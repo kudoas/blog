@@ -43,8 +43,8 @@ googleAnalytics = "UA-158529000-1" # Set your Google Analytics UA here
   # googleAdsense = "0000000000000000"
 
   # Word counter and read time indicator in post metadata
-  showWordCounter = true
-  showReadTime = false
+  showWordCounter = false
+  showReadTime = true
 
   # License in the footer
   showLicenseInFooter = false
