@@ -57,7 +57,7 @@ paginate = 10
 
   # Open Graph & Twitter Card variables
   # You can also set description and images in post front matter individually
-  description = "A minimal Hugo theme with nice theme color."
+  description = "つらつら気のままに溜まった知見を書くブログ"
   images = ["img/og.png"] # This will use the image called og.png in static/img folder
 
   # Posts shown in homepage
