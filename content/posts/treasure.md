@@ -10,7 +10,7 @@ draft: false
 
 8/1, 8, 15の土曜日と8/17~28の約1ヶ月の期間、VOYAGE GROUPのTreasureというインターンに参加してきました。
 
-![treasure1](img/posts/treasure1.png)
+![treasure1](https://kudolog.net/img/posts/treasure1.png)
 
 参加してからだいぶ日にちが空いてしまいましたが、振り返ろうと思います。最初は参加の経緯や事前講義、チーム開発まで色々書こうと思っていたのですが、考えあぐねている間に時間だけ過ぎてしまいました...汗。なのでTreasureの詳細は他の参加者の方に任せるとして、ここでは自分が特に学んだことについて言及したいと思います。
 
@@ -28,7 +28,7 @@ Treasureでは3日間という短い期間でWeb技術全般を網羅的学習�
 
 失敗して改善するサイクルを早く回す手法の一つとしてKPTというものを導入しました。KPTとは、**Keep：続けるべきこと、P：抱えている問題、Try：次にトライしたいこと**の3つで改善のサイクルを早く回すフレームワークの一つです。実際に1日に2-3回ずつ5分程度時間をとり、行いました。
 
-![treasure2](img/posts/treasure2.png)
+![treasure2](https://kudolog.net/img/posts/treasure2.png)
 
 > 私たちのチームで使用した実際のKPTの抜粋
 
@@ -40,7 +40,7 @@ Treasureでは3日間という短い期間でWeb技術全般を網羅的学習�
 
 開発の初期段階にCIの導入し、静的解析や自動テストを行いました。CIは失敗を先に検知する一つの手段です。本番環境でバグる前にあらかじめ、先にバグを見つけることで効率的に開発ができました。
 
-![treasure3](img/posts/treasure3.png)
+![treasure3](https://kudolog.net/img/posts/treasure3.png)
 
 > チームで使用していたGitHub Actions Workflows
 
@@ -98,4 +98,4 @@ APIの設計はフロントとバックでベストが違うことがありま�
 
 TreasureはサポーターやTAの支援が厚く、技術的にも精神的にも成長できる素晴らしいインターンでした。今までの人生単位でもここまでのものは少なく、一生を通して忘れらない経験になったと思います。この場で学んだことをここで終わりにせずに、コンフォートゾーンを超えてより成長できるように頑張りたいです。ありがとうございました。
 
-![treasure4](img/posts/treasure4.png)
+![treasure4](https://kudolog.net/img/posts/treasure4.png)
