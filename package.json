@@ -6,9 +6,9 @@
   "author": "daichi kudo",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/sanposhiho/blog/issues"
+    "url": "https://github.com/Kudoas/blog/issues"
   },
-  "homepage": "https://github.com/sanposhiho/blog#readme",
+  "homepage": "https://github.com/Kudoas/blog#readme",
   "devDependencies": {
     "textlint": "^11.7.6",
     "textlint-rule-preset-ja-spacing": "^2.0.2",
