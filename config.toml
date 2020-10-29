@@ -34,7 +34,7 @@ paginate = 10
   # Use CloudFlare Workers to accelerate the Google Analytics
   # If you are using this please comment the googleAnalytics above
   # Check https://github.com/SukkaW/cloudflare-workers-async-google-analytics for more details
-  # googleAnalyticsTid = "UA-000000000-0"
+  googleAnalyticsTid = "UA-158529000-1"
   # googleAnalyticsRoute = "https://*.*.workers.dev/"
 
   # Google AdSense
