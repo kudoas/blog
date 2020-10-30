@@ -5,7 +5,7 @@ description = "Resume"
 
 +++
 
-## Daichi Kudo
+## 👓 Daichi Kudo
 
 Meiji Pharmaceutical University, B5 (2017/04 - expected 2022/03)
 
@@ -180,10 +180,10 @@ React.js と Firebase を使用したオーダーメイドのハンバーガー�
 
 - AWS (S3, EC2),  GCP, Netlify, Vercel, Heroku, Firebase
 
-#### DB
+### DB
 
 - MySQL, PostgresQL, MongoDB
 
-#### Tool
+### Tool
 
-- Docker, Google Analytics, VS Code
+- Docker, Google Analytics, Visual Studio Code

@@ -130,3 +130,7 @@ googleAnalytics = "UA-158529000-1" # Set your Google Analytics UA here
     name = "Twitter"
     url = "https://twitter.com/kudoadd"
     weight = 2
+  [[menu.link]]
+    name = "Facebook"
+    url = "https://www.facebook.com/profile.php?id=100013190430935"
+    weight = 3
