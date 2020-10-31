@@ -7,7 +7,9 @@ description = "Resume"
 
 ## 👓 Daichi Kudo
 
-Meiji Pharmaceutical University, B5 (2017/04 - expected 2022/03)
+Welcome to my resume^^
+
+I am a B5 student at Meiji Pharmaceutical University (2017/04 - expected 2022/03).
 
 ## 🔗 Personal Links
 
@@ -178,7 +180,7 @@ React.js と Firebase を使用したオーダーメイドのハンバーガー�
 
 ### Cloud
 
-- AWS (S3, EC2),  GCP, Netlify, Vercel, Heroku, Firebase
+- AWS (S3, EC2), GCP, Netlify, Vercel, Heroku, Firebase
 
 ### DB
 
