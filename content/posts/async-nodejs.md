@@ -2,8 +2,10 @@
 title: 非同期処理でハマったこと
 date: 2020-03-01T09:43:00+09:00
 description: "JavaSctipt 特有の非同期処理でのメモです。"
+categories: ["program"]
 tags: ["javascript", "async"]
-draft: false
+images: ["tcard/async-nodejs.png"]
+author: ["@kudoadd"]
 ---
 
 JavaSctipt 特有の非同期処理でのメモです。
