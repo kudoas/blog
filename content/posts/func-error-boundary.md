@@ -125,7 +125,7 @@ ReactDOM.render(
 
 これによりエラーの際に、`<ErrorFallback/>`で定義した代わりの UI を表示させることができます。
 
-![error-message](https://kudolog.net/img/posts/func-error-boundary1.png)
+![error-message](https://kudolog.net/posts/func-error-boundary1.png)
 
 より詳しく知りたい方は参考資料をご覧ください。
 

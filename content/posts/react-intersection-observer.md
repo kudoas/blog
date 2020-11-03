@@ -12,7 +12,7 @@ author: ["@kudoadd"]
 
 いろいろなサイトを見ていると、画面へ入る瞬間にヌルッと下から出てくる UI を見つけました。以下のようなものです。
 
-![ezgif.com-gif-maker.gif](https://kudolog.net/img/posts/react-intersection-observer.gif)
+![ezgif.com-gif-maker.gif](https://kudolog.net/posts/react-intersection-observer.gif)
 
 >　画面に入るとヌルッとしたから出てくる
 
