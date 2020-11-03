@@ -2,8 +2,10 @@
 title: "Error BoundaryをFunction Componentで扱う"
 date: 2020-10-09T09:43:00+09:00
 description: "React では Error Boundary という子コンポーネントツリーでエラーが発生した際にクラッシュした UI を表示させる代わりに、フォールバック用の UI を表示するコンポーネントがあります。"
+categories: ["program"]
 tags: ["react", "error-boundary"]
-draft: false
+images: ["tcard/func-error-boundary.png"]
+author: ["@kudoadd"]
 ---
 
 ## 要約
@@ -123,7 +125,7 @@ ReactDOM.render(
 
 これによりエラーの際に、`<ErrorFallback/>`で定義した代わりの UI を表示させることができます。
 
-![error-message](https://kudolog.net/img/posts/func-error-boundary1.png)
+![error-message](https://kudolog.net/posts/func-error-boundary1.png)
 
 より詳しく知りたい方は参考資料をご覧ください。
 

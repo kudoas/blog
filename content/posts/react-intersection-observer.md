@@ -2,15 +2,17 @@
 title: "画面に表示されたことを検出して、Styled ComponentsでCSSを切り替える"
 date: 2020-10-03T09:43:00+09:00
 description: "react-intersection-observerとは画面の要素がビューポート（ブラウザ上に表示されている画面）に入った時、もしくは出た時に検知してくれる React 用のライブラリです。"
+categories: ["program"]
 tags: ["react", "styled-component", "react-intersection-observer"]
-draft: false
+images: ["tcard/react-intersection-observer.png"]
+author: ["@kudoadd"]
 ---
 
 ## はじめに
 
 いろいろなサイトを見ていると、画面へ入る瞬間にヌルッと下から出てくる UI を見つけました。以下のようなものです。
 
-![ezgif.com-gif-maker.gif](https://kudolog.net/img/posts/react-intersection-observer.gif)
+![ezgif.com-gif-maker.gif](https://kudolog.net/posts/react-intersection-observer.gif)
 
 >　画面に入るとヌルッとしたから出てくる
 

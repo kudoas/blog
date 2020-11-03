@@ -2,8 +2,10 @@
 title: "初めてのサマーインターン選考の記録"
 date: 2020-07-28T09:43:00+09:00
 description: "4月から今までサマーインターンの選考を受けていました。エンジニアとして初めてのインターン選考だったのでかなり手探りでした。ある程度落ち着いたので、選考の記録について共有したいと思います。"
+categories: ["intern"]
 tags: ["intern"]
-draft: false
+images: ["tcard/first-summer-intern.png"]
+author: ["@kudoadd"]
 ---
 
 こんにちは、[くどあ @kudoadd](https://twitter.com/kudoadd)です。
