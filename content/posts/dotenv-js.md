@@ -8,7 +8,7 @@ images: ["tcard/dotenv-js.png"]
 author: ["@kudoadd"]
 ---
 
-Node.js で API を作っていた時に Production Key や DB のパスワードをハードコーディングして GitHub に上げてしまうのは気が引けた。調べてみると Nodejs には環境変数を簡単に設定できる**dotenv**というモジュールがあったので使い方のメモです。
+Node.js で API を作っていた時に Production Key や DB のパスワードをハードコーディングして GitHub に上げるのセキュリティ的に良くありません。調べてみると Nodejs には環境変数を簡単に設定できる**dotenv**というモジュールがありました。今回はその使い方のメモです。
 
 ## dotenvの使い方
 
@@ -38,7 +38,7 @@ dotenv.config();
 ```reStructuredText
 root
 ├── index.ts
-└── .envt
+└── .env
 ```
 
 ### .env
