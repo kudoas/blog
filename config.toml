@@ -107,6 +107,7 @@ googleAnalytics = "UA-158529000-1" # Set your Google Analytics UA here
 
 [taxonomies]
   tag = "tags"
+  category = "categories"
 
 [menu]
   [[menu.nav]]
