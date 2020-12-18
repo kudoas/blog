@@ -2,8 +2,7 @@
 title = "Resume"
 date = 2020-10-30T09:43:00+09:00
 description = "Resume"
-tags: ["about"]
-categories: ["about"]
+
 +++
 
 ## 👓 Daichi Kudo
