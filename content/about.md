@@ -2,7 +2,8 @@
 title = "Resume"
 date = 2020-10-30T09:43:00+09:00
 description = "Resume"
-
+tags: ["about"]
+categories: ["about"]
 +++
 
 ## 👓 Daichi Kudo
@@ -25,7 +26,13 @@ I am a B5 student at Meiji Pharmaceutical University (2017/04 - expected 2022/03
 
 2020/11 (1 week)
 
-Coming soon...
+#### 使用技術
+
+- TypeScript / Next.js 
+
+#### 関連記事
+
+- [ゆめみのインターンに参加して](https://kudolog.net/posts/yumemi-intern/)
 
 ### Rakuten, Inc. 二子玉川夏の陣 2020
 
