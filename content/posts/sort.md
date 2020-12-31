@@ -2,7 +2,7 @@
 title: Pythonでのソートアルゴリズムの実装
 date: 2020-06-01T09:43:00+09:00
 description: "JavaSctipt 特有の非同期処理でのメモです。"
-categories: ["program"]
+categories: ["development"]
 tags: ["algorithm", "sort"]
 images: ["tcard/sort.png"]
 author: ["@kudoadd"]
