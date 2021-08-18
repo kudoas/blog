@@ -14,7 +14,7 @@ author: ["@kudoadd"]
 
 ![ezgif.com-gif-maker.gif](https://kudolog.net/posts/react-intersection-observer.gif)
 
->　画面に入るとヌルッとしたから出てくる
+> 画面に入るとヌルッとしたから出てくるものですが、GIF だと分かりづらいのでちゃんと見たい人は[**私が作成したページ**](https://kudoa-portfolio.vercel.app/)で見ることができます。
 
 この UI が個人的に結構気に入ったので、React での実装例として共有します。
 
@@ -23,7 +23,7 @@ author: ["@kudoadd"]
 - react-intersection-observer: 8.29.0
 - @emotion/core: 10.0.28
 
-## react-intersection-observerとは
+## react-intersection-observer とは
 
 [react-intersection-observer](https://github.com/thebuilder/react-intersection-observer)とは画面の要素がビューポート（ブラウザ上に表示されている画面）に入った時、もしくは出た時に検知してくれる React 用のライブラリです。内部的には[Intersection Observer API](https://developer.mozilla.org/ja/docs/Web/API/Intersection_Observer_API)が使われており、React で使いやすいように hooks などで提供してくれています。
 
@@ -31,8 +31,8 @@ react-intersection-observer は以下のように使用できます。
 
 ```tsx
 // Usage of Hooks, useInView (TypeScript)
-import React from 'react';
-import { useInView } from 'react-intersection-observer';
+import React from "react";
+import { useInView } from "react-intersection-observer";
 
 const Component: React.FC = () => {
   const { ref, inView } = useInView({
@@ -48,21 +48,20 @@ const Component: React.FC = () => {
 };
 ```
 
->[Usage Hooks 🎣 useInView](https://github.com/thebuilder/react-intersection-observer)
+> [Usage Hooks 🎣 useInView](https://github.com/thebuilder/react-intersection-observer)
 
 検知したい HTML の親要素の ref 属性に対して、useInView で提供されている `ref` を割り当てることで、ビューポートに表示されているかいないかを検知できるようになります。inView にはデフォルトは flase であり、検知すれば true を返します。これを使用して CSS を切り替えます。
 
-## Styled ComponentsでinViewの値によってCSSを切り替える
+## Styled Components で inView の値によって CSS を切り替える
 
 emotion には props を受け取って CSS を切り替えられます。
 
 ```tsx
-import styled from '@emotion/styled'
+import styled from "@emotion/styled";
 
 const Button = styled.button`
-  color: ${props =>
-    props.primary ? 'hotpink' : 'turquoise'};
-`
+  color: ${(props) => (props.primary ? "hotpink" : "turquoise")};
+`;
 ```
 
 > Styled Components [Changing based on props](https://emotion.sh/docs/styled)
@@ -70,8 +69,8 @@ const Button = styled.button`
 この機能を使うことで inView の値に応じて CSS を切り替えることができます。例えば、最初に例として挙げたビューポートに入った瞬間ヌルッとしたから出てくる UI は以下のように実現しています。
 
 ```tsx
-import React from 'react';
-import { useInView } from 'react-intersection-observer';
+import React from "react";
+import { useInView } from "react-intersection-observer";
 import styled from "@emotion/styled";
 
 const Component: React.FC = () => {
@@ -82,7 +81,7 @@ const Component: React.FC = () => {
 
   return (
     //　inView属性を割り当てる
-    <Section ref={ref} inView={inView} >
+    <Section ref={ref} inView={inView}>
       <h2>{`Header inside viewport ${inView}.`}</h2>
       <p>スクロールとするとヌルッと出てくるよ！</p>
     </Section>
@@ -106,7 +105,6 @@ const Section = styled.section<Props>`
 
 react-intersection-observer と Styled Components を紹介しました。ユーザーの動作に応じて CSS を切り替えると動きのある UI を実現できます。これらの機能を使用して自分の Portfolio を作成したので、ご興味があれば参考にどうぞ。
 
-- [**Daichi Kudo's Portfolio**](https://kudoa.netlify.app/)
+- [**Daichi Kudo's Portfolio**](https://kudoa-portfolio.vercel.app/)
 
 他にもこれらの機能を使って面白い実装などありましたら、是非コメントで教えてください。
-
