@@ -1,5 +1,5 @@
 baseURL = "https://kudolog.net"
-title = "クド戦記"
+title = "daichi/tech"
 theme = "fuji"
 
 ## Change this two to switch between different language
@@ -26,11 +26,11 @@ googleAnalytics = "UA-158529000-1" # Set your Google Analytics UA here
   post = "/:section/:filename/" # Custom post links, e.g. "/:year/:month/:title/"
 
 [params]
-  author = "Kudoa" # You can also set author in post front matter individually
-  subTitle = "つらつら気のままに溜まった知見を書くブログ"
+  author = "daichi" # You can also set author in post front matter individually
+  subTitle = "Ruby / Angular / Web standards のネタが多いです"
 
   # Source URL of the website, will appear in the footer
-  sourceURL = "https://github.com/Kudoas/blog"
+  sourceURL = "https://github.com/kudoas/blog"
 
   # Use CloudFlare Workers to accelerate the Google Analytics
   # If you are using this please comment the googleAnalytics above
@@ -125,11 +125,11 @@ googleAnalytics = "UA-158529000-1" # Set your Google Analytics UA here
 
   [[menu.link]]
     name = "GitHub"
-    url = "https://github.com/Kudoas"
+    url = "https://github.com/kudoas"
     weight = 1
   [[menu.link]]
     name = "Twitter"
-    url = "https://twitter.com/kudoadd"
+    url = "https://twitter.com/_da1kong"
     weight = 2
   [[menu.link]]
     name = "Facebook"
