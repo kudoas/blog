@@ -5,7 +5,7 @@ description: "JavaSctipt 特有の非同期処理でのメモです。"
 categories: ["development"]
 tags: ["algorithm", "sort"]
 images: ["tcard/sort.png"]
-author: ["@kudoadd"]
+author: ["@_da1kong"]
 ---
 
 以前の面接のコーディング試験で配列ソートの課題がでました。
@@ -18,7 +18,7 @@ author: ["@kudoadd"]
 配列の一番左の値を取ってきて右隣のものと比較し、右隣の方が小さければ交換します。
 この作業を配列の長さ分行えば、全てソートされるので計算量は O(n^2)かかります。
 
-### Pythonでの実装例
+### Python での実装例
 
 ```python
 def bubble_sort(A):
@@ -38,7 +38,7 @@ sorted_A = bubble_sort(A) # [1,2,3,4,5]
 
 ソート済みの区間に対して未ソート区間から数を差し込んでいきます。
 
-### Pythonでの実装例
+### Python での実装例
 
 ```python
 def insertion_sort(A):
@@ -60,7 +60,7 @@ def insertion_sort(A):
 
 それぞれの区間から最小値を見つけて順番に交換していくソートです。割と直感的なアルゴリズムで分かりやすいです。
 
-### Pythonでの実装例
+### Python での実装例
 
 ```python
 n = int(input())

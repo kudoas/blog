@@ -5,7 +5,7 @@ description: "react-intersection-observerとは画面の要素がビューポー
 categories: ["development"]
 tags: ["react", "styled-component", "react-intersection-observer"]
 images: ["tcard/react-intersection-observer.png"]
-author: ["@kudoadd"]
+author: ["@_da1kong"]
 ---
 
 ## はじめに
@@ -96,7 +96,8 @@ interface Props {
 // inViewがtrueになると透明度が0.5から1になり、50px下から移動してくる
 const Section = styled.section<Props>`
   transition: all 1s ease;
-  transform: ${(props) => (props.inView ? "translateY(0)" : "translateY(50px)")};
+  transform: ${(props) =>
+    props.inView ? "translateY(0)" : "translateY(50px)"};
   opacity: ${(props) => (props.inView ? 1 : 0.5)};
 `;
 ```

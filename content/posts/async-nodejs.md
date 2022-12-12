@@ -5,7 +5,7 @@ description: "JavaSctipt 特有の非同期処理でのメモです。"
 categories: ["development"]
 tags: ["javascript", "async"]
 images: ["tcard/async-nodejs.png"]
-author: ["@kudoadd"]
+author: ["@_da1kong"]
 ---
 
 JavaSctipt 特有の非同期処理でのメモです。
@@ -17,7 +17,7 @@ JavaSctipt 特有の非同期処理でのメモです。
 
 ```json
 // data/products.json
-[{"title":"hoge"},{"title":"hgoe"}] 
+[{ "title": "hoge" }, { "title": "hgoe" }]
 ```
 
 ```javascript
@@ -29,19 +29,19 @@ module.exports = class Product {
   constructor(t) {
     this.title = t;
   }
-  
+
   static fetchAll(cb) {
     const p = path.join(
       path.dirname(process.mainModule.filename),
-      "data", 
+      "data",
       "products.json"
     );
     fs.readFile(p, (err, fileContent) => {
-       if (err) {
-         return [];
-       }
-       return JSON.parse(fileContent);
-     });
+      if (err) {
+        return [];
+      }
+      return JSON.parse(fileContent);
+    });
   }
 };
 ```
@@ -51,14 +51,14 @@ module.exports = class Product {
 ```javascript
 // controllers
 exports.getProducts = (req, res, next) => {
-  Products.fetchAll(products => {
+  Products.fetchAll((products) => {
     res.render("shop", {
       prods: products,
       pageTitle: "Shop",
       path: "/",
       hasProducts: products.length > 0,
       activeShop: true,
-      productCSS: true
+      productCSS: true,
     });
   });
 };
@@ -71,7 +71,7 @@ exports.getProducts = (req, res, next) => {
 static fetchAll() {
     const p = path.join(
       path.dirname(process.mainModule.filename),
-      "data", 
+      "data",
       "products.json"
     );
   	// ①：ここが非同期処理なので処理が終わる前に通過してundefinedになる
@@ -85,7 +85,7 @@ static fetchAll() {
   }
 ```
 
-データを読み込む処理①は条件内で値を返しますが、関数自体が値を返している訳ではありません。node.js では非同期通信なので①が終了して関数が値を返す前に、controller が view にデータを渡す処理が実行されてしまいます。
+データを読み込む処理 ① は条件内で値を返しますが、関数自体が値を返している訳ではありません。node.js では非同期通信なので ① が終了して関数が値を返す前に、controller が view にデータを渡す処理が実行されてしまいます。
 
 ## 解決案
 
@@ -103,7 +103,7 @@ fetchAll の引数に callback 関数を受け取る方法です。
 static fetchAll(cb) {
     const p = path.join(
       path.dirname(process.mainModule.filename),
-      "data", 
+      "data",
       "products.json"
     );
     fs.readFile(p, (err, fileContent) => {
@@ -133,9 +133,9 @@ static async fetchAll() {
 ```javascript
 // controller
 exports.getProducts = async (req, res) => {
-	const products = await Product.fetchAll();
-	res.render('shop', { prods: products, docTitle: 'Shop', path: '/' });
-}
+  const products = await Product.fetchAll();
+  res.render("shop", { prods: products, docTitle: "Shop", path: "/" });
+};
 ```
 
 可読性が高いので、Nodejs のバージョンが対応していれば現在はこちらを使います。
@@ -148,6 +148,5 @@ exports.getProducts = async (req, res) => {
 ## 参考文献
 
 - [How do I return the response from an asynchronous call?](https://stackoverflow.com/questions/14220321/how-do-i-return-the-response-from-an-asynchronous-call)
-- [ラーメンで理解するasync/await](https://qiita.com/7tsuno/items/6d5a27ffe9143b35defe)
-- [Promiseの使い方、それに代わるasync/awaitの使い方](https://qiita.com/suin/items/97041d3e0691c12f4974)
-
+- [ラーメンで理解する async/await](https://qiita.com/7tsuno/items/6d5a27ffe9143b35defe)
+- [Promise の使い方、それに代わる async/await の使い方](https://qiita.com/suin/items/97041d3e0691c12f4974)

@@ -5,7 +5,7 @@ description: "React では Error Boundary という子コンポーネントツ�
 categories: ["development"]
 tags: ["react", "error-boundary"]
 images: ["tcard/func-error-boundary.png"]
-author: ["@kudoadd"]
+author: ["@_da1kong"]
 ---
 
 ## 要約
@@ -44,7 +44,7 @@ class ErrorBoundary extends React.Component {
       // You can render any custom fallback UI
       return <h1>Something went wrong.</h1>;
     }
-    return this.props.children; 
+    return this.props.children;
   }
 }
 ```
@@ -56,7 +56,7 @@ class ErrorBoundary extends React.Component {
 </ErrorBoundary>
 ```
 
-> [error boundaryとは](https://ja.reactjs.org/docs/error-boundaries.html#introducing-error-boundaries)
+> [error boundary とは](https://ja.reactjs.org/docs/error-boundaries.html#introducing-error-boundaries)
 
 これらを関数型でうまく扱える方法がないか探したところ、`react-error-boundary`というパッケージがありました。
 なので実装例とともに紹介します。
@@ -79,10 +79,7 @@ const App: React.FC = () => {
   return <div>OK</div>;
 };
 
-ReactDOM.render(
-  <App />,
-  document.getElementById("root")
-);
+ReactDOM.render(<App />, document.getElementById("root"));
 ```
 
 現状のままだと `<App />` がエラーを出した場合、真っ白な画面（壊れた UI）が表示されてしまいます。
@@ -131,6 +128,5 @@ ReactDOM.render(
 
 ## 参考資料
 
-- [Error Boundary](https://ja.reactjs.org/docs/error-boundaries.html) 
+- [Error Boundary](https://ja.reactjs.org/docs/error-boundaries.html)
 - [react-error-boundary](https://github.com/bvaughn/react-error-boundary)
-
