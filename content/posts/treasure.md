@@ -2,6 +2,7 @@
 title: "VOYAGE GROUPのインターン「Treasure」に参加して"
 date: 2020-10-01T09:43:00+09:00
 description: "8/1, 8, 15の土曜日と8/17~28の約1ヶ月の期間、VOYAGE GROUPのTreasureというインターンに参加してきました。"
+categories: ["PROGRAM"]
 tags: ["intern"]
 images: ["tcard/treasure.png"]
 author: ["@_da1kong"]

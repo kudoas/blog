@@ -2,6 +2,7 @@
 title: Nodejsで環境変数を設定できるdotenvの紹介
 date: 2020-05-26T09:43:00+09:00
 description: "Node.js で API を作っていた時に Production Key や DB のパスワードをハードコーディングして GitHub に上げてしまうのは気が引けた。調べてみると Nodejs には環境変数を簡単に設定できるdotenvというモジュールがあったので使い方のメモです。"
+categories: ["PROGRAM"]
 tags: ["Nodejs"]
 images: ["tcard/dotenv-js.png"]
 author: ["@_da1kong"]
