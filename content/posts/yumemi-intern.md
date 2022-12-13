@@ -2,8 +2,7 @@
 title: "ゆめみのインターンに参加して"
 date: 2020-12-06T09:00:00+09:00
 description: ""
-tags: ["intern", "yumemi", "react"]
-categories: ["intern"]
+tags: ["intern"]
 images: ["tcard/yumemi-intern.png"]
 author: ["@_da1kong"]
 ---
