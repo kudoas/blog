@@ -5,7 +5,7 @@ description: ""
 categories: ["PROGRAM"]
 tags: ["intern"]
 images: ["tcard/yumemi-intern.png"]
-author: ["@_da1kong"]
+author: "_da1kong"
 ---
 
 こんにちは、だいちです。

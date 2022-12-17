@@ -5,7 +5,7 @@ description: "リポジトリをまとめるために、リポジトリから他
 categories: ["PROGRAM"]
 tags: ["GitHub"]
 images: ["tcard/github-repository-migration.png"]
-author: ["@_da1kong"]
+author: "_da1kong"
 ---
 
 リポジトリをまとめるために、リポジトリから他のリポジトリに履歴を残したまま移行しました。そのとき行った方法です。

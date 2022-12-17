@@ -5,7 +5,7 @@ description: "2020年4月からサマーインターンの選考を受けてい�
 categories: ["PROGRAM"]
 tags: ["intern"]
 images: ["tcard/first-summer-intern.png"]
-author: ["@_da1kong"]
+author: "_da1kong"
 ---
 
 こんにちは、[だいち](https://twitter.com/_da1kong)です。

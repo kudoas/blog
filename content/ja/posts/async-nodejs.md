@@ -5,7 +5,7 @@ description: "JavaSctipt 特有の非同期処理でのメモです。"
 categories: ["PROGRAM"]
 tags: ["Nodejs"]
 images: ["tcard/async-nodejs.png"]
-author: ["@_da1kong"]
+author: "_da1kong"
 ---
 
 JavaSctipt 特有の非同期処理でのメモです。

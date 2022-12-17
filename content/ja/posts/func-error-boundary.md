@@ -5,7 +5,7 @@ description: "React では Error Boundary という子コンポーネントツ�
 categories: ["PROGRAM"]
 tags: ["React", "error-boundary"]
 images: ["tcard/func-error-boundary.png"]
-author: ["@_da1kong"]
+author: "_da1kong"
 ---
 
 ## 要約

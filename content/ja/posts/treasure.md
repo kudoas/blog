@@ -5,7 +5,7 @@ description: "8/1, 8, 15の土曜日と8/17~28の約1ヶ月の期間、VOYAGE GR
 categories: ["PROGRAM"]
 tags: ["intern"]
 images: ["tcard/treasure.png"]
-author: ["@_da1kong"]
+author: "_da1kong"
 ---
 
 こんにちは、[だいち](https://twitter.com/_da1kong)です。

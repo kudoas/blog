@@ -5,7 +5,7 @@ description: "react-intersection-observerとは画面の要素がビューポー
 categories: ["PROGRAM"]
 tags: ["React", "styled-component", "react-intersection-observer"]
 images: ["tcard/react-intersection-observer.png"]
-author: ["@_da1kong"]
+author: "_da1kong"
 ---
 
 ## はじめに
