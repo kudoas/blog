@@ -25,9 +25,9 @@ header:
     paddingY: 0
     align: center
     title:
-      - HUGO
+      - daichi / tech
     subtitle:
-      - The world’s fastest framework for building websites
+      - Ruby / Angular / Web Standards が好きです
     titleColor: 
     titleShadow: true
     titleFontSize: 44
