@@ -1,8 +1,8 @@
-baseURL = "http://example.org"
-title = "Hugo Zzo Theme"
+baseURL = "https://kudolog.net"
+title = "daichi.tech"
 theme = "zzo"
 
-defaultContentLanguage = "en"
+defaultContentLanguage = "ja"
 defaultContentLanguageInSubdir = true
 hasCJKLanguage = true
 
