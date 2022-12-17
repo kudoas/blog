@@ -66,7 +66,7 @@ bioImageUrl = ""
 useGravatar = false
 location = "Tokyo, Japan"
 organization = "Classi"
-link = "https://kudolog.com"
+link = "https://kudolog.net"
 
 # sidebar
 enableBio = true
@@ -165,6 +165,7 @@ commento = false
   facebook = ""
   twitter = "https://twitter.com/_da1kong"
   github = "https://github.com/kudoas"
+  hatenablog = "https://kudoa.hatenablog.com/"
   stack-overflow = ""
   instagram = ""
   google-plus = ""
