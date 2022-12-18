@@ -31,7 +31,7 @@ hideHomeHeaderWhenMobile = false
 showMobileMenuTerms = ["tags", "categories", "series"]
 
 # search
-enableSearch = true
+enableSearch = false
 enableSearchHighlight = true
 searchResultPosition = "main" # side, main
 searchContent = true # include content to search index
