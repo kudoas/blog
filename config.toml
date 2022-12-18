@@ -58,7 +58,7 @@ googleAnalytics = "UA-158529000-1" # Set your Google Analytics UA here
 
   # Open Graph & Twitter Card variables
   # You can also set description and images in post front matter individually
-  description = "つらつら気のままに溜まった知見を書くブログ"
+  description = ""
   images = ["img/og.png"] # This will use the image called og.png in static/img folder
 
   # Posts shown in homepage
