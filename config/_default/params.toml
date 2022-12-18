@@ -200,10 +200,10 @@ commento = false
 
 # possible share name: ["facebook","twitter", "reddit", "linkedin", "tumblr", "weibo", "douban", "line", "pocket", "feedly", "hatena", "pinterest", "delicious", "google"]
 [[share]]
-  name = "facebook"
-  username = ""
-[[share]]
   name = "twitter"
+[[share]]
+  name = "hatena"
+
 
 [[footerLinks]]
   name = ""
