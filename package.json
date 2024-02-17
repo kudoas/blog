@@ -2,8 +2,8 @@
   "name": "blog",
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "ssh://git@github.com/Kudoas/blog.git",
-  "author": "daichi kudo",
+  "repository": "ssh://git@github.com/kudoas/blog.git",
+  "author": "daich",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/Kudoas/blog/issues"
