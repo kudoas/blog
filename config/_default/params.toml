@@ -60,7 +60,7 @@ publicationIcon = "📚"
 typeIcon = "🎯"
 
 # whoami
-myname = "Daichi (@_da1kong)"
+myname = "Daichi (@da1chi24)"
 whoami = "Software Developer"
 bioImageUrl = ""
 useGravatar = false
@@ -162,7 +162,7 @@ commento = false
   email = ""
   phone = ""
   facebook = ""
-  twitter = "https://twitter.com/_da1kong"
+  twitter = "https://twitter.com/da1chi24"
   github = "https://github.com/kudoas"
   hatenablog = "https://kudoa.hatenablog.com/"
   stack-overflow = ""

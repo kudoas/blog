@@ -5,10 +5,9 @@ description: "2020年4月からサマーインターンの選考を受けてい�
 categories: ["PROGRAM"]
 tags: ["intern"]
 images: ["tcard/first-summer-intern.png"]
-author: "_da1kong"
 ---
 
-こんにちは、[だいち](https://twitter.com/_da1kong)です。
+こんにちは、[だいち](https://twitter.com/da1chi24)です。
 
 2020 年 4 月からサマーインターンの選考を受けていました。エンジニアとして初めてのインターン選考だったのでかなり手探りでした。ある程度落ち着いたので、選考の記録について共有します。
 

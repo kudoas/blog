@@ -5,7 +5,6 @@ description: "JavaSctipt 特有の非同期処理でのメモです。"
 categories: ["PROGRAM"]
 tags: ["algorithm"]
 images: ["tcard/sort.png"]
-author: "_da1kong"
 ---
 
 以前の面接のコーディング試験で配列ソートの課題がでました。

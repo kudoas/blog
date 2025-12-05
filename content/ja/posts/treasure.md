@@ -5,10 +5,9 @@ description: "8/1, 8, 15の土曜日と8/17~28の約1ヶ月の期間、VOYAGE GR
 categories: ["PROGRAM"]
 tags: ["intern"]
 images: ["tcard/treasure.png"]
-author: "_da1kong"
 ---
 
-こんにちは、[だいち](https://twitter.com/_da1kong)です。
+こんにちは、[だいち](https://twitter.com/da1chi24)です。
 
 8/1, 8, 15 の土曜日と 8/17~28 の約 1 ヶ月の期間、VOYAGE GROUP の Treasure というインターンに参加してきました。
 

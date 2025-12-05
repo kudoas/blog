@@ -26,7 +26,6 @@ googleAnalytics = "UA-158529000-1" # Set your Google Analytics UA here
   post = "/:section/:slug/" # Custom post links, e.g. "/:year/:month/:title/"
 
 [params]
-  author = "daichi" # You can also set author in post front matter individually
   subTitle = "Ruby / Angular / Web standards のネタが多いです"
 
   # Source URL of the website, will appear in the footer
@@ -126,5 +125,5 @@ ignoreErrors = ["error-output-taxonomy"]
     weight = 1
   [[menu.link]]
     name = "Twitter"
-    url = "https://twitter.com/_da1kong"
+    url = "https://twitter.com/da1chi24"
     weight = 2
