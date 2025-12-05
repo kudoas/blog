@@ -15,6 +15,10 @@ enableEmoji = true
 pagination = { pagerSize = 13 }
 rssLimit = 100
 
+[services]
+  [services.rss]
+    limit = 100
+
 enableGitInfo = false
 googleAnalytics = ""
 

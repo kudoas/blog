@@ -4,7 +4,7 @@ theme = "fuji"
 
 ## Change this two to switch between different language
 languageCode = "ja"  # For RSS, view https://www.rssboard.org/rss-language-codes
-defaultContentLanguage = "en"  # For HTML page, now support: en, zh-hans, zh-hant, ja, nl
+defaultContentLanguage = "ja"  # For HTML page, now support: en, zh-hans, zh-hant, ja, nl
 
 hasCJKLanguage = true
 summaryLength = 100 # Custom summary length, add <!--more--> in post file to custom split point

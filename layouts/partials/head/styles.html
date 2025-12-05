@@ -1,0 +1,23 @@
+{{ $main_options := (dict "targetPath" "css/main.css" "outputStyle" "compressed") }}
+{{ $main_template := resources.Get "sass/main.scss" | resources.ExecuteAsTemplate "main_parsed.scss" . }}
+{{ $main_style := css.Sass $main_options $main_template | resources.Minify }}
+<link rel="stylesheet" href="{{ $main_style.RelPermalink }}">
+
+{{ if .Site.Params.custom_css }}
+{{ range .Site.Params.custom_css }}
+  {{ $custom_path := . }}
+    {{ $custom_template := resources.Get $custom_path }}
+    {{ if $custom_template }}
+      {{ $custom_style := $custom_template }}
+      {{ $subtype := $custom_template.MediaType.SubType }}
+      {{ if in (slice "sass" "scss" "x-sass" "x-scss") $subtype }}
+        {{ $base := path.Base $custom_path }}
+        {{ $name := replace $base (path.Ext $base) "" }}
+        {{ $target := printf "css/%s.css" $name }}
+        {{ $custom_style = css.Sass (dict "targetPath" $target "outputStyle" "compressed") $custom_template }}
+      {{ end }}
+      {{ $custom_style = $custom_style | resources.Minify }}
+      <link rel="stylesheet" href="{{ $custom_style.RelPermalink }}">
+    {{ end }}
+{{ end }}
+{{ end }}

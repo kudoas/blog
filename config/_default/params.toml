@@ -1,7 +1,7 @@
 logoText = "daichi/tech"
 logoType = "short" # long, short
 description = "技術ネタを中心にしたテックブログ"
-custom_css = []
+custom_css = ["sass/custom/single-override.scss"]
 custom_js = []
 useFaviconGenerator = true # https://www.favicon-generator.org/
 meta_image = ""
