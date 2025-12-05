@@ -8,5 +8,5 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: 24
-      - run: yarn install
-      - run: yarn textlint
+      - run: bun i --frozen-lockfile
+      - run: bun run textlint

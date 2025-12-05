@@ -18,7 +18,7 @@ author: "_da1kong"
 
 React では Error Boundary という子コンポーネントツリーでエラーが発生した際にクラッシュした UI を表示させる代わりに、フォールバック用の UI を表示するコンポーネントがあります。これはユーザーが壊れた画面で操作することにより、サービスに問題が起こることを防ぐことができます。
 
-このようなエラーハンドリングは `try/catch` で行うことが一般的ですが、これは命令型のコード（関数の実行など）でしか動作しません。そのため、コンポーネントのような宣言型でエラーに応じた処理を行うためには別の方法を取らなければなりません。react ではライフサイクルメソッドの [`static getDerivedStateFromError()`](https://ja.reactjs.org/docs/react-component.html#static-getderivedstatefromerror) か [`componentDidCatch()`](https://ja.reactjs.org/docs/react-component.html#componentdidcatch) のいずれか（または両方）を使うことで実装できます。
+このようなエラーハンドリングは `try/catch` で行うことが一般的ですが、これは命令型のコード（関数の実行など）でしか動作しません。そのため、コンポーネントのような宣言型でエラーに応じた処理を行うためには別の方法を取らなければなりません。react ではライフサイクルメソッドの[`static getDerivedStateFromError()`](https://ja.reactjs.org/docs/react-component.html#static-getderivedstatefromerror)か[`componentDidCatch()`](https://ja.reactjs.org/docs/react-component.html#componentdidcatch)のいずれか（または両方）を使うことで実装できます。
 
 以下は公式ドキュメントからの抜粋です。
 
@@ -58,7 +58,7 @@ class ErrorBoundary extends React.Component {
 
 > [error boundary とは](https://ja.reactjs.org/docs/error-boundaries.html#introducing-error-boundaries)
 
-これらを関数型でうまく扱える方法がないか探したところ、`react-error-boundary`というパッケージがありました。
+これらを関数型でうまく扱える方法がないか探したところ、`react-error-boundary` というパッケージがありました。
 なので実装例とともに紹介します。
 
 ## Function Component で Error Boundary を試す
@@ -84,7 +84,7 @@ ReactDOM.render(<App />, document.getElementById("root"));
 
 現状のままだと `<App />` がエラーを出した場合、真っ白な画面（壊れた UI）が表示されてしまいます。
 
-`react-error-boundary`を使うことでエラー時のコンポーネントを関数コンポーネントとして別に用意し、エラー時のフォールバック用のコンポーネントとして表示できます。以下が簡単な実装例です。
+`react-error-boundary` を使うことでエラー時のコンポーネントを関数コンポーネントとして別に用意し、エラー時のフォールバック用のコンポーネントとして表示できます。以下が簡単な実装例です。
 
 ```jsx
 import React from "react";
@@ -120,7 +120,7 @@ ReactDOM.render(
 );
 ```
 
-これによりエラーの際に、`<ErrorFallback/>`で定義した代わりの UI を表示させることができます。
+これによりエラーの際に、`<ErrorFallback/>` で定義した代わりの UI を表示させることができます。
 
 ![error-message](https://blog.da1chi.net/posts/func-error-boundary1.png)
 

@@ -8,30 +8,113 @@
   },
   "rules": {
     "preset-ja-technical-writing": {
+      "sentence-length": {
+        "severity": "warning"
+      },
+      "max-comma": {
+        "severity": "warning"
+      },
+      "max-ten": {
+        "severity": "warning"
+      },
+      "max-kanji-continuous-len": {
+        "severity": "warning"
+      },
+      "no-mix-dearu-desumasu": {
+        "severity": "warning"
+      },
+      "ja-no-mixed-period": {
+        "periodMark": "。",
+        "allowPeriodMarks": [
+          ":",
+          "、"
+        ],
+        "allowEmojiAtEnd": true,
+        "severity": "warning"
+      },
+      "arabic-kanji-numbers": {
+        "severity": "warning"
+      },
+      "no-doubled-conjunction": {
+        "severity": "warning"
+      },
+      "no-doubled-conjunctive-particle-ga": {
+        "severity": "warning"
+      },
+      "no-double-negative-ja": {
+        "severity": "warning"
+      },
+      "no-doubled-joshi": {
+        "severity": "warning"
+      },
+      "no-dropping-the-ra": {
+        "severity": "warning"
+      },
+      "no-nfd": {
+        "severity": "warning"
+      },
       "no-exclamation-question-mark": {
         "allowFullWidthExclamation": true,
-        "allowFullWidthQuestion": true
+        "allowFullWidthQuestion": true,
+        "severity": "warning"
+      },
+      "no-hankaku-kana": {
+        "severity": "warning"
+      },
+      "no-invalid-control-character": {
+        "severity": "warning"
+      },
+      "ja-no-weak-phrase": {
+        "severity": "warning"
+      },
+      "ja-no-successive-word": {
+        "severity": "warning"
+      },
+      "ja-no-abusage": {
+        "severity": "warning"
+      },
+      "ja-no-redundant-expression": {
+        "severity": "warning"
+      },
+      "ja-unnatural-alphabet": {
+        "severity": "warning"
+      },
+      "no-unmatched-pair": {
+        "severity": "warning"
+      },
+      "no-zero-width-spaces": {
+        "severity": "warning"
       }
     },
     "preset-ja-spacing": {
+      "ja-nakaguro-or-halfwidth-space-between-katakana": {
+        "severity": "warning"
+      },
+      "ja-no-space-around-parentheses": {
+        "severity": "warning"
+      },
+      "ja-no-space-between-full-width": {
+        "severity": "warning"
+      },
       "ja-space-between-half-and-full-width": {
         "space": "always",
-        "exceptPunctuation": true
+        "exceptPunctuation": true,
+        "severity": "warning"
+      },
+      "ja-space-after-exclamation": {
+        "severity": "warning"
+      },
+      "ja-space-after-question": {
+        "severity": "warning"
       },
       "ja-space-around-code": {
         "before": true,
-        "after": true
+        "after": true,
+        "severity": "warning"
+      },
+      "ja-space-around-link": {
+        "severity": "warning"
       }
-    },
-    "ja-technical-writing/ja-no-mixed-period": {
-      "periodMark": "。",
-      "allowPeriodMarks": [
-        ":",
-        "、"
-      ],
-      "allowEmojiAtEnd": true
-    },
-    "ja-technical-writing/sentence-length": false,
-    "ja-technical-writing/ja-no-successive-word": false
+    }
   }
 }

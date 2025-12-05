@@ -45,7 +45,7 @@ author: "_da1kong"
 
 ### 開発手法
 
-- 今回は簡易的な git-flow を採用しました。`feature`、`master`で管理し、PR をメンターの方にレビューして頂きました。
+- 今回は簡易的な git-flow を採用しました。`feature`、`master` で管理し、PR をメンターの方にレビューして頂きました。
 
 ### CSS
 

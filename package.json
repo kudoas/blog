@@ -5,7 +5,7 @@
   "repository": "ssh://git@github.com/kudoas/blog.git",
   "author": "daich",
   "scripts": {
-    "textlint": "textlint 'src/**/*.md'"
+    "textlint": "textlint 'content/**/*.md'"
   },
   "license": "MIT",
   "bugs": {
@@ -13,9 +13,9 @@
   },
   "homepage": "https://github.com/Kudoas/blog#readme",
   "devDependencies": {
-    "textlint": "^11.7.6",
-    "textlint-rule-preset-ja-spacing": "^2.0.2",
-    "textlint-rule-preset-ja-technical-writing": "^12.0.0",
+    "textlint": "^15.4.1",
+    "textlint-rule-preset-ja-spacing": "^2.4.3",
+    "textlint-rule-preset-ja-technical-writing": "^12.0.2",
     "textlint-rule-spellcheck-tech-word": "^5.0.0"
   }
 }

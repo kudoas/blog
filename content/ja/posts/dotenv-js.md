@@ -12,7 +12,7 @@ Node.js で API を作っていた時に Production Key や DB のパスワー�
 
 ## dotenv の使い方
 
-`dotenv`をインストールするだけで使用できます。
+`dotenv` をインストールするだけで使用できます。
 
 ```bash
 $ yarn add dotenv
