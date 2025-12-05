@@ -8,7 +8,7 @@ defaultContentLanguage = "en"  # For HTML page, now support: en, zh-hans, zh-han
 
 hasCJKLanguage = true
 summaryLength = 100 # Custom summary length, add <!--more--> in post file to custom split point
-paginate = 10
+pagination = { pagerSize = 10 }
 
 googleAnalytics = "UA-158529000-1" # Set your Google Analytics UA here
 
@@ -23,7 +23,7 @@ googleAnalytics = "UA-158529000-1" # Set your Google Analytics UA here
   home = ["HTML", "RSS", "SearchIndex"]
 
 [permalinks]
-  post = "/:section/:filename/" # Custom post links, e.g. "/:year/:month/:title/"
+  post = "/:section/:contentbasename/" # Custom post links, e.g. "/:year/:month/:title/"
 
 [params]
   author = "daichi" # You can also set author in post front matter individually
