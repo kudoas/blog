@@ -23,7 +23,7 @@ googleAnalytics = "UA-158529000-1" # Set your Google Analytics UA here
   home = ["HTML", "RSS", "SearchIndex"]
 
 [permalinks]
-  post = "/:section/:contentbasename/" # Custom post links, e.g. "/:year/:month/:title/"
+  post = "/:section/:slug/" # Custom post links, e.g. "/:year/:month/:title/"
 
 [params]
   author = "daichi" # You can also set author in post front matter individually
@@ -104,6 +104,8 @@ googleAnalytics = "UA-158529000-1" # Set your Google Analytics UA here
   [markup.tableOfContents]
     startLevel = 2
     endLevel = 3
+
+ignoreErrors = ["error-output-taxonomy"]
 
 [taxonomies]
   tag = "tags"
