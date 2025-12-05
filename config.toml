@@ -116,7 +116,7 @@ ignoreErrors = ["error-output-taxonomy"]
     weight = 1
   [[menu.nav]]
     name = "About"
-    url = "/about/"
+    url = "https://da1chi.net"
     weight = 2
 
   [[menu.link]]
