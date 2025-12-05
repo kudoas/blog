@@ -1,17 +1,15 @@
 {
   "name": "blog",
   "version": "1.0.0",
-  "main": "index.js",
   "repository": "ssh://git@github.com/kudoas/blog.git",
-  "author": "daich",
   "scripts": {
     "textlint": "textlint 'content/**/*.md'"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Kudoas/blog/issues"
+    "url": "https://github.com/kudoas/blog/issues"
   },
-  "homepage": "https://github.com/Kudoas/blog#readme",
+  "homepage": "https://github.com/kudoas/blog#readme",
   "devDependencies": {
     "textlint": "^15.4.1",
     "textlint-rule-preset-ja-spacing": "^2.4.3",
