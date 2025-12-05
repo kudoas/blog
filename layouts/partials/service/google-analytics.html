@@ -1,3 +1,3 @@
-{{ if not hugo.IsServer }}
+{{ if ne (hugo.Environment | default "production") "development" }}
   {{ template "_internal/google_analytics.html" . }}
 {{ end }}
