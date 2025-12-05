@@ -14,7 +14,7 @@ notAllowedTypesInArchive = ["about", "talks", "showcase", "publication", "presen
 notAllowedTypesInHomeFeed = ["about", "archive", "contact", "talks", "showcase", "publication", "presentation", "resume", "gallery"]
 
 viewportSize = "normal" # widest, wider, wide, normal, narrow
-enableUiAnimation = true
+enableUiAnimation = false
 hideSingleContentsWhenJSDisabled = false
 enablePinnedPosts = true
 minItemsToShowInTagCloud = 1 # Minimum items to show in tag cloud
