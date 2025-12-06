@@ -61,3 +61,8 @@ html {
     margin-bottom: 1rem;
   }
 }
+
+.single__contents[data-dir="ltr"] blockquote {
+  margin: 0;
+  padding: 0 0 0 1.42188rem;
+}
