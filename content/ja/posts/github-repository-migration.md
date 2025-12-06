@@ -1,14 +1,14 @@
 ---
 title: GitHubのリポジトリを履歴を残したまま他のリポジトリへ移行する方法
 date: 2022-12-13T23:03:00+09:00
-description: "リポジトリをまとめるために、リポジトリから他のリポジトリに履歴を残したまま移行しました。そのとき行った方法です。"
+description: "作業用リポジトリが増えてきたので、１つにまとめました。その際に git 履歴を残したまま移行したので、その方法を解説します。"
 author: daichi
 categories: ["DEV"]
 tags: ["GitHub"]
 images: ["tcard/github-repository-migration.png"]
 ---
 
-リポジトリをまとめるために、リポジトリから他のリポジトリに履歴を残したまま移行しました。そのとき行った方法です。
+作業用リポジトリが増えてきたので、１つにまとめました。その際に git 履歴を残したまま移行したので、その方法を解説します。
 
 ## やりたいことのイメージ
 
@@ -18,6 +18,7 @@ images: ["tcard/github-repository-migration.png"]
 └── 移行先のリポジトリ (target_repo)
     └── /target <- ここに「移行したいリポジトリ」を移行する
 ```
+
 ※ ただしこの場合ディレクトリの階層が異なるため、移行したいリポジトリの履歴と移行先のリポジトリの履歴が合わなくなります。
 そのため、全体の階層を含めた履歴ではなく、**ファイルの履歴だけの変更だけ取っておきたい**目的と割り切って使用した方が良いです。
 
@@ -27,7 +28,7 @@ images: ["tcard/github-repository-migration.png"]
 
 ## 手順
 
-### 移行先のリポジトリ に 移行用のディレクトリ を作成する
+### 1. 移行先のリポジトリに移行用のディレクトリを作成する
 
 移行したいリポジトリのルートディレクトリで移行用のディレクトリを作成します。（コミットに反映されるように `.gitkeep` を置いています。）
 
@@ -38,7 +39,7 @@ $ git add .
 $ git commit -m "リポジトリの移行先のディレクトリを作成"
 ```
 
-### 移行先のローカルリポジトリ に 移行したいリモートリポジトリ を登録する
+### 2. 移行先のローカルリポジトリに移行したいリモートリポジトリ を登録する
 
 移行したいリモートリポジトリからコミット履歴を fetch するために、移行したいリモートリポジトリを登録します。
 
@@ -46,7 +47,7 @@ $ git commit -m "リポジトリの移行先のディレクトリを作成"
 $ git remote add <登録したい任意の名前> <GitHubのURL（ssh, httpsなど）>
 ```
 
-### 登録したリポジトリのコミット履歴を移行先のローカルリポジトリに反映する
+### 3. 登録したリポジトリのコミット履歴を移行先のローカルリポジトリに反映する
 
 先ほど登録したリポジトリを使ってコミット履歴を fetch し、移行先のリポジトリに反映します。
 
@@ -67,7 +68,5 @@ $ git merge --allow-unrelated-histories -X subtree=target target_repo/main
 
 今回は移行したいリポジトリが移行先のリポジトリ内のディレクトリに移動させるため、エラー無視して反映できるように `--allow-unrelated-histories` が必要です。
 
-
-## 参考
-
-- [--allow-unrelated-histories](https://git-scm.com/docs/git-merge#Documentation/git-merge.txt---allow-unrelated-histories)
+> By default, git merge command refuses to merge histories that do not share a common ancestor. This option can be used to override this safety when merging histories of two projects that started their lives independently. As that is a very rare occasion, no configuration variable to enable this by default exists or will be added.
+> ref. [--allow-unrelated-histories](https://git-scm.com/docs/git-merge#Documentation/git-merge.txt---allow-unrelated-histories)
