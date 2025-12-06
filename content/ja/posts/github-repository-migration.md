@@ -2,6 +2,7 @@
 title: GitHubのリポジトリを履歴を残したまま他のリポジトリへ移行する方法
 date: 2022-12-13T23:03:00+09:00
 description: "リポジトリをまとめるために、リポジトリから他のリポジトリに履歴を残したまま移行しました。そのとき行った方法です。"
+author: daichi
 categories: ["DEV"]
 tags: ["GitHub"]
 images: ["tcard/github-repository-migration.png"]
