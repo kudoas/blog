@@ -2,7 +2,7 @@
 title: "ゆめみのインターンに参加した"
 date: 2020-12-06T09:00:00+09:00
 description: ""
-categories: ["PROGRAM"]
+categories: ["DEV"]
 tags: ["intern"]
 images: ["tcard/yumemi-intern.png"]
 ---

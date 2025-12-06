@@ -5,7 +5,31 @@ url = "https://da1chi.net"
 weight = 1
 
 [[main]]
-identifier = "posts"
-name = "Posts"
+identifier = "blogs"
+name = "Blogs"
 url = "posts"
 weight = 2
+
+[[main]]
+parent = "blogs"
+name = "dev"
+url = "categories/dev"
+weight = 1
+
+[[main]]
+parent = "blogs"
+name = "life"
+url = "categories/life"
+weight = 2
+
+[[main]]
+parent = "blogs"
+name = "tags"
+url = "tags"
+weight = 3
+
+[[main]]
+parent = "blogs"
+name = "all"
+url = "posts"
+weight = 4

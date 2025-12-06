@@ -2,7 +2,7 @@
 title: "2020年サマーインターン選考の記録"
 date: 2020-07-28T09:43:00+09:00
 description: "2020年4月からサマーインターンの選考を受けていました。エンジニアとして初めてのインターン選考だったのでかなり手探りでした。ある程度落ち着いたので、選考の記録について共有します。"
-categories: ["PROGRAM"]
+categories: ["DEV"]
 tags: ["intern"]
 images: ["tcard/first-summer-intern.png"]
 ---

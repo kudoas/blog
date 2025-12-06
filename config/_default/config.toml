@@ -3,7 +3,7 @@ title = "daichi.tech"
 theme = "zzo"
 
 defaultContentLanguage = "ja"
-defaultContentLanguageInSubdir = true
+defaultContentLanguageInSubdir = false
 hasCJKLanguage = true
 
 summaryLength = 50
