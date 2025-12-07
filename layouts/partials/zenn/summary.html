@@ -1,0 +1,29 @@
+{{/* Zenn記事を一覧に混在表示するサマリー（外部リンク表示＋カテゴリDEV）。 */}}
+{{ $item := .item }}
+{{ $url := print "https://zenn.dev" $item.path }}
+{{ $date := time $item.published_at }}
+<article class="summary-classic summary-classic--zenn" data-ani="{{ $.page.Site.Params.enableUiAnimation | default "true" }}">
+  <div class="summary-classic__flex-box">
+    <div class="summary-classic__content">
+      <header>
+        <h5 class="title h5">
+          <a href='{{ $url }}' target="_blank" rel="noreferrer noopener">
+            {{ $item.title }}
+            <span class="summary-classic__external">Zenn ↗</span>
+          </a>
+        </h5>
+        <h6 class="subtitle caption">
+          <time title="{{ i18n "tooltip-written" }}" dir="{{ if ne ($.page.Param "languagedir") "rtl" }}ltr{{ else }}rtl{{ end }}">{{ ($.page.Site.Params.writtenTimeIcon | safeHTML) | default "📅" }}&nbsp;{{ $date.Format (i18n "summary-dateformat") }} </time>
+          <span title="likes"> &middot; ❤️ {{ $item.liked_count }}</span>
+          <span title="外部リンク" aria-label="外部リンク"> &middot; ↗</span>
+        </h6>
+      </header>
+      <div>
+        <div class="summary-classic__text p2">
+          {{ with $item.emoji }}{{ . }} {{ end }}Zennの記事です。詳しくはZennでお読みください。
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr />
+</article>

@@ -1,0 +1,46 @@
+{{ define "main" }}
+{{ $title := .Title }}
+{{ $isCategories := eq (lower $title) "categories" }}
+
+{{/* Zennデータ取得（キャッシュ優先、必要ならリモート） */}}
+{{ $zennCount := 0 }}
+{{ if $isCategories }}
+  {{ $api := "https://www.da1chi.net/api/zenn/articles?username=da1chi" }}
+  {{ $enableRemote := or (eq (getenv "HUGO_ZENN_FETCH") "1") (default false $.Site.Params.enableZennRemote) }}
+  {{ $zennResp := site.Data.zenn | default dict }}
+  {{ if $enableRemote }}
+    {{ with resources.GetRemote $api }}
+      {{ with . | transform.Unmarshal }}
+        {{ $zennResp = . }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+  {{ $zennCount = len ($zennResp.articles | default (slice)) }}
+{{ end }}
+
+<header class="header basicflex-column">
+  <h3 class="terms__title capitalize h3">{{ $title }}</h3>
+</header>
+<main class="terms main">  
+  <div class="terms__list">
+    {{ range $index, $element := .Data.Terms }}
+    {{ if $index }}
+      {{ $count := len $element }}
+      {{ if and $isCategories (eq (lower $element.Page.Title) "dev") }}
+        {{ $count = add $count $zennCount }}
+      {{ end }}
+      <a href="{{ $element.Page.RelPermalink }}" class="terms__item {{ if lt $count 5 }}is-small{{ else if lt $count 10 }}is-normal{{ else if lt $count 20 }}is-medium{{ else if ge $count 20 }}is-large{{ end }}">
+        <span class="terms__{{ lower  $title }}">
+          {{ $element.Page.Title }}
+        </span>
+        <span class="terms__len">({{ printf "%#v" $count }})</span>
+      </a>
+    {{ end }}
+    {{ end }}
+  </div>
+</main>
+<aside class="hide">
+  {{ partial "search/site-search" . }}
+</aside>
+{{ partial "script/taxo-script" . }}
+{{ end }}

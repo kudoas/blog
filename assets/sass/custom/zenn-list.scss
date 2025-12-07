@@ -1,0 +1,112 @@
+.zenn-list {
+  margin: 1.5rem 0;
+  padding: 1rem;
+  border: 1px solid var(--theme-divider, #e0e0e0);
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0.05));
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+  }
+
+  &__title {
+    margin: 0;
+  }
+
+  &__more {
+    text-decoration: none;
+    color: var(--theme-accent, #0066cc);
+    font-weight: 600;
+  }
+
+  &__items {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  &__item {
+    padding: 0.65rem 0.75rem;
+    border-radius: 10px;
+    transition: background 0.2s ease, transform 0.2s ease;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.04);
+      transform: translateY(-1px);
+    }
+  }
+
+  &__link {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 0.6rem;
+    align-items: center;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  &__emoji {
+    font-size: 1.35rem;
+  }
+
+  &__meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  &__title-text {
+    font-weight: 600;
+    line-height: 1.35;
+  }
+
+  &__date {
+    color: #666;
+  }
+
+  &__likes {
+    color: #b2002d;
+    font-weight: 600;
+  }
+}
+
+@media (max-width: 600px) {
+  .zenn-list {
+    &__link {
+      grid-template-columns: auto 1fr;
+      grid-template-areas:
+        "emoji title"
+        "emoji date";
+    }
+    &__emoji {
+      grid-area: emoji;
+    }
+    &__meta {
+      grid-area: title;
+    }
+    &__likes {
+      display: none;
+    }
+  }
+}
+
+/* Zenn summary (外部リンク表記の装飾) */
+.summary-classic--zenn {
+  .summary-classic__external {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-left: 0.4rem;
+    padding: 0.1rem 0.4rem;
+    border-radius: 999px;
+    background: rgba(0, 102, 204, 0.1);
+    color: var(--theme-accent, #0066cc);
+    font-size: 0.8em;
+    font-weight: 700;
+  }
+}

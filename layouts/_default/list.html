@@ -14,11 +14,45 @@
     {{ end }}
 
     <div class="summary__container" data-display="block">
-      {{ $paginator := .Paginate (where .Pages "Type" .Type).ByWeight }}
-      {{ range $paginator.Pages }}
-        {{ .Render "summary" }}
+      {{/* ローカル記事とZenn記事を混在させてソート（作成日降順） */}}
+      {{ $items := slice }}
+      {{ $localPages := where .Pages "Type" .Type }}
+      {{ range $localPages }}
+        {{ $items = $items | append (dict
+          "kind" "local"
+          "page" .
+          "date" .Date
+        ) }}
       {{ end }}
-      {{ partial "pagination/pagination" . }}
+
+      {{/* Zenn記事を取得（デフォルトは data/zenn.json、HUGO_ZENN_FETCH=1 か params.enableZennRemote=true でリモートフェッチ） */}}
+      {{ $api := "https://www.da1chi.net/api/zenn/articles?username=da1chi" }}
+      {{ $enableRemote := or (eq (getenv "HUGO_ZENN_FETCH") "1") (default false $.Site.Params.enableZennRemote) }}
+      {{ $zennResp := site.Data.zenn | default dict }}
+      {{ if $enableRemote }}
+        {{ with resources.GetRemote $api }}
+          {{ with . | transform.Unmarshal }}
+            {{ $zennResp = . }}
+          {{ end }}
+        {{ end }}
+      {{ end }}
+      {{ range $zennResp.articles }}
+        {{ $d := time .published_at }}
+        {{ $items = $items | append (dict
+          "kind" "zenn"
+          "data" .
+          "date" $d
+        ) }}
+      {{ end }}
+
+      {{ $sorted := sort $items "date" "desc" }}
+      {{ range $sorted }}
+        {{ if eq .kind "local" }}
+          {{ .page.Render "summary" }}
+        {{ else if eq .kind "zenn" }}
+          {{ partial "zenn/summary" (dict "page" $ "item" .data) }}
+        {{ end }}
+      {{ end }}
     </div>
     {{ partial "search/search-result-desktop" . }}
   </div>

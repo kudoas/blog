@@ -1,0 +1,46 @@
+{{ if and ($.Param "enableSidebarCategories") (ne (len .Site.Taxonomies.categories) 0) }}
+{{/* Zenn記事をDEVカテゴリに合算するため、件数計算をオーバーライド */}}
+{{ $minItemsToShowInTagCloud := $.Site.Params.minItemsToShowInTagCloud }}
+{{ $zennCount := 0 }}
+{{ $api := "https://www.da1chi.net/api/zenn/articles?username=da1chi" }}
+{{ $enableRemote := or (eq (getenv "HUGO_ZENN_FETCH") "1") (default false $.Site.Params.enableZennRemote) }}
+{{ $zennResp := site.Data.zenn | default dict }}
+{{ if $enableRemote }}
+  {{ with resources.GetRemote $api }}
+    {{ with . | transform.Unmarshal }}
+      {{ $zennResp = . }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+{{ $zennCount = len ($zennResp.articles | default (slice)) }}
+
+<div class="taxo">
+    <section>
+        <span class="title p2">
+            <a href="{{ "/categories/" | relLangURL }}" class="taxo__title">
+                {{ i18n "categories" }}
+            </a>
+        </span>
+        {{ range $index, $element := .Site.Taxonomies.categories }}
+        {{ if $index }}
+            {{ $count := len $element }}
+            {{ if eq (lower $element.Page.Title) "dev" }}
+              {{ $count = add $count $zennCount }}
+            {{ end }}
+            {{ if ge $count $minItemsToShowInTagCloud }}
+              <span class="tag">
+                  <a href="{{ $element.Page.RelPermalink }}" class="is-categories taxo__link" data-dir="{{ if ne ($.Param "languagedir") "rtl" }}ltr{{ else }}rtl{{ end }}">
+                      <span class="taxo__text">
+                          {{ $element.Page.Title }}
+                      </span>
+                      <span class="taxo__num" dir="auto">
+                          {{ printf "%#v" $count }}
+                      </span>
+                  </a>
+              </span>
+            {{ end }}
+        {{ end }}
+        {{ end }}
+    </section>
+</div>
+{{ end }}
