@@ -5,6 +5,7 @@
 - `content/` holds Markdown posts, `archetypes/` stores new-post templates, and `static/` plus `assets/` contain public images and social-card fonts.
 - `layouts/` overrides the Zzo theme; add partials or CSS tweaks here when UI changes are needed.
 - `config/` alongside `config.toml` captures Hugo configuration, `resources/` caches build artifacts, and `public/` contains generated output.
+- `themes/zzo/` is managed as a submodule; never edit it directly—override via `layouts/` or `assets/` instead.
 - The root `Makefile` exposes Twitter card helpers, while `.textlintrc` and `node_modules/` define the textlint toolchain.
 
 ## Build, Test, and Development Commands
