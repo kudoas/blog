@@ -47,9 +47,9 @@ jobs:
       - run: bun run build
       - id: preview
         run: |
-          output="$(bun x wrangler preview --name "pr-${{ github.event.pull_request.number }}" --json)"
-          printf '%s\n' "$output"
-          preview_url="$(printf '%s' "$output" | jq -er '.preview.urls[0]')"
+          export WRANGLER_OUTPUT_FILE_PATH="$RUNNER_TEMP/wrangler-preview.jsonl"
+          bun x wrangler preview --name "pr-${{ github.event.pull_request.number }}"
+          preview_url="$(jq -er 'select(.type == "preview") | .preview_urls[0]' "$WRANGLER_OUTPUT_FILE_PATH")"
           echo "url=$preview_url" >> "$GITHUB_OUTPUT"
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
