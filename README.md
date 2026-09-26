@@ -66,6 +66,9 @@ RSS にはこのブログの Markdown 記事のみ含めます。
 
 ## 公開
 
+無停止移行の判断と切り戻し手順は
+[ADR 0001](docs/adr/0001-vercel-to-cloudflare-workers.md) に記録しています。
+
 `wrangler.jsonc` は Astro の静的生成物 `dist/` を Cloudflare Workers の
 Static Assets として配信します。API やサーバー処理はありません。
 GitHub Actions は PR と `main` の push で検証を行い、`main` の検証が成功すると
