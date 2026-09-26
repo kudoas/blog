@@ -36,7 +36,6 @@
 
 @layer layout {
   .shell { width: min(100% - 48px, 800px); margin-inline: auto; }
-  .narrow { max-width: 720px; }
   .site-header { min-height: 108px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
   .wordmark { font-family: var(--mono); font-size: 20px; font-weight: 650; letter-spacing: -.9px; color: var(--text); white-space: nowrap; }
   .wordmark span { color: var(--accent); padding-inline: 2px; }

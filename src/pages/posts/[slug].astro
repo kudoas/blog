@@ -12,7 +12,7 @@ const { post } = Astro.props;
 const { Content, headings } = await render(post);
 const toc = headings.filter(({ depth }) => depth >= 2 && depth <= 3);
 ---
-<BaseLayout title={post.data.title} description={post.data.description} image={post.data.images[0]} date={post.data.date} article noindex={post.data.draft} narrow>
+<BaseLayout title={post.data.title} description={post.data.description} image={post.data.images[0]} date={post.data.date} article noindex={post.data.draft}>
   <article class="post">
     <header class="post-header">
       <a href="/" class="back-link">← 記事一覧</a>

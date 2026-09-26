@@ -9,9 +9,8 @@ interface Props {
   article?: boolean;
   date?: Date;
   noindex?: boolean;
-  narrow?: boolean;
 }
-const { title, description = site.description, image = site.image, article = false, date, noindex = false, narrow = false } = Astro.props;
+const { title, description = site.description, image = site.image, article = false, date, noindex = false } = Astro.props;
 const pageTitle = title ? `${title} | ${site.title}` : site.title;
 const canonical = new URL(Astro.url.pathname, site.url).href;
 const imageUrl = new URL(image.startsWith('http') || image.startsWith('/') ? image : `/${image}`, site.url).href;
@@ -50,7 +49,7 @@ const imageUrl = new URL(image.startsWith('http') || image.startsWith('/') ? ima
         <a href={site.about}>About <span aria-hidden="true">↗</span></a>
       </nav>
     </header>
-    <main id="main" class:list={['shell', { narrow }]} tabindex="-1"><slot /></main>
+    <main id="main" class="shell" tabindex="-1"><slot /></main>
     <footer class="site-footer shell">
       <p>© {new Date().getFullYear()} {site.author}</p>
       <nav aria-label="関連リンク">
