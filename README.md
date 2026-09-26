@@ -71,13 +71,17 @@ RSS にはこのブログの Markdown 記事のみ含めます。
 
 `wrangler.jsonc` は Astro の静的生成物 `dist/` を Cloudflare Workers の
 Static Assets として配信します。API やサーバー処理はありません。
+`vercel.json` は Vercel の Git 自動デプロイを停止し、切り戻し用の旧本番を保持します。
 GitHub Actions は PR と `main` の push で検証を行い、`main` の検証が成功すると
-Cloudflare Workers にデプロイします。GitHub の `production` environment に
+Cloudflare Workers にデプロイします。`main` に反映する前に GitHub の
+`production` environment に
 `CLOUDFLARE_API_TOKEN` と `CLOUDFLARE_ACCOUNT_ID` を設定してください。
 API トークンには対象アカウントの Workers 編集権限が必要です。
-本番サイトへ切り替える際は Cloudflare 側で `blog.da1chi.net` をこの Worker に接続し、
-記事 URL、`_redirects`、404、RSS、OGP を確認してください。
+本番サイトへ切り替える際は Worker の `workers.dev` URL を先に検証し、
+Cloudflare で既存の DNS レコードを維持したまま Route `blog.da1chi.net/*` を
+Worker `tech-blog` に追加します。切り替え後は記事 URL、`_redirects`、404、RSS、
+OGP を確認してください。
 
-ローカルでの確認後、権限がある環境では `bun run deploy` で
+ローカルでの確認後、権限がある環境では `bun x wrangler login`、`bun run deploy` で
 同じ検証を通してデプロイできます。現行サイトを切り替えるときは、
 切り替え前のデプロイを戻せるよう残します。
