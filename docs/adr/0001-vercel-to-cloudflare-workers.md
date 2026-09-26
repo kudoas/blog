@@ -65,8 +65,10 @@ Route 追加後、実ドメインで同じ項目と HTTP ステータスを確�
   `https://tech-blog.first-developing1.workers.dev` にデプロイした。
 - Worker の記事、画像、RSS、サイトマップ、旧 URL のリダイレクト、404 を確認した。
   公開 URL を対象にしたブラウザテスト 3 件も成功した。
-- GitHub の Cloudflare 用シークレット、`main` への反映、DNS と既存 Route の管理画面での
-  確認、公開 Route の追加は未実施。現行ドメインは引き続き Vercel から応答している。
+- GitHub のリポジトリ共通シークレット `CLOUDFLARE_API_TOKEN` と
+  `CLOUDFLARE_ACCOUNT_ID` の登録を確認した。
+- `main` への反映、DNS と既存 Route の管理画面での確認、公開 Route の追加は未実施。
+  現行ドメインは引き続き Vercel から応答している。
 
 ## 影響と残るリスク
 

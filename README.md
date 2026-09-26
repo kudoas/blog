@@ -74,7 +74,7 @@ Static Assets として配信します。API やサーバー処理はありま�
 `vercel.json` は Vercel の Git 自動デプロイを停止し、切り戻し用の旧本番を保持します。
 GitHub Actions は PR と `main` の push で検証を行い、`main` の検証が成功すると
 Cloudflare Workers にデプロイします。`main` に反映する前に GitHub の
-`production` environment に
+リポジトリまたは `production` environment に
 `CLOUDFLARE_API_TOKEN` と `CLOUDFLARE_ACCOUNT_ID` を設定してください。
 API トークンには対象アカウントの Workers 編集権限が必要です。
 本番サイトへ切り替える際は Worker の `workers.dev` URL を先に検証し、
