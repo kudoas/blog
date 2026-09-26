@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleList from '../../components/ArticleList';
+import { getArticles } from '../../lib/content';
+import { collectTerms, filterArticles } from '../../lib/articles';
+import type { ArticleSummary } from '../../lib/articles';
+export async function getStaticPaths() {
+  const articles = await getArticles();
+  return collectTerms(articles).map(({ slug, label }) => ({ params: { tag: slug }, props: { label, articles: filterArticles(articles, '', slug) } }));
+}
+interface Props { label: string; articles: ArticleSummary[] }
+const { label, articles } = Astro.props;
+---
+<BaseLayout title={`#${label}`}>
+  <header class="page-heading"><a class="back-link" href="/tags/">← タグ一覧</a><h1>#{label}</h1><p class="muted">{articles.length} 件の記事</p></header>
+  <ArticleList articles={articles} />
+</BaseLayout>

@@ -1,0 +1,30 @@
+---
+import { render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getPosts } from '../../lib/content';
+import { formatDate, tagUrl } from '../../lib/articles';
+export async function getStaticPaths() {
+  return (await getPosts()).map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+interface Props { post: CollectionEntry<'posts'> }
+const { post } = Astro.props;
+const { Content, headings } = await render(post);
+const toc = headings.filter(({ depth }) => depth >= 2 && depth <= 3);
+---
+<BaseLayout title={post.data.title} description={post.data.description} image={post.data.images[0]} date={post.data.date} article noindex={post.data.draft} narrow>
+  <article class="post">
+    <header class="post-header">
+      <a href="/" class="back-link">← 記事一覧</a>
+      <div class="post-meta"><time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time><span>{post.data.author}</span>{post.data.draft && <span class="draft-label">下書き</span>}</div>
+      <h1>{post.data.title}</h1>
+      {post.data.tags.length > 0 && <div class="post-tags">{post.data.tags.map((tag) => <a class="tag" href={tagUrl(tag)}>#{tag}</a>)}</div>}
+    </header>
+    {toc.length > 0 && <details class="toc" open>
+      <summary>目次</summary>
+      <nav aria-label="目次"><ul>{toc.map((heading) => <li class:list={{ 'toc-nested': heading.depth === 3 }}><a href={`#${heading.slug}`}>{heading.text}</a></li>)}</ul></nav>
+    </details>}
+    <div class="prose"><Content /></div>
+    <div class="post-end"><a href="/">← 記事一覧へ戻る</a></div>
+  </article>
+</BaseLayout>

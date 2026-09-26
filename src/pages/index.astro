@@ -1,0 +1,13 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ArticleExplorer from '../components/ArticleExplorer';
+import { getArticles } from '../lib/content';
+const articles = await getArticles();
+---
+<BaseLayout>
+  <section class="articles-section" aria-labelledby="articles-heading">
+    <div class="section-heading"><h1 id="articles-heading">記事</h1></div>
+    <ArticleExplorer articles={articles} client:load />
+    <noscript><p class="muted">検索には JavaScript が必要です。記事は一覧からそのまま読めます。</p></noscript>
+  </section>
+</BaseLayout>

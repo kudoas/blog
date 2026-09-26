@@ -1,0 +1,10 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getArticles } from '../../lib/content';
+import { collectTerms, tagUrl } from '../../lib/articles';
+const tags = collectTerms(await getArticles());
+---
+<BaseLayout title="タグ">
+  <header class="page-heading"><p class="eyebrow">TOPICS</p><h1>タグから探す</h1><p class="muted">気になるテーマの記事をまとめて。</p></header>
+  <ul class="term-list">{tags.map(({ label, count }) => <li><a href={tagUrl(label)}><span>#{label}</span><span class="term-count">{count}</span></a></li>)}</ul>
+</BaseLayout>

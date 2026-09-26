@@ -1,15 +1,80 @@
 # daichi/tech
 
-## Skill
+Astro で生成する日本語の静的ブログです。記事本文は Markdown で管理し、
+外部の記事も同じ一覧に掲載します。React は一覧の検索とタグ絞り込みに使用します。
 
-- [Hugo](https://gohugo.io/) - 静的サイトジェネレーター。`content/` から記事を生成し、`themes/zzo/` と組み合わせてデプロイしている。
-- [textlint](https://github.com/textlint/textlint) - 原稿を lint して文章ルールを統一。VS Code の拡張と CI で同じ設定を共有。
+## 開発
 
-## Theme
+Node.js 24 と Bun 1.4.2 を使用します。Bun がインストール済みなら、
+次のコマンドで開始できます。
 
-- [Zzo](https://github.com/zzossig/hugo-theme-zzo) - ダーク／ライト切替が可能で、タグ・カテゴリなどブログに必要な UI が揃っているテーマ。
+```sh
+bun install --frozen-lockfile
+bun run dev
+```
 
-## Reference
+`http://localhost:4321` でプレビューできます。主な確認コマンドは次のとおりです。
 
-- [Hugo でさくっと自作ブログを作った](https://sanposhiho.com/posts/make-blog-by-hugo/) - Hugo 導入時の構成検討で参考にした記事。
-- [textlint と VS Code で始める文章校正](https://qiita.com/takasp/items/22f7f72b691fda30aea2) - textlint 設定と VS Code 連携を整える際に参照したガイド。
+```sh
+bun run verify          # textlint、型検査、単体テスト、ビルド、出力検証
+bun run test:e2e        # ブラウザテスト
+bun run preview         # 生成済み dist/ を確認
+bun run preview:worker  # Cloudflare のリダイレクトと404を確認
+```
+
+ブラウザテストには Chrome を使用します。CI では Playwright の Chromium を導入します。
+既存記事には textlint の警告が22件あります。移行時に本文を変更していません。
+
+## 記事を書く
+
+`content/ja/posts/<slug>.md` に Markdown を追加します。ファイル名が
+`/posts/<slug>/` の URL になります。新しい記事には次の front matter を指定します。
+
+```yaml
+---
+title: 記事のタイトル
+date: 2026-09-25T12:00:00+09:00
+description: 記事の説明
+tags: [Astro, React]
+categories: [DEV]
+draft: true
+images: [tcard/example.png]
+---
+```
+
+`draft: true` は開発プレビューだけで表示します。公開時に `false` に変更してください。
+古い記事のように `draft` がない場合は公開記事として扱います。
+画像は `static/` に置き、`/posts/example.png` などのルート相対 URL で参照します。
+既存記事の画像 URL とカード画像は維持しています。
+
+外部記事は `content/external.yaml` に1件ずつ追記します。`id` は重複しない
+kebab-case とし、`title`、`url`、`date`、`source` は必須です。
+`tags`、`categories`、`description` は省略できます。
+Zenn に限らず任意の掲載先を `source` に指定できます。
+
+```yaml
+- id: my-guest-post
+  title: 外部の記事
+  url: https://example.com/articles/my-guest-post
+  date: "2026-09-25T12:00:00+09:00"
+  source: Example
+  tags: [Astro]
+```
+
+公開記事と外部記事を日付順に一覧へ表示します。検索はタイトルとタグが対象です。
+RSS にはこのブログの Markdown 記事のみ含めます。
+
+## 公開
+
+`wrangler.jsonc` は Astro の静的生成物 `dist/` を Cloudflare Workers の
+Static Assets として配信します。API やサーバー処理はありません。
+GitHub Actions は PR と `main` の push で検証を行い、`main` の検証が成功すると
+Cloudflare Workers にデプロイします。GitHub の `production` environment に
+`CLOUDFLARE_API_TOKEN` と `CLOUDFLARE_ACCOUNT_ID` を設定してください。
+API トークンには対象アカウントの Workers 編集権限が必要です。
+本番サイトへ切り替える際は Cloudflare 側で `blog.da1chi.net` をこの Worker に接続し、
+記事 URL、`_redirects`、404、RSS、OGP を確認してください。
+
+ローカルでの確認後、権限がある環境では `bun run deploy` で
+同じ検証を通してデプロイできます。現行サイトを切り替えるときは、
+切り替え前のデプロイを戻せるよう残します。

@@ -1,0 +1,18 @@
+# Legacy Hugo URLs. Exact /posts rules do not affect /posts/<slug>/ or images.
+/posts / 301
+/posts/ / 301
+/posts/index.xml /index.xml 301
+/tags/index.xml /index.xml 301
+/categories/index.xml /index.xml 301
+/series/index.xml /index.xml 301
+/about https://da1chi.net 301
+/about/ https://da1chi.net 301
+/series /tags/ 301
+/series/ /tags/ 301
+/sitemap.xml /sitemap-index.xml 301
+/posts/page/:page / 301
+/posts/page/:page/ / 301
+/page/:page / 301
+/page/:page/ / 301
+/categories/:category/page/:page/ /categories/:category/ 301
+/tags/:tag/page/:page/ /tags/:tag/ 301

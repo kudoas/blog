@@ -1,1 +1,13 @@
 /public
+/node_modules/
+/.astro/
+/dist/
+/.wrangler/
+/test-results/
+/playwright-report/
+/.playwright-mcp/
+/themes/
+.env
+.env.*
+!.env.example
+.DS_Store

@@ -1,9 +1,25 @@
 {
   "name": "blog",
   "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "bun@1.4.2",
+  "engines": {
+    "node": ">=24 <25"
+  },
   "repository": "ssh://git@github.com/kudoas/blog.git",
   "scripts": {
-    "textlint": "textlint 'content/**/*.md'"
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro sync && tsc --noEmit",
+    "textlint": "textlint 'content/**/*.md'",
+    "test": "node --test tests/unit/*.test.ts",
+    "test:build": "node --test tests/build/*.test.mjs",
+    "test:e2e": "playwright test",
+    "verify": "bun run textlint && bun run check && bun run test && bun run build && bun run test:build",
+    "deploy": "bun run verify && wrangler deploy",
+    "preview:worker": "wrangler dev --port 8787"
   },
   "license": "MIT",
   "bugs": {
@@ -11,9 +27,27 @@
   },
   "homepage": "https://github.com/kudoas/blog#readme",
   "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "@types/node": "24",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "cheerio": "^1.2.0",
     "textlint": "^15.4.1",
     "textlint-rule-preset-ja-spacing": "^2.4.3",
     "textlint-rule-preset-ja-technical-writing": "^12.0.2",
-    "textlint-rule-spellcheck-tech-word": "^5.0.0"
+    "textlint-rule-spellcheck-tech-word": "^5.0.0",
+    "typescript": "^7.0.2",
+    "wrangler": "^4.140.0"
+  },
+  "dependencies": {
+    "@astrojs/markdown-remark": "^7.3.1",
+    "@astrojs/react": "7.0.0",
+    "@astrojs/rss": "^4.0.19",
+    "@astrojs/sitemap": "^3.7.4",
+    "astro": "7.3.5",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "remark-breaks": "^4.0.0",
+    "yaml": "^2.9.1"
   }
 }
