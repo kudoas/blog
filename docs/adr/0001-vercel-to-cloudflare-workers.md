@@ -1,6 +1,6 @@
 # ADR 0001: Vercel から Cloudflare Workers への無停止移行
 
-- 状態: Accepted（実施前）
+- 状態: Accepted（公開切り替え前）
 - 決定日: 2026-09-26
 
 ## 背景
@@ -56,6 +56,17 @@ Route 追加後、実ドメインで同じ項目と HTTP ステータスを確�
 新しい記事一覧が表示され、応答が Vercel の旧ページでないことも確認する。
 5xx、主要 URL の 404、画像や検索の不具合があれば Route を削除する。
 切り戻し後は実ドメインで旧サイトが表示されることを確認し、原因を調べる。
+
+## 実施記録（2026-09-26）
+
+- 切り戻し先の Vercel 本番デプロイ ID は `dpl_CBb7ctoXKzrTJi59FYyAUCBADtyd`。
+- `vercel.json` を追加し、Vercel の Git 自動デプロイを停止する設定を用意した。
+- Worker `tech-blog` の Version ID `b2eb5e78-10fb-4d96-868a-2a783615b0dd` を
+  `https://tech-blog.first-developing1.workers.dev` にデプロイした。
+- Worker の記事、画像、RSS、サイトマップ、旧 URL のリダイレクト、404 を確認した。
+  公開 URL を対象にしたブラウザテスト 3 件も成功した。
+- GitHub の Cloudflare 用シークレット、`main` への反映、DNS と既存 Route の管理画面での
+  確認、公開 Route の追加は未実施。現行ドメインは引き続き Vercel から応答している。
 
 ## 影響と残るリスク
 
