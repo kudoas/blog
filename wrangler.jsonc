@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "daichi-tech-blog",
+  "name": "tech-blog",
   "compatibility_date": "2026-09-25",
   "assets": {
     "directory": "./dist",

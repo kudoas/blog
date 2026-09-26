@@ -20,7 +20,7 @@ Vercel の `tech-blog` は同じ GitHub リポジトリの `main` から本番�
 1. 移行ブランチに `vercel.json` を追加し、`git.deploymentEnabled: false` で
    Vercel の Git 自動デプロイを停止する。旧本番デプロイ、ドメイン設定、DNS は保持する。
    `main` 反映後に Vercel の本番デプロイが置き換わっていないことを確認する。
-2. Worker `daichi-tech-blog` を先にデプロイし、`workers.dev` URL で検証する。
+2. Worker `tech-blog` を先にデプロイし、`workers.dev` URL で検証する。
    公開 Route はこの段階では追加しない。`wrangler.jsonc` にも公開 Route を定義せず、
    切り替え操作は Cloudflare ダッシュボードで管理する。
 3. Cloudflare で既存の `blog.da1chi.net` DNS レコードがプロキシ有効であることを確認し、

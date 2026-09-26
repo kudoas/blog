@@ -37,7 +37,7 @@
     <li>移行ブランチに <code>vercel.json</code> を追加し、<code>git.deploymentEnabled: false</code> で
       Vercel の Git 自動デプロイを停止する。旧本番デプロイ、ドメイン設定、DNS は保持する。
       <code>main</code> 反映後に Vercel の本番デプロイが置き換わっていないことを確認する。</li>
-    <li>Worker <code>daichi-tech-blog</code> を先にデプロイし、<code>workers.dev</code> URL で検証する。
+    <li>Worker <code>tech-blog</code> を先にデプロイし、<code>workers.dev</code> URL で検証する。
       公開 Route はこの段階では追加しない。<code>wrangler.jsonc</code> にも公開 Route を定義せず、
       切り替え操作は Cloudflare ダッシュボードで管理する。</li>
     <li>Cloudflare で既存の <code>blog.da1chi.net</code> DNS レコードがプロキシ有効であることを確認し、
