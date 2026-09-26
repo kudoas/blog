@@ -74,6 +74,9 @@
   .search-input input, .search-fields select { height: 46px; background: var(--surface); color: var(--text); border: 1px solid var(--line); border-radius: 6px; font-size: 13px; }
   .search-input input { width: 100%; padding: 10px 12px 10px 42px; }
   .search-input input::placeholder { color: var(--muted); opacity: 1; }
+  .search-help { color: var(--muted); font-size: 12px; line-height: 1.8; margin-top: 10px; }
+  .article-excerpt { color: var(--muted); font-size: 13px; line-height: 1.9; margin-top: 8px; overflow-wrap: anywhere; }
+  .article-excerpt mark { background: #17476b; color: var(--text); border-radius: 2px; }
   .search-fields select { max-width: 185px; padding-inline: 12px 24px; }
   .list-status { display: flex; justify-content: space-between; align-items: center; min-height: 60px; color: var(--muted); font-size: 12px; }
   .result-number { font-family: var(--mono); color: var(--text); }
