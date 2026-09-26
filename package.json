@@ -28,7 +28,7 @@
   "homepage": "https://github.com/kudoas/blog#readme",
   "devDependencies": {
     "@playwright/test": "^1.63.0",
-    "@types/node": "24",
+    "@types/node": "26",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
     "cheerio": "^1.2.0",
