@@ -63,3 +63,15 @@ test('taxonomy links and the sitemap point at generated pages', () => {
   assert.equal(urls.some((url) => url.includes('/404')), false);
   assert.ok(existsSync('dist/categories/dev/index.html'));
 });
+
+test('legacy public assets remain available at their original paths', () => {
+  for (const path of [
+    'assets/font/KintoSans-Regular.ttf',
+    'assets/iconfont/iconfont.woff2',
+    'gallery/photo/beach.jpg',
+    'images/header/background.jpg',
+    'manifest.json',
+  ]) {
+    assert.ok(existsSync(`dist/${path}`), path);
+  }
+});
