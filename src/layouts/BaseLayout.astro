@@ -1,0 +1,61 @@
+---
+import { site } from '../site';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  article?: boolean;
+  date?: Date;
+  noindex?: boolean;
+}
+const { title, description = site.description, image = site.image, article = false, date, noindex = false } = Astro.props;
+const pageTitle = title ? `${title} | ${site.title}` : site.title;
+const canonical = new URL(Astro.url.pathname, site.url).href;
+const imageUrl = new URL(image.startsWith('http') || image.startsWith('/') ? image : `/${image}`, site.url).href;
+---
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#06192f" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description || site.description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon/favicon.ico" sizes="any" />
+    <link rel="apple-touch-icon" href="/favicon/apple-icon-180x180.png" />
+    <link rel="alternate" type="application/rss+xml" title={site.title} href="/index.xml" />
+    <meta property="og:site_name" content={site.title} />
+    <meta property="og:type" content={article ? 'article' : 'website'} />
+    <meta property="og:title" content={title ?? site.title} />
+    <meta property="og:description" content={description || site.description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={imageUrl} />
+    <meta property="og:locale" content="ja_JP" />
+    {date && <meta property="article:published_time" content={date.toISOString()} />}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@da1chi24" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">本文へスキップ</a>
+    <header class="site-header shell">
+      <a class="wordmark" href="/" aria-label={`${site.title} ホーム`}>daichi<span>/</span>tech</a>
+      <nav aria-label="メインナビゲーション">
+        <a href="/" aria-current={Astro.url.pathname === '/' ? 'page' : undefined}>記事</a>
+        <a href="/tags/" aria-current={Astro.url.pathname.startsWith('/tags/') ? 'page' : undefined}>タグ</a>
+        <a href={site.about}>About <span aria-hidden="true">↗</span></a>
+      </nav>
+    </header>
+    <main id="main" class="shell" tabindex="-1"><slot /></main>
+    <footer class="site-footer shell">
+      <p>© {new Date().getFullYear()} {site.author}</p>
+      <nav aria-label="関連リンク">
+        {site.social.map((link) => <a href={link.url}>{link.label}</a>)}
+        <a href="/index.xml">RSS</a>
+      </nav>
+    </footer>
+  </body>
+</html>

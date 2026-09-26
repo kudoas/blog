@@ -1,4 +1,0 @@
-{{ $env := lower (default "production" (getenv "HUGO_ENVIRONMENT")) }}
-{{ if ne $env "development" }}
-  {{ template "_internal/google_analytics.html" . }}
-{{ end }}

@@ -1,34 +1,39 @@
 # Repository Guidelines
 
-## Project Structure
+Please answer concisely and politely in Japanese with emoji.
 
-- `content/` holds Markdown posts, `archetypes/` stores new-post templates, and `static/` plus `assets/` contain public images and social-card fonts.
-- `layouts/` overrides the Zzo theme; add partials or CSS tweaks here when UI changes are needed.
-- `config/` alongside `config.toml` captures Hugo configuration, `resources/` caches build artifacts, and `public/` contains generated output.
-- `themes/zzo/` is managed as a submodule; never edit it directly—override via `layouts/` or `assets/` instead.
-- The root `Makefile` exposes Twitter card helpers, while `.textlintrc` and `node_modules/` define the textlint toolchain.
+## Structure
 
-## Build, Test, and Development Commands
+- `content/ja/posts/` contains Markdown posts; keep existing bodies and slugs intact.
+- `content/external.yaml` contains manually curated external articles, including Zenn.
+- `src/content.config.ts` validates both collections; `src/lib/` prepares summary data.
+- `src/pages/` and `src/layouts/` render static Astro pages. React is limited to
+  interactive search and filtering in `src/components/`.
+- `src/styles/global.css` owns the one-column dark blue design. `static/` preserves
+  existing public image URLs. `dist/` is generated output.
+- `wrangler.jsonc` configures Cloudflare Workers Static Assets; `static/_redirects`
+  preserves legacy routes.
 
-- `hugo server -D`: run a local preview including drafts at `http://localhost:1313`.
-- `hugo --minify`: build the production site into `public/`.
-- `npm run textlint`: lint all Markdown under `content/**` with Japanese technical-writing rules.
-- `make tgen-all` / `make tgen-diff`: regenerate all Twitter cards or only ones touched since `HEAD`.
+## Development
 
-## Coding Style and Naming
+- `bun install --frozen-lockfile` installs dependencies.
+- `bun run dev` starts the Astro preview at `http://localhost:4321`.
+- `bun run verify` runs textlint, TypeScript 7, unit tests, the
+  production build, and generated-site tests.
+- `bun run test:e2e` checks the browser flows using installed Chrome.
 
-- Markdown lines should wrap near 80 characters, and every front matter block must include `title`, `date`, `tags`, and `draft`.
-- Save media as `static/assets/<category>/<slug>-<index>.png` and reference them via root-relative paths in posts.
-- Follow kebab-case for layout filenames and CSS classes when overriding theme partials.
-- Observe `.textlintrc` rules (e.g., `preset-ja-technical-writing`) to keep tone consistent and avoid mixed formality.
+## Content and naming
 
-## Testing Guidelines
+- New posts require `title`, `date`, `tags`, and `draft` in front matter. Historical
+  posts without `draft` default to published. Preserve existing `/posts/<slug>/` URLs.
+- Use root-relative paths to images under `static/`; do not rename existing images.
+- External items require unique kebab-case `id`, `title`, HTTPS `url`, `date`, and
+  `source`. Optional `tags`, `categories`, and `description` support other sites.
+- Keep layout filenames and CSS classes in kebab-case. Follow `.textlintrc` for prose.
 
-- Textlint is the only automated check; run `npm run textlint` before committing and fix warnings in the manuscript.
-- For long posts or embedded tables, verify layout via `hugo server -D`; when updating OGP assets, include the `make tgen-diff` output in your PR notes.
+## Validation and changes
 
-## Commit and Pull Request Guidelines
-
-- The history favors prefixed commit messages such as `fix: <scope>`; use `feat: add <slug>` for new posts and `chore:` for configuration changes.
-- PRs should describe purpose, key changes, related issues, and attach screenshots or card previews for UI/OGP updates.
-- Share any external preview URL (e.g., Netlify) and list review focuses (content, layout, config) to streamline feedback.
+- Run `bun run verify` before committing and browser tests for UI work.
+- Keep tests about observable behavior, including route and asset compatibility.
+- Preserve unrelated work. Stage only intended files. Commit locally after checks;
+  do not push without an explicit request.

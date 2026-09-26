@@ -1,0 +1,105 @@
+# 外部の記事はここへ追記します。id は重複しない名前にしてください。
+- id: zenn-8651e73d044cc2
+  title: Angular v21 CDK Overlay でサポートされたネイティブ popover の紹介
+  url: https://zenn.dev/da1chi/articles/8651e73d044cc2
+  date: 2025-12-07T12:25:22.742+09:00
+  source: Zenn
+  tags: []
+  categories:
+    - DEV
+- id: zenn-939f27321ba016
+  title: Renovate の Best Practices から学ぶ依存関係管理の考え方
+  url: https://zenn.dev/da1chi/articles/939f27321ba016
+  date: 2024-04-17T08:30:00.600+09:00
+  source: Zenn
+  tags: []
+  categories:
+    - DEV
+- id: zenn-43c4a9538a177f
+  title: ドキュメントの修正から始めるAngularへの貢献
+  url: https://zenn.dev/da1chi/articles/43c4a9538a177f
+  date: 2024-12-11T09:19:24.853+09:00
+  source: Zenn
+  tags: []
+  categories:
+    - DEV
+- id: zenn-377ffc4d08d22c
+  title: 非同期処理後に動的に生成される DOM にアクセスする
+  url: https://zenn.dev/da1chi/articles/377ffc4d08d22c
+  date: 2024-05-18T08:04:30.746+09:00
+  source: Zenn
+  tags: []
+  categories:
+    - DEV
+- id: zenn-ec2f211f31fc40
+  title: Angular v17.2 でパッケージマネージャーとして「Bun」がサポートされたので性能を検証する
+  url: https://zenn.dev/da1chi/articles/ec2f211f31fc40
+  date: 2024-04-03T18:30:00.369+09:00
+  source: Zenn
+  tags: []
+  categories:
+    - DEV
+- id: zenn-1d39e61b1b28f4
+  title: Bunのロックファイル(bun.lockb)のバージョン管理をPull Requestのコメントで可視化する
+  url: https://zenn.dev/da1chi/articles/1d39e61b1b28f4
+  date: 2024-04-08T18:26:35.229+09:00
+  source: Zenn
+  tags: []
+  categories:
+    - DEV
+- id: zenn-8d4f5672792d82
+  title: .rubocop_todo.yml の反映漏れを CI で防止する
+  url: https://zenn.dev/da1chi/articles/8d4f5672792d82
+  date: 2024-09-05T21:29:53.237+09:00
+  source: Zenn
+  tags: []
+  categories:
+    - DEV
+- id: zenn-4acc42272926e6
+  title: Angular で Form Validator を自作する
+  url: https://zenn.dev/da1chi/articles/4acc42272926e6
+  date: 2024-06-02T23:13:30.217+09:00
+  source: Zenn
+  tags: []
+  categories:
+    - DEV
+- id: zenn-972d9290e3d7b8
+  title: Angular v18 で ng-content にフォールバックのコンテンツをサポート
+  url: https://zenn.dev/da1chi/articles/972d9290e3d7b8
+  date: 2024-05-05T20:50:28.775+09:00
+  source: Zenn
+  tags: []
+  categories:
+    - DEV
+- id: zenn-e4369860b67d66
+  title: Angular CLI の Web Test Runner サポートを試す
+  url: https://zenn.dev/da1chi/articles/e4369860b67d66
+  date: 2025-02-09T10:15:27.121+09:00
+  source: Zenn
+  tags: []
+  categories:
+    - DEV
+- id: zenn-5e8adbbf12c634
+  title: docker/build-push-action で ECR に push する際に最小限必要な権限
+  url: https://zenn.dev/da1chi/articles/5e8adbbf12c634
+  date: 2024-07-21T20:22:12.650+09:00
+  source: Zenn
+  tags: []
+  categories:
+    - DEV
+- id: zenn-806fa57b4eff3c
+  title: SQLboiler で SQLite の日付フィールドを扱うポイント
+  url: https://zenn.dev/da1chi/articles/806fa57b4eff3c
+  date: 2024-05-12T08:58:34.912+09:00
+  source: Zenn
+  tags: []
+  categories:
+    - DEV
+- id: zenn-fdf271a44ba6b1
+  title: GitHub Project を操作する上で利用できる GitHub API と必要なトークン
+  url: https://zenn.dev/da1chi/articles/fdf271a44ba6b1
+  date: 2024-04-28T17:28:00.183+09:00
+  source: Zenn
+  tags: []
+  categories:
+    - DEV

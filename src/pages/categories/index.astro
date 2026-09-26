@@ -1,0 +1,10 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getArticles } from '../../lib/content';
+import { collectTerms } from '../../lib/articles';
+const categories = collectTerms(await getArticles(), 'categories');
+---
+<BaseLayout title="カテゴリ">
+  <header class="page-heading"><h1>カテゴリ</h1></header>
+  <ul class="term-list">{categories.map(({ slug, label, count }) => <li><a href={`/categories/${encodeURIComponent(slug)}/`}><span>{label}</span><span class="term-count">{count}</span></a></li>)}</ul>
+</BaseLayout>
