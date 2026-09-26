@@ -48,6 +48,7 @@ jobs:
       - id: preview
         run: |
           output="$(bun x wrangler preview --name "pr-${{ github.event.pull_request.number }}" --json)"
+          printf '%s\n' "$output"
           preview_url="$(printf '%s' "$output" | jq -er '.preview.urls[0]')"
           echo "url=$preview_url" >> "$GITHUB_OUTPUT"
         env:
