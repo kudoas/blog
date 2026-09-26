@@ -85,3 +85,5 @@ OGP を確認してください。
 ローカルでの確認後、権限がある環境では `bun x wrangler login`、`bun run deploy` で
 同じ検証を通してデプロイできます。現行サイトを切り替えるときは、
 切り替え前のデプロイを戻せるよう残します。
+デプロイ先の検索やモバイル表示は、
+`E2E_BASE_URL=https://tech-blog.<subdomain>.workers.dev bun run test:e2e` で検証できます。
