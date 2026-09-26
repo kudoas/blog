@@ -16,6 +16,20 @@ test('all published local and external entries appear in prerendered HTML', () =
   assert.deepEqual(dates, [...dates].sort((a, b) => b - a));
 });
 
+test('ships the search bundle and restricts local indexing to article content', () => {
+  assert.ok(existsSync('dist/pagefind/pagefind.js'));
+  assert.equal(page('index.html')('[data-pagefind-body]').length, 0);
+  for (const { id } of posts) {
+    const $ = page(`posts/${id}/index.html`);
+    assert.equal($('h1[data-pagefind-body]').length, 1);
+    assert.equal($('.prose[data-pagefind-body]').length, 1);
+    assert.equal($('.toc [data-pagefind-body], .post-end [data-pagefind-body], .site-header [data-pagefind-body]').length, 0);
+    for (const tag of $('.post-tags a').toArray()) {
+      assert.equal($(tag).attr('data-pagefind-filter'), 'tag[data-search-tag]');
+    }
+  }
+});
+
 test('each Markdown article retains its URL, metadata, image paths and heading anchors', () => {
   for (const { id, data } of posts) {
     const $ = page(`posts/${id}/index.html`);

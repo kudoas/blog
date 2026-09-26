@@ -1,7 +1,7 @@
 import { formatDate, tagUrl } from '../lib/articles';
 import type { ArticleSummary } from '../lib/articles';
 
-export default function ArticleList({ articles }: { articles: ArticleSummary[] }) {
+export default function ArticleList({ articles, excerpts = {} }: { articles: ArticleSummary[]; excerpts?: Record<string, string> }) {
   return (
     <ul className="article-list">
       {articles.map((article) => (
@@ -15,6 +15,8 @@ export default function ArticleList({ articles }: { articles: ArticleSummary[] }
                   {article.kind === 'external' && <span className="external-arrow" aria-label="外部サイトを新しいタブで開く">↗</span>}
                 </a>
               </h3>
+              {/* Only Pagefind-generated excerpts are HTML: its API escapes content before adding <mark>. */}
+              {article.kind === 'local' && excerpts[article.id] && <p className="article-excerpt" dangerouslySetInnerHTML={{ __html: excerpts[article.id] }} />}
               <div className="article-meta">
                 <span className={article.kind === 'external' ? 'article-source' : 'article-source local-source'}>{article.source}</span>
                 {article.draft && <span className="draft-label">下書き</span>}
