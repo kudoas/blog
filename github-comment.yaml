@@ -1,0 +1,9 @@
+exec:
+  preview:
+    - when: ExitCode == 0
+      template: |
+        Preview: {{.Vars.preview_url}}
+      embedded_var_names: [run_id]
+
+hide:
+  preview: 'Comment.HasMeta && Comment.Meta.TemplateKey == "preview" && Comment.Meta.Vars.run_id != Vars.run_id'
