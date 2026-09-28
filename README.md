@@ -90,13 +90,12 @@ Worker `tech-blog` に `pr-<番号>` の Preview を作り、GitHub の `Preview
 デプロイします。Cloudflare の認証情報は GitHub のリポジトリ、または両 environment に
 `CLOUDFLARE_API_TOKEN` と `CLOUDFLARE_ACCOUNT_ID` を設定してください。
 API トークンには対象アカウントの Workers 編集権限が必要です。
-本番サイトへ切り替える際は Worker の `workers.dev` URL を先に検証し、
-Cloudflare で既存の DNS レコードを維持したまま Route `blog.da1chi.net/*` を
-Worker `tech-blog` に追加します。切り替え後は記事 URL、`_redirects`、404、RSS、
-OGP を確認してください。
+公開サイト `https://blog.da1chi.net/` では Astro 版を配信しています。
+変更を公開した後は記事 URL、`_redirects`、404、RSS、OGP を確認してください。
+公開経路の切り替え判断と当時の手順は ADR に残しています。
 
 ローカルでの確認後、権限がある環境では `bun x wrangler login`、`bun run deploy` で
-同じ検証を通してデプロイできます。現行サイトを切り替えるときは、
-切り替え前のデプロイを戻せるよう残します。
+同じ検証を通してデプロイできます。切り戻しに備え、直前のデプロイと
+Vercel の旧本番を保持します。
 デプロイ先の検索やモバイル表示は、
 `E2E_BASE_URL=https://tech-blog.<subdomain>.workers.dev bun run test:e2e` で検証できます。

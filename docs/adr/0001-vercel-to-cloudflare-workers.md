@@ -1,6 +1,6 @@
 # ADR 0001: Vercel から Cloudflare Workers への無停止移行
 
-- 状態: Accepted（公開切り替え前）
+- 状態: Accepted（公開サイトで Astro 版を確認。Route 設定は未確認）
 - 決定日: 2026-09-26
 
 ## 背景
@@ -69,6 +69,15 @@ Route 追加後、実ドメインで同じ項目と HTTP ステータスを確�
   `CLOUDFLARE_ACCOUNT_ID` の登録を確認した。
 - `main` への反映、DNS と既存 Route の管理画面での確認、公開 Route の追加は未実施。
   現行ドメインは引き続き Vercel から応答している。
+
+## 追記（2026-09-27）
+
+- `main` の GitHub Actions 実行 `36283490075` では、検証と Worker の本番デプロイが成功した。
+- 公開サイト `https://blog.da1chi.net/` は Astro 版の内容を返し、HTTP 応答は
+  `200`、`server: cloudflare` で、以前の `x-vercel-id` は見られなかった。
+- Cloudflare の Route・DNS の実設定と Vercel の旧本番デプロイの状態は未確認。
+  ドメイン設定と Vercel の退役は後で扱う。Git 自動デプロイを停止する
+  `vercel.json` は、それまで保持する。
 
 ## 影響と残るリスク
 
