@@ -1,0 +1,8 @@
+/build/
+/log/
+/tmp/
+/public/
+/app/assets/stylesheets/application.css
+/config/master.key
+/.bundle/
+/.ruby-lsp/

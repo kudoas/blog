@@ -1,0 +1,26 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "fileutils"
+require "pathname"
+
+app = Pathname.new(__dir__).parent
+root = app.parent.parent
+output = app.join("public")
+dist = root.join("dist")
+
+abort "Build the Astro site first: bun run build" unless dist.join("pagefind/pagefind.js").file?
+
+FileUtils.mkdir_p(output)
+FileUtils.cp_r(root.join("static/.").to_s, output.to_s)
+FileUtils.rm_f(output.join("_redirects"))
+FileUtils.cp_r(dist.join("pagefind"), output)
+FileUtils.cp(dist.join("robots.txt"), output)
+Dir.glob(dist.join("*.xml")).each { |file| FileUtils.cp(file, output) }
+Dir.glob(dist.join("{tags,categories}/**/*.xml")).each do |file|
+  target = output.join(Pathname.new(file).relative_path_from(dist))
+  FileUtils.mkdir_p(target.dirname)
+  FileUtils.cp(file, target)
+end
+
+FileUtils.cp(root.join("src/styles/global.css"), app.join("app/assets/stylesheets/application.css"))

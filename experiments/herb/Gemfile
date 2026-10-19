@@ -1,0 +1,9 @@
+source "https://rubygems.org"
+
+gem "rails", "~> 8.1.3", ">= 8.1.3.1"
+gem "propshaft"
+gem "puma", "~> 7.0"
+gem "importmap-rails"
+
+gem "herb", git: "https://github.com/marcoroth/herb.git", ref: "2283849f57e81982b946b6243fa250b667723c4f"
+gem "reactionview", git: "https://github.com/marcoroth/reactionview.git", ref: "74b565e178e67d575e17f1cfa558eeb695c38641"

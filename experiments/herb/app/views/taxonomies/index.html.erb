@@ -1,0 +1,6 @@
+<header class="page-heading"><p class="eyebrow"><%= @eyebrow %></p><h1><%= @heading %></h1><p class="muted"><%= @subtitle %></p></header>
+<ul class="term-list">
+  <% @terms.each do |term| %>
+    <li><a href="<%= @base_path %><%= term.fetch('slug') %>/"><span>#<%= term.fetch('label') %></span><span class="term-count"><%= term.fetch('count') %></span></a></li>
+  <% end %>
+</ul>

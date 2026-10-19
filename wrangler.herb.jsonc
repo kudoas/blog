@@ -1,0 +1,25 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "tech-blog-herb",
+  "main": "experiments/herb/worker/index.ts",
+  "compatibility_date": "2026-10-18",
+  "compatibility_flags": ["nodejs_compat"],
+  "containers": [
+    {
+      "class_name": "BlogContainer",
+      "image": "./experiments/herb/Dockerfile",
+      "image_build_context": ".",
+      "instance_type": "basic",
+      "max_instances": 1
+    }
+  ],
+  "durable_objects": {
+    "bindings": [
+      { "name": "BLOG_CONTAINER", "class_name": "BlogContainer" }
+    ]
+  },
+  "exports": {
+    "BlogContainer": { "type": "durable-object", "storage": "sqlite" }
+  },
+  "observability": { "enabled": true }
+}

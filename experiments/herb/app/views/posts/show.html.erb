@@ -1,0 +1,19 @@
+<article class="post">
+  <header class="post-header">
+    <a href="/" class="back-link">← 記事一覧</a>
+    <div class="post-meta"><time datetime="<%= @post.fetch('date') %>"><%= format_date(@post.fetch('date')) %></time><span><%= @post.fetch('author') %></span></div>
+    <h1 data-pagefind-body><%= @post.fetch('title') %></h1>
+    <% if @post.fetch('tags').any? %><div class="post-tags" data-pagefind-body>
+      <% @post.fetch('tags').each do |tag| %><a class="tag" href="<%= tag_url(tag) %>" data-pagefind-filter="tag[data-search-tag]" data-search-tag="<%= tag_slug(tag) %>">#<%= tag %></a><% end %>
+    </div><% end %>
+  </header>
+  <% if @post.fetch('headings').any? %><details class="toc" open>
+    <summary>目次</summary><nav aria-label="目次"><ul>
+      <% @post.fetch('headings').each do |heading| %>
+        <li class="<%= 'toc-nested' if heading.fetch('depth') == 3 %>"><a href="#<%= heading.fetch('slug') %>"><%= heading.fetch('text') %></a></li>
+      <% end %>
+    </ul></nav>
+  </details><% end %>
+  <div class="prose" data-pagefind-body><%= raw @post.fetch('bodyHtml') %></div>
+  <div class="post-end"><a href="/">← 記事一覧へ戻る</a></div>
+</article>

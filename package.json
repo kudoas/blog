@@ -17,7 +17,10 @@
     "test": "node --test tests/unit/*.test.ts",
     "test:build": "node --test tests/build/*.test.mjs",
     "test:e2e": "playwright test",
-    "verify": "bun run textlint && bun run check && bun run test && bun run build && bun run test:build",
+    "verify": "bun run textlint && bun run check && bun run build && bun run test && bun run test:build",
+    "build:herb": "bun run build && bun scripts/export-herb-content.ts && cd experiments/herb && bin/prepare-assets",
+    "verify:herb": "bun run verify && bun run build:herb && cd experiments/herb && mise exec ruby@4.0.6 -- bundle exec rails test",
+    "test:e2e:herb": "bunx playwright test --config playwright.herb.config.ts",
     "deploy": "bun run verify && wrangler deploy",
     "preview:worker": "wrangler dev --port 8787"
   },
@@ -26,11 +29,12 @@
     "url": "https://github.com/kudoas/blog/issues"
   },
   "homepage": "https://github.com/kudoas/blog#readme",
-    "dependencies": {
+  "dependencies": {
     "@astrojs/markdown-remark": "7.3.1",
     "@astrojs/react": "7.0.0",
     "@astrojs/rss": "4.0.19",
     "@astrojs/sitemap": "3.7.4",
+    "@cloudflare/containers": "0.3.7",
     "astro": "7.3.5",
     "react": "19.3.0",
     "react-dom": "19.3.0",
