@@ -4,19 +4,16 @@
 
 ## 起動
 
-リポジトリのルートで一度、記事本文・検索索引と静的ファイルを生成します。
+リポジトリのルートで初回セットアップを行います。
 
 ```sh
-bun install --frozen-lockfile
-bun run build:herb
+mise run herb:setup
 ```
 
-続けてRailsを起動します。
+次のコマンドでコンテンツを再ビルドしてRailsを起動します。
 
 ```sh
-cd experiments/herb
-mise exec ruby@4.0.6 -- bundle install
-mise exec ruby@4.0.6 -- bundle exec rails server -p 3000
+mise run herb:dev
 ```
 
 <http://localhost:3000> を開きます。Astro版は従来どおり `bun run dev` で起動でき、ポート3000と4321で見比べられます。

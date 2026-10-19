@@ -1,0 +1,23 @@
+[tasks."herb:install"]
+description = "Install the blog's Bun dependencies"
+run = "bun install --frozen-lockfile"
+
+[tasks."herb:build"]
+description = "Build blog content and assets for the Herb app"
+depends = ["herb:install"]
+run = "bun run build:herb"
+
+[tasks."herb:bundle"]
+description = "Install Ruby dependencies for the Herb app"
+dir = "experiments/herb"
+run = "mise exec ruby@4.0.6 -- bundle install"
+
+[tasks."herb:setup"]
+description = "Prepare the local Herb app"
+depends = ["herb:build", "herb:bundle"]
+
+[tasks."herb:dev"]
+description = "Run the local Herb Rails app at http://localhost:3000"
+depends = ["herb:build"]
+dir = "experiments/herb"
+run = "mise exec ruby@4.0.6 -- bundle exec rails server -p 3000"
