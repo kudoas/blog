@@ -10,6 +10,18 @@ class ContentTest < ActionDispatch::IntegrationTest
     assert_select "a[href^='https://zenn.dev/']"
   end
 
+  test "scoped article-list styles are transformed and attached to partial markup" do
+    get "/"
+
+    assert_response :success
+    style = css_select("style[data-herb-style-scoped]").first
+    assert style, "expected the scoped-style visitor to transform the article-list block"
+    scope = style["data-herb-style-scoped"]
+    assert_match(/\Adata-herb-scope-[a-f0-9]+\z/, scope)
+    assert_select ".read-later-form[#{scope}]"
+    assert_includes style.text, ".read-later-form[#{scope}]"
+  end
+
   test "post preserves the canonical URL, body and heading anchors" do
     get "/posts/func-error-boundary/"
 

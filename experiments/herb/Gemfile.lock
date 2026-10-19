@@ -126,6 +126,14 @@ GEM
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
     json (3.1.0)
+    lightningcss (1.33.0.2-aarch64-linux-gnu)
+    lightningcss (1.33.0.2-aarch64-linux-musl)
+    lightningcss (1.33.0.2-arm-linux-gnu)
+    lightningcss (1.33.0.2-arm-linux-musl)
+    lightningcss (1.33.0.2-arm64-darwin)
+    lightningcss (1.33.0.2-x86_64-darwin)
+    lightningcss (1.33.0.2-x86_64-linux-gnu)
+    lightningcss (1.33.0.2-x86_64-linux-musl)
     logger (1.7.0)
     loofah (2.25.2)
       crass (~> 1.0.2)
@@ -256,6 +264,7 @@ PLATFORMS
 DEPENDENCIES
   herb!
   importmap-rails
+  lightningcss
   propshaft
   puma (~> 7.0)
   rails (~> 8.1.3, >= 8.1.3.1)
@@ -299,6 +308,14 @@ CHECKSUMS
   io-console (0.9.4) sha256=a403304f32928ee85e56d457b4612ca43f2703b561a3258844992bd24085fbb1
   irb (1.18.0) sha256=de9454a0703a54704b9811a5ef31a60c86949fbf4013fcf244fabc7c775248e3
   json (3.1.0) sha256=3ce7ccf8fde58960177a3a756c31f292a4c1e1dedee884547096a5b0604e3bd8
+  lightningcss (1.33.0.2-aarch64-linux-gnu) sha256=1240e16ad6e5a47f23f042622ed2eed7def58043cf87803b1f7ae9029c039cb8
+  lightningcss (1.33.0.2-aarch64-linux-musl) sha256=158ad3554028b2ae5f179f68d65b4e8fb501491bdc5834b8e99d3aee547ced79
+  lightningcss (1.33.0.2-arm-linux-gnu) sha256=91f53ae781145bb5c5745943fdb5b5817823556bf7a01e14ff31120225890850
+  lightningcss (1.33.0.2-arm-linux-musl) sha256=522e51d57523c39e75433390df94c27f419daaa21b348ab65cc594c546256e83
+  lightningcss (1.33.0.2-arm64-darwin) sha256=7ad09f91185f66712f0bbfb5376afea7c19c1dd80b7acc9e89b3a0ff32c3a9b0
+  lightningcss (1.33.0.2-x86_64-darwin) sha256=aadcbabdb2fdc489bbba1c8dcb20e440b6d312efb031a60aa0bb7b4c259094af
+  lightningcss (1.33.0.2-x86_64-linux-gnu) sha256=1250fe2f3b3ac23ad40e8a5038eae6304192a2df27740dd91b50f8c5b188dd73
+  lightningcss (1.33.0.2-x86_64-linux-musl) sha256=6d50341945d90a845d01db7d5fd5df8d47b2426390f0581bcf7258a203b8aaa9
   logger (1.7.0) sha256=196edec7cc44b66cfb40f9755ce11b392f21f7967696af15d274dde7edff0203
   loofah (2.25.2) sha256=2007f746959ac65552456e04b433e83deb22759ab38c838b4445c70e43425918
   mail (2.9.1) sha256=06574eca475253d6c18145dd70af80d0eb970182d55053497c5f4d797ea160e8

@@ -153,3 +153,13 @@ if (explorer) {
 
   if (input.value || tagFilter.value) update(confirmed, { history: false })
 }
+
+document.addEventListener("click", (event) => {
+  if (!(event.target instanceof Element)) return
+  const button = event.target.closest("[data-outbox-retry], [data-outbox-discard]")
+  const runtime = Runtime.get()
+  if (!button || !runtime) return
+  event.preventDefault()
+  if (button.hasAttribute("data-outbox-retry")) runtime.outbox.retry(button)
+  else runtime.outbox.discard(button)
+})

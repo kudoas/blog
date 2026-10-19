@@ -30,6 +30,7 @@ class TaxonomiesController < ApplicationController
   private
 
   def render_term(field, base_path)
+    @saved_articles = SavedArticles.new(articles: content_repository.articles, ids: session[SavedArticles::SESSION_KEY]).articles
     term = content_repository.terms(field).find { |item| item.fetch("slug") == params[:term] }
     raise ActionController::RoutingError, "Not Found" unless term
 

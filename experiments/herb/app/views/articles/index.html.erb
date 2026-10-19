@@ -1,9 +1,33 @@
 <%# herb:slots client %>
-<%# herb:state (pending: false, search_error: false) %>
+<%# herb:state (pending: false, search_error: false, failed: false) %>
 
 <section class="articles-section" aria-labelledby="articles-heading">
   <div class="section-heading"><h1 id="articles-heading">記事</h1></div>
   <div class="article-explorer" data-articles="<%= content_repository.articles.to_json %>">
+    <section class="saved-articles" aria-labelledby="saved-articles-heading">
+      <h2 id="saved-articles-heading">あとで読む</h2>
+      <ul class="saved-articles-list" data-herb-name="saved_articles">
+        <% @saved_articles.each do |article| %>
+          <%# herb:key article.fetch('id') %>
+          <li>
+            <a data-herb-name="title" href="<%= article.fetch('url') %>"><%= article.fetch('title') %></a>
+            <form action="<%= remove_saved_articles_path %>" method="post">
+              <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+              <%= hidden_field_tag :article_id, article.fetch('id') %>
+              <button type="submit">解除</button>
+            </form>
+            <% if failed %>
+              <p role="alert">保存に失敗しました。再試行するか、一覧から外してください。</p>
+              <button type="button" data-outbox-retry>再試行</button>
+              <button type="button" data-outbox-discard>破棄</button>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+      <% if @saved_articles.length >= SavedArticles::MAX_ITEMS %>
+        <p class="saved-articles-limit" role="status">あとで読める記事は<%= SavedArticles::MAX_ITEMS %>件までです。</p>
+      <% end %>
+    </section>
     <form role="search" method="get" action="/">
       <fieldset>
         <legend class="sr-only">記事を探す</legend>
@@ -23,7 +47,7 @@
       <button type="button" class="clear-search" <%= 'hidden' if @query.blank? && @tag.blank? %>>条件をクリア</button>
     </div>
     <div aria-busy="<%= pending %>">
-      <%= render "article_list", articles: @articles %>
+      <%= render "articles/article_list", articles: @articles, saved_articles: @saved_articles %>
       <% if @articles.empty? %><p class="empty-state">条件に合う記事が見つかりませんでした。</p><% end %>
     </div>
   </div>

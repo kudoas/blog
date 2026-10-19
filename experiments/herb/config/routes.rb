@@ -12,6 +12,8 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "articles#index"
   post "search", to: "articles#index"
+  post "saved-articles", to: "saved_articles#create", as: :saved_articles
+  post "saved-articles/remove", to: "saved_articles#destroy", as: :remove_saved_articles
   get "posts/:slug", to: "posts#show", as: :post
   get "tags", to: "taxonomies#tags", as: :tags
   get "tags/:term", to: "taxonomies#tag", as: :tag

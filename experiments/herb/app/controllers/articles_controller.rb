@@ -1,5 +1,6 @@
 class ArticlesController < ApplicationController
   def index
+    @saved_articles = SavedArticles.new(articles: content_repository.articles, ids: session[SavedArticles::SESSION_KEY]).articles
     @query = params[:q].to_s
     @tag = params[:tag].to_s
     @total_count = content_repository.articles.length

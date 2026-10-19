@@ -1,4 +1,11 @@
 <%# herb:slots client %>
+<style scoped>
+  .read-later-form { margin-top: 10px; }
+  .read-later-button { border: 1px solid var(--line); border-radius: 4px; background: transparent; color: var(--muted); padding: 5px 9px; font-size: 11px; }
+  .read-later-button:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+  .read-later-button:disabled { cursor: not-allowed; opacity: .55; }
+</style>
+<% saved_ids = saved_articles.map { |article| article.fetch('id') } %>
 <ul class="article-list" data-herb-name="articles">
   <% articles.each do |article| %>
     <%# herb:key article.fetch('id') %>
@@ -12,6 +19,14 @@
             <% article.fetch('tags').each do |tag| %><a class="tag" href="<%= tag_url(tag) %>">#<%= tag %></a><% end %>
           </div>
           <p class="article-excerpt" data-search-excerpt><%== @excerpts&.[](article.fetch('id')).to_s %></p>
+          <% unless saved_ids.include?(article.fetch('id')) %>
+            <form class="read-later-form" action="<%= saved_articles_path %>" method="post" data-herb-into="saved_articles">
+              <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+              <%= hidden_field_tag "article[article_id]", article.fetch('id') %>
+              <%= hidden_field_tag "article[title]", article.fetch('title') %>
+              <button class="read-later-button" type="submit" <%= 'disabled' if saved_articles.length >= SavedArticles::MAX_ITEMS %>>あとで読む</button>
+            </form>
+          <% end %>
         </div>
       </article>
     </li>
