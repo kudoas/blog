@@ -1,13 +1,14 @@
 import { expect, test } from '@playwright/test';
 
-test('shows Herb Dev Tools without connecting to an inactive dev server', async ({ page }) => {
+test('connects Herb Dev Tools to the embedded dev server', async ({ page }) => {
   const websocketUrls: string[] = [];
   page.on('websocket', (socket) => websocketUrls.push(socket.url()));
 
   await page.goto('/');
-  await page.waitForFunction(() => 'HerbDevTools' in window);
+  await expect.poll(() => page.evaluate(() => Reflect.get(window, 'HerbDevTools')?.client?.getState())).toBe('connected');
 
-  expect(websocketUrls).not.toContain('ws://localhost:8592/');
+  const port = await page.locator('meta[name="herb-dev-server-port"]').getAttribute('content');
+  expect(websocketUrls).toContain(`ws://localhost:${port}/`);
 });
 
 test('adds a read-later row optimistically, confirms it and keeps it after reload', async ({ page }) => {
@@ -109,9 +110,13 @@ test('confirms a read-later add from a taxonomy page', async ({ page }) => {
   const article = page.locator('.article-list > li').first();
   const title = await article.locator('h3 a').innerText();
 
+  const confirmation = page.waitForResponse((response) =>
+    new URL(response.url()).pathname === '/saved-articles' && response.status() === 201,
+  );
   await article.getByRole('button', { name: 'あとで読む' }).click();
   await expect(page.locator("[data-herb-name='saved_articles'] > li")).toHaveCount(1);
   await expect(page.locator("[data-herb-name='saved_articles'] a")).toContainText(title);
+  await confirmation;
   await page.reload();
   await expect(page.locator("[data-herb-name='saved_articles'] > li")).toHaveCount(1);
 });
