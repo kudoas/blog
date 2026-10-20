@@ -21,8 +21,8 @@
       </li>
     <% end %>
   </ul>
-  <% if @saved_articles.length >= SavedArticles::MAX_ITEMS %>
-    <p class="saved-articles-limit" role="status">あとで読める記事は<%= SavedArticles::MAX_ITEMS %>件までです。</p>
+  <% if @saved_articles.length >= ReadingList::MAX_ITEMS %>
+    <p class="saved-articles-limit" role="status">あとで読める記事は<%= ReadingList::MAX_ITEMS %>件までです。</p>
   <% end %>
 </section>
 <%= render "articles/article_list", articles: @articles, saved_articles: @saved_articles %>

@@ -2,7 +2,7 @@ require "test_helper"
 
 class SavedArticlesIntegrationTest < ActionDispatch::IntegrationTest
   test "adding and removing use normal HTML form redirects" do
-    article_id = ContentRepository.new.articles.first.fetch("id")
+    article_id = PublishedContent.new.articles.first.id
 
     post "/saved-articles", params: { article_id: article_id }
     assert_response :redirect
@@ -28,7 +28,7 @@ class SavedArticlesIntegrationTest < ActionDispatch::IntegrationTest
   end
 
   test "an Outbox add confirms one keyed row and persists it in the session" do
-    article = ContentRepository.new.articles.first
+    article = PublishedContent.new.articles.first
 
     post "/saved-articles?format=slots", params: { article_id: article.fetch("id") },
       headers: { "Accept" => "application/vnd.herb.slots+json" }
@@ -43,7 +43,7 @@ class SavedArticlesIntegrationTest < ActionDispatch::IntegrationTest
   end
 
   test "an Outbox add from a taxonomy page confirms against that page template" do
-    article = ContentRepository.new.articles.first
+    article = PublishedContent.new.articles.first
 
     post "/saved-articles?format=slots", params: { article_id: article.fetch("id") },
       headers: {
@@ -57,7 +57,7 @@ class SavedArticlesIntegrationTest < ActionDispatch::IntegrationTest
   end
 
   test "removing a saved article clears it from the session" do
-    article = ContentRepository.new.articles.first
+    article = PublishedContent.new.articles.first
     post "/saved-articles", params: { article_id: article.fetch("id") }
     post "/saved-articles/remove", params: { article_id: article.fetch("id") }
 
@@ -66,7 +66,7 @@ class SavedArticlesIntegrationTest < ActionDispatch::IntegrationTest
   end
 
   test "a full saved list explains the limit and disables further adds" do
-    ContentRepository.new.articles.first(SavedArticles::MAX_ITEMS).each do |article|
+    PublishedContent.new.articles.first(ReadingList::MAX_ITEMS).each do |article|
       post "/saved-articles", params: { article_id: article.fetch("id") }
     end
 

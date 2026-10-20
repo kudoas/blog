@@ -1,21 +1,20 @@
 class ArticlesController < ApplicationController
   def index
-    @saved_articles = SavedArticles.new(articles: content_repository.articles, ids: session[SavedArticles::SESSION_KEY]).articles
+    @saved_articles = reading_list.articles
     @query = params[:q].to_s
     @tag = params[:tag].to_s
-    @total_count = content_repository.articles.length
+    @total_count = published_content.articles.length
     if request.post?
-      selection = SearchSelection.new(content_repository).resolve(
-        ids: params[:ids],
-        excerpts: params[:excerpts].is_a?(ActionController::Parameters) ? params[:excerpts].to_unsafe_h : {},
-        query: @query,
-        tag: @tag,
-        fallback: params[:fallback] == true
-      )
-      @articles = selection.fetch(:articles)
-      @excerpts = selection.fetch(:excerpts)
+      result = if params[:fallback] == true
+        SearchResult.fallback(content: published_content, query: @query, tag: @tag)
+      else
+        SearchResult.from_pagefind(content: published_content, ids: params[:ids],
+          excerpts: params[:excerpts].is_a?(ActionController::Parameters) ? params[:excerpts].to_unsafe_h : {}, tag: @tag)
+      end
+      @articles = result.articles
+      @excerpts = result.excerpts
     else
-      @articles = content_repository.filter(query: @query, tag: @tag)
+      @articles = published_content.search(query: @query, tag: @tag)
       @excerpts = {}
     end
     render :index if request.post?
