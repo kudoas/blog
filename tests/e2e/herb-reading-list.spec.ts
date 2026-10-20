@@ -28,6 +28,13 @@ test('adds a read-later row optimistically, confirms it and keeps it after reloa
   await requestStarted;
   await expect(page.locator("[data-herb-name='saved_articles'] > li")).toHaveCount(1);
   await expect(page.locator("[data-herb-name='saved_articles'] a")).toContainText(title);
+  const earlyRemovals: string[] = [];
+  page.on('request', (request) => {
+    if (new URL(request.url()).pathname === '/saved-articles/remove') earlyRemovals.push(request.url());
+  });
+  await page.locator("[data-herb-name='saved_articles']").getByRole('button', { name: '解除' }).click();
+  expect(earlyRemovals).toHaveLength(0);
+  expect(new URL(page.url()).pathname).toBe('/');
   const confirmation = page.waitForResponse((response) =>
     new URL(response.url()).pathname === '/saved-articles' && response.status() === 201,
   );
@@ -72,6 +79,79 @@ test('adds and removes a read-later item with JavaScript disabled', async ({ bro
   await page.locator("[data-herb-name='saved_articles']").getByRole('button', { name: '解除' }).click();
   await expect(page.locator("[data-herb-name='saved_articles'] > li")).toHaveCount(0);
   await context.close();
+});
+
+test('removes a saved item through slots without navigating away', async ({ page }) => {
+  await page.goto('/');
+  const navigations: string[] = [];
+  page.on('framenavigated', (frame) => {
+    if (frame === page.mainFrame()) navigations.push(frame.url());
+  });
+
+  const firstArticle = page.locator('.article-list > li').first();
+  const confirmation = page.waitForResponse((response) =>
+    new URL(response.url()).pathname === '/saved-articles' && response.status() === 201,
+  );
+  await firstArticle.getByRole('button', { name: 'あとで読む' }).click();
+  await confirmation;
+  const removal = page.waitForResponse((response) =>
+    new URL(response.url()).pathname === '/saved-articles/remove' && response.status() === 200,
+  );
+  await page.locator("[data-herb-name='saved_articles']").getByRole('button', { name: '解除' }).click();
+  await removal;
+
+  await expect(page.locator("[data-herb-name='saved_articles'] > li")).toHaveCount(0);
+  await expect(firstArticle.getByRole('button', { name: 'あとで読む' })).toBeVisible();
+  expect(navigations).toHaveLength(0);
+});
+
+test('keeps filtered results when a saved item is removed', async ({ page }) => {
+  await page.goto('/');
+  const filtered = page.waitForResponse((response) =>
+    new URL(response.url()).pathname === '/search' && response.status() === 200,
+  );
+  await page.locator('#tag-filter').selectOption('react');
+  await filtered;
+  await expect(page.locator('.article-explorer [aria-busy]')).toHaveAttribute('aria-busy', 'false');
+  await expect(page.locator('.article-list > li').first()).toBeVisible();
+  await expect(page.locator('#tag-filter')).toHaveValue('react');
+  const titles = await page.locator('.article-list > li h3 a').allTextContents();
+  const url = page.url();
+
+  const confirmation = page.waitForResponse((response) =>
+    new URL(response.url()).pathname === '/saved-articles' && response.status() === 201,
+  );
+  await page.locator('.article-list > li').first().getByRole('button', { name: 'あとで読む' }).click();
+  await confirmation;
+  const removal = page.waitForResponse((response) =>
+    new URL(response.url()).pathname === '/saved-articles/remove' && response.status() === 200,
+  );
+  await page.locator("[data-herb-name='saved_articles']").getByRole('button', { name: '解除' }).click();
+  await removal;
+
+  await expect(page.locator("[data-herb-name='saved_articles'] > li")).toHaveCount(0);
+  await expect(page.locator('#tag-filter')).toHaveValue('react');
+  expect(await page.locator('.article-list > li h3 a').allTextContents()).toEqual(titles);
+  expect(page.url()).toBe(url);
+});
+
+test('removes a saved item through slots on a taxonomy page', async ({ page }) => {
+  await page.goto('/tags/react/');
+  const article = page.locator('.article-list > li').first();
+  const confirmation = page.waitForResponse((response) =>
+    new URL(response.url()).pathname === '/saved-articles' && response.status() === 201,
+  );
+  await article.getByRole('button', { name: 'あとで読む' }).click();
+  await confirmation;
+  const removal = page.waitForResponse((response) =>
+    new URL(response.url()).pathname === '/saved-articles/remove' && response.status() === 200,
+  );
+  await page.locator("[data-herb-name='saved_articles']").getByRole('button', { name: '解除' }).click();
+  await removal;
+
+  await expect(page.locator("[data-herb-name='saved_articles'] > li")).toHaveCount(0);
+  await expect(article.getByRole('button', { name: 'あとで読む' })).toBeVisible();
+  expect(new URL(page.url()).pathname).toBe('/tags/react/');
 });
 
 test('lets the reader retry or discard a failed Outbox row', async ({ page }) => {

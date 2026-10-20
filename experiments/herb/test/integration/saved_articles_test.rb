@@ -65,6 +65,21 @@ class SavedArticlesIntegrationTest < ActionDispatch::IntegrationTest
     assert_select "ul[data-herb-name='saved_articles'] > li", 0
   end
 
+  test "removing a saved article can return slots without a redirect" do
+    article = PublishedContent.new.articles.first
+    post "/saved-articles", params: { article_id: article.fetch("id") }
+
+    post "/saved-articles/remove?format=slots", params: { article_id: article.fetch("id") },
+      headers: { "Accept" => "application/vnd.herb.slots+json" }
+
+    assert_response :success
+    assert_equal "application/vnd.herb.slots+json", response.media_type
+    assert_equal "app/views/articles/index.html.erb", JSON.parse(response.body).fetch("template")
+
+    get "/"
+    assert_select "ul[data-herb-name='saved_articles'] > li", 0
+  end
+
   test "a full saved list explains the limit and disables further adds" do
     PublishedContent.new.articles.first(ReadingList::MAX_ITEMS).each do |article|
       post "/saved-articles", params: { article_id: article.fetch("id") }

@@ -11,7 +11,7 @@
           <%# herb:key article.fetch('id') %>
           <li>
             <a data-herb-name="title" href="<%= article.fetch('url') %>"><%= article.fetch('title') %></a>
-            <form action="<%= remove_saved_articles_path %>" method="post">
+            <form action="<%= remove_saved_articles_path %>" method="post" data-herb-remove>
               <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
               <%= hidden_field_tag :article_id, article.fetch('id') %>
               <button type="submit">解除</button>
