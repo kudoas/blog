@@ -11,6 +11,24 @@ test('connects Herb Dev Tools to the embedded dev server', async ({ page }) => {
   expect(websocketUrls).toContain(`ws://localhost:${port}/`);
 });
 
+test('styles the search controls and saved-item removal', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('.search-fields')).toHaveCSS('display', 'flex');
+  await expect(page.locator('#article-search')).toHaveCSS('background-color', 'rgb(12, 34, 59)');
+  await expect(page.locator('#tag-filter')).toHaveCSS('background-color', 'rgb(12, 34, 59)');
+
+  const confirmation = page.waitForResponse((response) =>
+    new URL(response.url()).pathname === '/saved-articles' && response.status() === 201,
+  );
+  await page.locator('.article-list > li').first().getByRole('button', { name: 'あとで読む' }).click();
+  await confirmation;
+  await expect(page.locator('.saved-articles-list').getByRole('button', { name: '解除' })).toHaveCSS('border-radius', '4px');
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(page.locator('.search-fields')).toHaveCSS('flex-direction', 'column');
+  await expect(page.locator('#tag-filter')).toHaveCSS('width', '350px');
+});
+
 test('adds a read-later row optimistically, confirms it and keeps it after reload', async ({ page }) => {
   let release!: () => void;
   const held = new Promise<void>((resolve) => { release = resolve; });

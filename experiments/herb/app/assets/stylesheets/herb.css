@@ -1,0 +1,63 @@
+@layer components {
+  .saved-articles {
+    margin-bottom: 28px;
+    padding: 16px 20px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: var(--surface);
+  }
+
+  .saved-articles h2 {
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .saved-articles-list {
+    list-style: none;
+    margin: 8px 0 0;
+    padding: 0;
+  }
+
+  .saved-articles-list > li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+    padding-block: 10px;
+    border-top: 1px solid var(--line);
+    font-size: 13px;
+  }
+
+  .saved-articles-list > li > a {
+    flex: 1 1 240px;
+    min-width: 0;
+    color: var(--text);
+  }
+
+  .saved-articles-list > li > a:hover { color: var(--accent); }
+  .saved-articles-list form { margin: 0; }
+
+  .saved-articles-list button {
+    padding: 5px 9px;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    background: transparent;
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.5;
+  }
+
+  .saved-articles-list button:hover:not(:disabled) {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .saved-articles-list button:disabled { opacity: .55; }
+  .saved-articles-list [role="alert"] { color: #f6d38f; font-size: 12px; }
+  .saved-articles-limit { margin-top: 8px; color: var(--muted); font-size: 12px; }
+
+  @media (max-width: 600px) {
+    .saved-articles { padding: 14px 16px; }
+  }
+}
