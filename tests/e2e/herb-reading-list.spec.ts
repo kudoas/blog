@@ -1,5 +1,15 @@
 import { expect, test } from '@playwright/test';
 
+test('shows Herb Dev Tools without connecting to an inactive dev server', async ({ page }) => {
+  const websocketUrls: string[] = [];
+  page.on('websocket', (socket) => websocketUrls.push(socket.url()));
+
+  await page.goto('/');
+  await page.waitForFunction(() => 'HerbDevTools' in window);
+
+  expect(websocketUrls).not.toContain('ws://localhost:8592/');
+});
+
 test('adds a read-later row optimistically, confirms it and keeps it after reload', async ({ page }) => {
   let release!: () => void;
   const held = new Promise<void>((resolve) => { release = resolve; });
