@@ -18,6 +18,8 @@ mise run herb:dev
 
 <http://localhost:3000> を開きます。Astro版は従来どおり `bun run dev` で起動でき、ポート3000と4321で見比べられます。
 
+開発環境ではHerb Dev Toolsが有効です。ページ右上のHerbバッジからテンプレートの出力元や診断を確認できます。
+
 記事本文は既存Astroビルドから受け取り、一覧・詳細・タグ／カテゴリ、検索、画像、RSS、PagefindをRailsから配信します。`build:herb`を再実行すると、Markdown・外部記事・静的アセットの変更が反映されます。
 
 ## あとで読む

@@ -7,7 +7,7 @@
 </style>
 <% saved_ids = saved_articles.map { |article| article.fetch('id') } %>
 <ul class="article-list" data-herb-name="articles">
-  <% articles.each do |article| %>
+  <% articles.each do |article| # herb:debug disable %>
     <%# herb:key article.fetch('id') %>
     <li>
       <article class="article-summary">

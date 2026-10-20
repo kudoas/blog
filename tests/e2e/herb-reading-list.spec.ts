@@ -64,6 +64,12 @@ test('adds and removes a read-later item with JavaScript disabled', async ({ bro
 });
 
 test('lets the reader retry or discard a failed Outbox row', async ({ page }) => {
+  const dismissDebugOverlay = async () => {
+    if (await page.locator('meta[name="herb-debug-mode"]').count()) {
+      await page.locator('button[data-herb-dev-tools-action="dismiss-overlay"]').click();
+    }
+  };
+
   let attempts = 0;
   await page.route('**/saved-articles**', async (route) => {
     attempts += 1;
@@ -75,6 +81,7 @@ test('lets the reader retry or discard a failed Outbox row', async ({ page }) =>
   const savedList = page.locator("[data-herb-name='saved_articles']");
   const firstSavedRow = savedList.locator('> li').last();
   await expect(firstSavedRow.getByRole('alert')).toBeVisible();
+  await dismissDebugOverlay();
   await firstSavedRow.getByRole('button', { name: '再試行' }).click();
   await expect(savedList.locator('> li')).toHaveCount(1);
   await expect(savedList.getByRole('alert')).toHaveCount(0);
@@ -82,6 +89,7 @@ test('lets the reader retry or discard a failed Outbox row', async ({ page }) =>
   await page.locator('.article-list > li').nth(1).getByRole('button', { name: 'あとで読む' }).click();
   const failedRow = savedList.locator('> li').last();
   await expect(failedRow.getByRole('alert')).toBeVisible();
+  await dismissDebugOverlay();
   await failedRow.getByRole('button', { name: '破棄' }).click();
   await expect(savedList.locator('> li')).toHaveCount(1);
 });
