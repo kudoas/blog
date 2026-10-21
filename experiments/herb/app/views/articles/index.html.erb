@@ -3,7 +3,7 @@
 
 <section class="articles-section" aria-labelledby="articles-heading">
   <div class="section-heading"><h1 id="articles-heading">記事</h1></div>
-  <div class="article-explorer" data-articles="<%= published_content.articles.to_json %>">
+  <div class="article-explorer" data-articles="<%= @published_content.articles.to_json %>">
     <section class="saved-articles" aria-labelledby="saved-articles-heading">
       <h2 id="saved-articles-heading">あとで読む</h2>
       <ul class="saved-articles-list" data-herb-name="saved_articles">
@@ -38,7 +38,7 @@
         </div>
         <label for="tag-filter" class="sr-only">タグで絞り込む</label>
         <select id="tag-filter" name="tag"><option value="">すべてのタグ</option>
-          <% published_content.terms(:tags).each do |term| %>
+          <% @published_content.terms(:tags).each do |term| %>
             <option value="<%= term.fetch('slug') %>" <%= 'selected' if @tag == term.fetch('slug') %>><%= term.fetch('label') %></option>
           <% end %>
         </select>

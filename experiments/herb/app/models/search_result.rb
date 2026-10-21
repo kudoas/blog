@@ -7,7 +7,8 @@ class SearchResult
     safe_excerpts = excerpts.to_h.filter_map do |id, excerpt|
       next unless allowed_ids.include?(id) && excerpt.is_a?(String)
 
-      [id, safe_excerpt(excerpt)]
+      safe = excerpt.gsub("<mark>", "\0").gsub("</mark>", "\1").gsub("<", "&lt;").gsub(">", "&gt;").gsub("\0", "<mark>").gsub("\1", "</mark>")
+      [id, safe]
     end.to_h
     new(articles: articles, excerpts: safe_excerpts)
   end
@@ -21,8 +22,4 @@ class SearchResult
     @excerpts = excerpts
   end
 
-  def self.safe_excerpt(value)
-    value.gsub("<mark>", "\0").gsub("</mark>", "\1").gsub("<", "&lt;").gsub(">", "&gt;").gsub("\0", "<mark>").gsub("\1", "</mark>")
-  end
-  private_class_method :safe_excerpt
 end

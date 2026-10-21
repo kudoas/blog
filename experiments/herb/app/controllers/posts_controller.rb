@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
   def show
-    @post = published_content.post(params[:slug])
+    @post = @published_content.post(params[:slug])
     raise ActionController::RoutingError, "Not Found" unless @post
 
     @page_title = @post.fetch("title")
