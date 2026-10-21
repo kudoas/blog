@@ -1,0 +1,42 @@
+#!/bin/sh
+set -eu
+
+pid_file=tmp/pids/server.pid
+if [ ! -f "$pid_file" ]; then
+  echo "Herb Rails server is not running (no PID file)."
+  exit 0
+fi
+
+pid=$(cat "$pid_file")
+case "$pid" in
+  ''|*[!0-9]*)
+    echo "Invalid Rails server PID: $pid" >&2
+    exit 1
+    ;;
+esac
+
+if ! process=$(ps -p "$pid" -o command= 2>&1); then
+  if [ -z "$process" ]; then
+    echo "Herb Rails server is not running (stale PID file: $pid)."
+    exit 0
+  fi
+  echo "Cannot inspect PID $pid: $process" >&2
+  exit 1
+fi
+
+cwd=$(lsof -a -p "$pid" -d cwd -Fn | sed -n 's/^n//p')
+case "$process" in
+  *puma*"[herb]"*) ;;
+  *)
+    echo "PID $pid is not the Herb Puma server; refusing to stop it." >&2
+    exit 1
+    ;;
+esac
+
+if [ "$cwd" != "$(pwd -P)" ]; then
+  echo "PID $pid belongs to another directory; refusing to stop it." >&2
+  exit 1
+fi
+
+kill -TERM "$pid"
+echo "Sent TERM to Herb Rails server (PID $pid)."

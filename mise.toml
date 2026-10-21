@@ -21,3 +21,8 @@ description = "Run the local Herb Rails app at http://localhost:3000"
 depends = ["herb:build"]
 dir = "experiments/herb"
 run = "mise exec ruby@4.0.6 -- bundle exec rails server -p 3000"
+
+[tasks."herb:stop"]
+description = "Stop the local Herb Rails app"
+dir = "experiments/herb"
+run = "bin/stop"

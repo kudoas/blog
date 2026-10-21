@@ -16,6 +16,8 @@ mise run herb:setup
 mise run herb:dev
 ```
 
+停止するときは `mise run herb:stop` を実行します。
+
 <http://localhost:3000> を開きます。Astro版は従来どおり `bun run dev` で起動でき、ポート3000と4321で見比べられます。
 
 開発環境ではHerb Dev Toolsが有効です。ページ右上のHerbバッジからテンプレートの出力元や診断を確認できます。
