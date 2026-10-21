@@ -1,4 +1,6 @@
 @layer components {
+  .clear-search.is-hidden { display: none; }
+
   .saved-articles {
     margin-bottom: 28px;
     padding: 16px 20px;

@@ -123,6 +123,43 @@ test('removes a saved item through slots without navigating away', async ({ page
   expect(navigations).toHaveLength(0);
 });
 
+test('removing a saved item does not report missing Herb branches', async ({ page }) => {
+  await page.goto('/');
+  await page.evaluate(() => {
+    const devTools = Reflect.get(window, 'HerbDevTools');
+    const originalReport = devTools.report.bind(devTools);
+    const warnings: string[] = [];
+    Reflect.set(window, 'herbMaterializeWarnings', warnings);
+    devTools.report = (input: unknown) => {
+      for (const entry of Array.isArray(input) ? input : [input]) {
+        if (entry && typeof entry === 'object' && Reflect.get(entry, 'code') === 'herb-slots-materialize') {
+          warnings.push(Reflect.get(entry, 'template'));
+        }
+      }
+      return originalReport(input);
+    };
+  });
+
+  const firstArticle = page.locator('.article-list > li').first();
+  for (let cycle = 0; cycle < 3; cycle += 1) {
+    const confirmation = page.waitForResponse((response) =>
+      new URL(response.url()).pathname === '/saved-articles' && response.status() === 201,
+    );
+    await firstArticle.getByRole('button', { name: 'あとで読む' }).click();
+    await confirmation;
+
+    await expect(page.locator('.saved-articles-list').getByRole('button', { name: '解除' })).toBeEnabled();
+    const removal = page.waitForResponse((response) =>
+      new URL(response.url()).pathname === '/saved-articles/remove' && response.status() === 200,
+    );
+    await page.locator('.saved-articles-list').getByRole('button', { name: '解除' }).click();
+    await removal;
+    await expect(page.locator('.saved-articles-list > li')).toHaveCount(0);
+    await expect(firstArticle.getByRole('button', { name: 'あとで読む' })).toBeVisible();
+  }
+  expect(await page.evaluate(() => Reflect.get(window, 'herbMaterializeWarnings'))).toEqual([]);
+});
+
 test('keeps filtered results when a saved item is removed', async ({ page }) => {
   await page.goto('/');
   const filtered = page.waitForResponse((response) =>

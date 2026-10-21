@@ -113,7 +113,7 @@ if (explorer) {
   async function update(next, { history = true } = {}) {
     const current = ++generation
     if (history) window.history.replaceState(null, "", urlFor(next))
-    clearButton.hidden = !next.q && !next.tag
+    clearButton.classList.toggle("is-hidden", !next.q && !next.tag)
     runtime.state.setState({ pending: Boolean(next.q.trim()), search_error: false })
     const report = await runtime.state.set(next)
     if (current !== generation) return

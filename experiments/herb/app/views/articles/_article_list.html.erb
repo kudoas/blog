@@ -13,7 +13,13 @@
       <article class="article-summary">
         <time class="article-date" datetime="<%= article.fetch('date') %>"><%= format_date(article.fetch('date')) %></time>
         <div class="article-summary-content">
-          <h3><a href="<%= article.fetch('url') %>" <% if article.fetch('kind') == 'external' %>target="_blank" rel="noopener noreferrer"<% end %>><%= article.fetch('title') %><% if article.fetch('kind') == 'external' %><span class="external-arrow" aria-label="外部サイトを新しいタブで開く">↗</span><% end %></a></h3>
+          <h3>
+            <% if article.fetch('kind') == 'external' %>
+              <a href="<%= article.fetch('url') %>" target="_blank" rel="noopener noreferrer"><%= article.fetch('title') %><span class="external-arrow" aria-label="外部サイトを新しいタブで開く">↗</span></a>
+            <% else %>
+              <a href="<%= article.fetch('url') %>"><%= article.fetch('title') %></a>
+            <% end %>
+          </h3>
           <div class="article-meta">
             <span class="article-source"><%= article.fetch('source') %></span>
             <% article.fetch('tags').each do |tag| %><a class="tag" href="<%= tag_url(tag) %>">#<%= tag %></a><% end %>

@@ -47,7 +47,7 @@
     <p id="search-help" class="search-help">ブログ内は本文まで、外部記事はタイトル・タグ・説明を検索します。</p>
     <% if search_error %><p class="search-help" role="alert">本文検索を読み込めませんでした。タイトル・タグから検索しています。</p><% end %>
     <div class="list-status"><p role="status" aria-live="polite" aria-atomic="true"><% if pending %>検索中…<% else %><span class="result-number"><%= @articles.length %></span> 件の記事<% if @query.present? || @tag.present? %> / 全<%= @total_count %>件<% end %><% end %></p>
-      <button type="button" class="clear-search" <%= 'hidden' if @query.blank? && @tag.blank? %>>条件をクリア</button>
+      <button type="button" class="clear-search<%= ' is-hidden' if @query.blank? && @tag.blank? %>">条件をクリア</button>
     </div>
     <div aria-busy="<%= pending %>">
       <%= render "articles/article_list", articles: @articles, saved_articles: @saved_articles %>
