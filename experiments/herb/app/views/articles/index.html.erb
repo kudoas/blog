@@ -1,9 +1,13 @@
 <%# herb:slots client %>
-<%# herb:state (pending: false, search_error: false, failed: false) %>
+<%# herb:state (show_slots_example: false, failed: false) %>
 
 <section class="articles-section" aria-labelledby="articles-heading">
   <div class="section-heading"><h1 id="articles-heading">記事</h1></div>
-  <div class="article-explorer" data-articles="<%= @published_content.articles.to_json %>">
+  <div class="article-explorer">
+    <button type="button" data-herb-toggle="show_slots_example" aria-expanded="<%= show_slots_example %>">Slots の仕組みを見る</button>
+    <% if show_slots_example %>
+      <p class="slots-example">この文章は初回表示では隠れた分岐です。Herb が用意した HTML をブラウザーが表示し、通信は発生しません。</p>
+    <% end %>
     <section class="saved-articles" aria-labelledby="saved-articles-heading">
       <h2 id="saved-articles-heading">あとで読む</h2>
       <ul class="saved-articles-list" data-herb-name="saved_articles">
@@ -28,30 +32,7 @@
         <p class="saved-articles-limit" role="status">あとで読める記事は<%= ReadingList::MAX_ITEMS %>件までです。</p>
       <% end %>
     </section>
-    <form role="search" method="get" action="/">
-      <fieldset class="search-fields">
-        <legend class="sr-only">記事を探す</legend>
-        <div class="search-input">
-          <label for="article-search" class="sr-only">記事を検索</label>
-          <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10.5" cy="10.5" r="6.5" /><path d="m16 16 5 5" /></svg>
-          <input id="article-search" type="search" name="q" placeholder="記事を検索" aria-describedby="search-help" value="<%= @query %>">
-        </div>
-        <label for="tag-filter" class="sr-only">タグで絞り込む</label>
-        <select id="tag-filter" name="tag"><option value="">すべてのタグ</option>
-          <% @published_content.terms(:tags).each do |term| %>
-            <option value="<%= term.fetch('slug') %>" <%= 'selected' if @tag == term.fetch('slug') %>><%= term.fetch('label') %></option>
-          <% end %>
-        </select>
-      </fieldset>
-    </form>
-    <p id="search-help" class="search-help">ブログ内は本文まで、外部記事はタイトル・タグ・説明を検索します。</p>
-    <% if search_error %><p class="search-help" role="alert">本文検索を読み込めませんでした。タイトル・タグから検索しています。</p><% end %>
-    <div class="list-status"><p role="status" aria-live="polite" aria-atomic="true"><% if pending %>検索中…<% else %><span class="result-number"><%= @articles.length %></span> 件の記事<% if @query.present? || @tag.present? %> / 全<%= @total_count %>件<% end %><% end %></p>
-      <button type="button" class="clear-search<%= ' is-hidden' if @query.blank? && @tag.blank? %>">条件をクリア</button>
-    </div>
-    <div aria-busy="<%= pending %>">
-      <%= render "articles/article_list", articles: @articles, saved_articles: @saved_articles %>
-      <% if @articles.empty? %><p class="empty-state">条件に合う記事が見つかりませんでした。</p><% end %>
-    </div>
+    <div class="list-status"><p><span class="result-number"><%= @articles.length %></span> 件の記事</p></div>
+    <%= render "articles/article_list", articles: @articles, saved_articles: @saved_articles %>
   </div>
 </section>

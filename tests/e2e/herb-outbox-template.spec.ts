@@ -1,8 +1,8 @@
 import { expect, test } from '@playwright/test';
 
-test('keeps an item template for an empty collection', async ({ page }) => {
-  await page.goto('/?q=outbox-probe-empty-list');
-  await expect(page.locator('.article-list > li')).toHaveCount(0);
+test('keeps an item template for an empty saved collection', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('.article-list > li')).toHaveCount(22);
 
   const templateAvailable = await page.evaluate(() => {
     const runtime = (window as Window & { HerbRuntime?: { slots: {

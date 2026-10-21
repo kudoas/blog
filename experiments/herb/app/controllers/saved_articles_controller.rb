@@ -29,11 +29,7 @@ class SavedArticlesController < ApplicationController
           @articles = @published_content.tagged(field: field, slug: slug)
           render "taxonomies/show", status: :created
         else
-          @query = ""
-          @tag = ""
-          @total_count = @published_content.articles.length
           @articles = @published_content.articles
-          @excerpts = {}
           render "articles/index", status: :created
         end
       end
@@ -77,13 +73,7 @@ class SavedArticlesController < ApplicationController
           @articles = @published_content.tagged(field: field, slug: slug)
           render "taxonomies/show"
         else
-          @query = params[:q].to_s
-          @tag = params[:tag].to_s
-          @total_count = @published_content.articles.length
-          selection = SearchResult.from_pagefind(content: @published_content, ids: params[:ids],
-            excerpts: params[:excerpts].is_a?(ActionController::Parameters) ? params[:excerpts].to_unsafe_h : {}, tag: @tag)
-          @articles = selection.articles
-          @excerpts = selection.excerpts
+          @articles = @published_content.articles
           render "articles/index"
         end
       end

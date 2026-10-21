@@ -11,12 +11,6 @@ class PublishedContentTest < ActiveSupport::TestCase
     assert content.articles.any? { |article| article.fetch("kind") == "external" }
   end
 
-  test "article matching normalizes titles and tags" do
-    content = PublishedContent.new
-
-    assert_equal ["local:func-error-boundary"], content.search(query: "Ｅｒｒｏｒ", tag: "react").map(&:id)
-  end
-
   test "taxonomy selection uses the article's normalized tags" do
     content = PublishedContent.new
 

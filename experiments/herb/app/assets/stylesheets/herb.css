@@ -1,5 +1,15 @@
 @layer components {
-  .clear-search.is-hidden { display: none; }
+  .article-explorer > button[data-herb-toggle] {
+    margin-bottom: 12px;
+    padding: 5px 9px;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+  }
+
+  .slots-example { margin: 0 0 16px; color: var(--muted); font-size: 13px; }
 
   .saved-articles {
     margin-bottom: 28px;

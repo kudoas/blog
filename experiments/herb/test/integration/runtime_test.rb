@@ -6,7 +6,9 @@ class RuntimeTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_select "h1", "記事"
-    assert_select ".article-explorer[data-articles]"
+    assert_select "button[data-herb-toggle='show_slots_example']"
+    assert_select "button[data-herb-toggle='show_slots_example'][aria-expanded='false']"
+    assert_select "[data-herb-region]"
     assert_includes response.body, "data-herb-region"
   end
 

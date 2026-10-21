@@ -12,11 +12,6 @@ class Article
     normalized.empty? || fetch("tags").any? { |tag| self.class.normalize(tag).gsub(/\s+/, "-") == normalized }
   end
 
-  def matches?(query)
-    normalized = self.class.normalize(query)
-    normalized.empty? || self.class.normalize([fetch("title"), *fetch("tags")].join(" ")).include?(normalized)
-  end
-
   def fetch(key)
     @attributes.fetch(key)
   end

@@ -24,7 +24,6 @@
             <span class="article-source"><%= article.fetch('source') %></span>
             <% article.fetch('tags').each do |tag| %><a class="tag" href="<%= tag_url(tag) %>">#<%= tag %></a><% end %>
           </div>
-          <p class="article-excerpt" data-search-excerpt><%== @excerpts&.[](article.fetch('id')).to_s %></p>
           <% unless saved_ids.include?(article.fetch('id')) %>
             <form class="read-later-form" action="<%= saved_articles_path %>" method="post" data-herb-into="saved_articles">
               <%= hidden_field_tag :authenticity_token, form_authenticity_token %>

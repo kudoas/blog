@@ -22,7 +22,13 @@ mise run herb:dev
 
 開発環境ではHerb Dev Toolsが有効です。ページ右上のHerbバッジからテンプレートの出力元や診断を確認できます。
 
-記事本文は既存Astroビルドから受け取り、一覧・詳細・タグ／カテゴリ、検索、画像、RSS、PagefindをRailsから配信します。`build:herb`を再実行すると、Markdown・外部記事・静的アセットの変更が反映されます。
+記事本文は既存Astroビルドから受け取り、一覧・詳細・タグ／カテゴリ、画像、RSS、静的アセットをRailsから配信します。Rails版の検索画面は、この実験では外しています。Astro版の検索はそのままです。`build:herb`を再実行すると、Markdown・外部記事・静的アセットの変更が反映されます。
+
+## Slots の見方
+
+記事一覧の「Slots の仕組みを見る」は、`app/views/articles/index.html.erb`の`herb:state`と`data-herb-toggle`だけで動きます。初回表示では`if show_slots_example`の本文が隠れています。クリックすると、`herb:slots client`によって初回HTMLに用意された分岐をブラウザーが表示します。この切替ではRailsへリクエストを送りません。
+
+「あとで読む」の追加・解除は別の例です。追加はOutbox、解除は`app/javascript/saved_articles.js`からのSlotsリクエストを使います。Railsの`SavedArticlesController`がSlots形式で返した値をRuntimeが記事一覧に反映します。
 
 ## あとで読む
 

@@ -51,18 +51,16 @@ class ContentTest < ActionDispatch::IntegrationTest
     assert_select ".article-list > li", minimum: 1
   end
 
-  test "search query and tag render filtered results without JavaScript" do
-    get "/", params: { q: "Error Boundary", tag: "react" }
+  test "home page shows the client slot example without search controls" do
+    get "/"
 
     assert_response :success
-    assert_select "input[name='q'][value='Error Boundary']"
-    assert_select "option[value='react'][selected]"
-    assert_select ".article-list > li", 1
-    assert_select "a[href='/posts/func-error-boundary/']"
+    assert_select "button[data-herb-toggle='show_slots_example']", "Slots の仕組みを見る"
+    assert_select "form[role='search']", 0
   end
 
-  test "search returns a Herb slots payload for reactive updates" do
-    get "/", params: { q: "Error Boundary", tag: "react", format: :slots },
+  test "article index returns a Herb slots payload" do
+    get "/", params: { format: :slots },
       headers: { "Accept" => "application/vnd.herb.slots+json" }
 
     assert_response :success
@@ -70,18 +68,6 @@ class ContentTest < ActionDispatch::IntegrationTest
     payload = JSON.parse(response.body)
     assert_equal "app/views/articles/index.html.erb", payload.fetch("template")
     assert payload.fetch("slots").any?
-  end
-
-  test "Pagefind selection follows relevance and sanitizes excerpts in slots" do
-    post "/search", params: {
-      q: "Error Boundary", tag: "react", ids: ["local:func-error-boundary", "unknown"],
-      excerpts: { "local:func-error-boundary" => '<img src=x onerror=alert(1)>a <mark>match</mark>' }
-    }, headers: { "Accept" => "application/vnd.herb.slots+json" }, as: :json
-
-    assert_response :success
-    assert_includes response.body, "<mark>match</mark>"
-    assert_includes response.body, "&lt;img src=x onerror=alert(1)&gt;"
-    assert_not_includes response.body, '<img src=x onerror='
   end
 
   test "serves legacy images, feeds and the Pagefind search index" do

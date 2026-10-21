@@ -26,10 +26,6 @@ class PublishedContent
     @taxonomies.fetch(field.to_s)
   end
 
-  def search(query:, tag:)
-    @articles.select { |article| article.matches?(query) && article.tagged?(tag) }
-  end
-
   def tagged(field:, slug:)
     @articles.select do |article|
       article.fetch(field.to_s).any? { |value| Article.normalize(value).gsub(/\s+/, "-") == slug }

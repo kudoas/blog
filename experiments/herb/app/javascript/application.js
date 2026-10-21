@@ -1,1 +1,1 @@
-import "search"
+import "saved_articles"
