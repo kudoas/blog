@@ -43,7 +43,9 @@ document.addEventListener("submit", async (event) => {
       body: JSON.stringify({ article_id: articleId }),
     })
     if (!response.ok) throw new Error(`Herb removal failed: ${response.status}`)
-    const report = runtime.slots.apply(await response.json())
+    const payload = await response.json()
+    button.disabled = false
+    const report = runtime.slots.apply(payload)
     if (report.applied === 0) throw new Error("Herb removal slots could not be applied")
   } catch (error) {
     button.disabled = false
