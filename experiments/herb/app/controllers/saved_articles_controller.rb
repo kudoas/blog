@@ -26,10 +26,10 @@ class SavedArticlesController < ApplicationController
           @heading = field == :tags ? "##{term.fetch('label')}" : term.fetch("label")
           @page_title = @heading
           @base_path = "/#{kind}/"
-          @articles = @published_content.tagged(field: field, slug: slug)
+          @articles = @reading_list.unsaved_articles(@published_content.tagged(field: field, slug: slug))
           render "taxonomies/show", status: :created
         else
-          @articles = @published_content.articles
+          @articles = @reading_list.unsaved_articles(@published_content.articles)
           render "articles/index", status: :created
         end
       end
@@ -70,10 +70,10 @@ class SavedArticlesController < ApplicationController
           @heading = field == :tags ? "##{term.fetch('label')}" : term.fetch("label")
           @page_title = @heading
           @base_path = "/#{kind}/"
-          @articles = @published_content.tagged(field: field, slug: slug)
+          @articles = @reading_list.unsaved_articles(@published_content.tagged(field: field, slug: slug))
           render "taxonomies/show"
         else
-          @articles = @published_content.articles
+          @articles = @reading_list.unsaved_articles(@published_content.articles)
           render "articles/index"
         end
       end

@@ -28,7 +28,7 @@ mise run herb:dev
 
 記事一覧の「Slots の仕組みを見る」は、`app/views/articles/index.html.erb`の`herb:state`と`data-herb-toggle`だけで動きます。初回表示では`if show_slots_example`の本文が隠れています。クリックすると、`herb:slots client`によって初回HTMLに用意された分岐をブラウザーが表示します。この切替ではRailsへリクエストを送りません。
 
-「あとで読む」の追加・解除は別の例です。追加はOutbox、解除は`app/javascript/saved_articles.js`からのSlotsリクエストを使います。Railsの`SavedArticlesController`がSlots形式で返した値をRuntimeが記事一覧に反映します。
+「あとで読む」の追加・解除は別の例です。追加はOutbox、解除は`app/javascript/saved_articles.js`からのSlotsリクエストを使います。追加が確定すると、Runtimeが現在のページをSlots形式で再取得し、保存した記事を記事一覧から除いて件数を更新します。解除時は`SavedArticlesController`のSlots応答で記事と件数を戻します。
 
 ## あとで読む
 

@@ -27,7 +27,7 @@ class TaxonomiesController < ApplicationController
     @heading = "##{term.fetch('label')}"
     @page_title = @heading
     @base_path = "/tags/"
-    @articles = @published_content.tagged(field: :tags, slug: params[:term])
+    @articles = @reading_list.unsaved_articles(@published_content.tagged(field: :tags, slug: params[:term]))
     render :show
   end
 
@@ -39,7 +39,7 @@ class TaxonomiesController < ApplicationController
     @heading = term.fetch("label")
     @page_title = @heading
     @base_path = "/categories/"
-    @articles = @published_content.tagged(field: :categories, slug: params[:term])
+    @articles = @reading_list.unsaved_articles(@published_content.tagged(field: :categories, slug: params[:term]))
     render :show
   end
 end

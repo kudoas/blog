@@ -1,6 +1,20 @@
 import { Runtime } from "reactionview"
 
-Runtime.start()
+const runtime = Runtime.start()
+runtime.outbox.unobserve()
+
+async function refreshAfterSave(result) {
+  if (result.status !== "confirmed") return
+  const report = await runtime.state.refresh()
+  if (report.failed) window.location.reload()
+}
+
+document.addEventListener("submit", (event) => {
+  if (!(event.target instanceof HTMLFormElement) || !event.target.matches("[data-herb-into]")) return
+  event.preventDefault()
+  const result = runtime.outbox.submitForm(event.target)
+  if (result) void result.then(refreshAfterSave)
+})
 
 document.addEventListener("submit", async (event) => {
   if (!(event.target instanceof HTMLFormElement) || !event.target.matches("[data-herb-remove]")) return
@@ -44,12 +58,16 @@ document.addEventListener("submit", async (event) => {
   }
 })
 
-document.addEventListener("click", (event) => {
+document.addEventListener("click", async (event) => {
   if (!(event.target instanceof Element)) return
   const button = event.target.closest("[data-outbox-retry], [data-outbox-discard]")
   const runtime = Runtime.get()
   if (!button || !runtime) return
   event.preventDefault()
-  if (button.hasAttribute("data-outbox-retry")) runtime.outbox.retry(button)
-  else runtime.outbox.discard(button)
+  if (button.hasAttribute("data-outbox-retry")) {
+    const result = runtime.outbox.retry(button)
+    if (result) await refreshAfterSave(await result)
+  } else {
+    runtime.outbox.discard(button)
+  }
 })

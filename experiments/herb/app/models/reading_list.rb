@@ -26,4 +26,8 @@ class ReadingList
   def articles
     @ids.filter_map { |id| @content.article(id) }
   end
+
+  def unsaved_articles(articles)
+    articles.reject { |article| @ids.include?(article.id) }
+  end
 end

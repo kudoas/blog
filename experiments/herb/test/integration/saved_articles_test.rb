@@ -40,6 +40,8 @@ class SavedArticlesIntegrationTest < ActionDispatch::IntegrationTest
     get "/"
     assert_select "ul[data-herb-name='saved_articles'] > li", 1
     assert_select "ul[data-herb-name='saved_articles'] a[href='#{article.fetch("url")}']"
+    assert_select ".result-number", "21"
+    assert_select ".article-list > li[data-article-id='#{article.id}']", 0
   end
 
   test "an Outbox add from a taxonomy page confirms against that page template" do
@@ -63,6 +65,8 @@ class SavedArticlesIntegrationTest < ActionDispatch::IntegrationTest
 
     get "/"
     assert_select "ul[data-herb-name='saved_articles'] > li", 0
+    assert_select ".result-number", "22"
+    assert_select ".article-list > li[data-article-id='#{article.id}']", 1
   end
 
   test "removing a saved article can return slots without a redirect" do
