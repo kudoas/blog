@@ -25,6 +25,7 @@ const imageUrl = new URL(image.startsWith('http') || image.startsWith('/') ? ima
     <meta name="description" content={description || site.description} />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
     <link rel="canonical" href={canonical} />
+    {article && !noindex && <meta name="giscus:backlink" content={canonical} />}
     <link rel="icon" href="/favicon/favicon.ico" sizes="any" />
     <link rel="apple-touch-icon" href="/favicon/apple-icon-180x180.png" />
     <link rel="alternate" type="application/rss+xml" title={site.title} href="/index.xml" />

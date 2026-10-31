@@ -73,6 +73,10 @@ test('keeps article links and the body readable without JavaScript', async ({ br
   await page.getByRole('link', { name: 'Error BoundaryをFunction Componentで扱う', exact: true }).click();
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Error BoundaryをFunction Componentで扱う');
   await expect(page.locator('.prose pre').first()).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'コメント・リアクション' })).toBeVisible();
+  const discussion = page.getByRole('link', { name: 'GitHub でコメントを見る' });
+  await expect(discussion).toBeVisible();
+  expect(new URL((await discussion.getAttribute('href'))!).searchParams.get('discussions_q')).toBe('category:Announcements "/posts/func-error-boundary/"');
   await context.close();
 });
 
@@ -169,4 +173,34 @@ test('does not search during composition or let a pending search replace cleared
   await expect(page.locator('.article-summary h3 a')).toHaveCount(1);
   await expect(page.locator('.article-summary h3 a')).toContainText('Renovate');
   await expect(page).toHaveURL(/q=Renovate/);
+});
+
+
+test('article content and GitHub fallback remain usable when comments cannot load', async ({ page }, testInfo) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.route('https://giscus.app/**', route => route.abort());
+  await page.goto('/posts/func-error-boundary/?source=comments-test#comments');
+  await expect(page.getByRole('heading', { name: 'コメント・リアクション' })).toBeVisible();
+  const fallback = page.getByRole('link', { name: 'GitHub でコメントを見る' });
+  await expect(fallback).toBeVisible();
+  await fallback.focus();
+  await expect(fallback).toBeFocused();
+  expect(new URL((await fallback.getAttribute('href'))!).searchParams.get('discussions_q')).toBe('category:Announcements "/posts/func-error-boundary/"');
+  await expect(page.locator('.prose pre').first()).toBeAttached();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  await page.screenshot({ path: testInfo.outputPath('mobile-comments-fallback.png') });
+});
+
+test('only articles request the comment client and keep production backlinks in preview', async ({ page }) => {
+  const requests: string[] = [];
+  await page.route('https://giscus.app/client.js', async route => {
+    requests.push(route.request().url());
+    await route.fulfill({ contentType: 'text/javascript', body: '' });
+  });
+  await page.goto('/');
+  expect(requests).toHaveLength(0);
+  await page.getByRole('link', { name: 'Error BoundaryをFunction Componentで扱う', exact: true }).click();
+  await expect(page.getByRole('heading', { name: 'コメント・リアクション' })).toBeVisible();
+  await expect.poll(() => requests.length).toBe(1);
+  await expect(page.locator('meta[name="giscus:backlink"]')).toHaveAttribute('content', 'https://blog.da1chi.net/posts/func-error-boundary/');
 });
