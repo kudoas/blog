@@ -40,8 +40,8 @@ test('finds body text and external articles through the same search', async ({ p
   await search.fill('クイックソート');
   await expect(page.getByRole('link', { name: 'Pythonでのソートアルゴリズムの実装', exact: true })).toBeVisible();
   await search.fill('Renovate');
-  await expect(page.locator('.article-summary h3 a')).toHaveCount(1);
-  await expect(page.locator('.article-summary h3 a')).toHaveAttribute('href', /zenn.dev/);
+  await expect(page.locator('.article-summary h2 a')).toHaveCount(1);
+  await expect(page.locator('.article-summary h2 a')).toHaveAttribute('href', /zenn.dev/);
   await search.fill('zzzxxyy');
   await expect(page.getByText('条件に合う記事が見つかりませんでした。')).toBeVisible();
 });
@@ -137,8 +137,8 @@ test('falls back to title and tag search when the index cannot load', async ({ p
   await page.route('**/pagefind/**', (route) => route.abort());
   await page.goto('/?q=Renovate');
   await expect(page.getByRole('alert')).toContainText('タイトル・タグから検索しています');
-  await expect(page.locator('.article-summary h3 a')).toHaveCount(1);
-  await expect(page.locator('.article-summary h3 a')).toHaveAttribute('href', /zenn.dev/);
+  await expect(page.locator('.article-summary h2 a')).toHaveCount(1);
+  await expect(page.locator('.article-summary h2 a')).toHaveAttribute('href', /zenn.dev/);
   await page.getByRole('searchbox').fill('ｒｅａｃｔ');
   await page.getByLabel('タグで絞り込む').selectOption('nodejs');
   await expect(page.getByText('条件に合う記事が見つかりませんでした。')).toBeVisible();
@@ -170,8 +170,8 @@ test('does not search during composition or let a pending search replace cleared
   await expect(page.locator('.article-list > li')).toHaveCount(total);
   release();
   await input.fill('Renovate');
-  await expect(page.locator('.article-summary h3 a')).toHaveCount(1);
-  await expect(page.locator('.article-summary h3 a')).toContainText('Renovate');
+  await expect(page.locator('.article-summary h2 a')).toHaveCount(1);
+  await expect(page.locator('.article-summary h2 a')).toContainText('Renovate');
   await expect(page).toHaveURL(/q=Renovate/);
 });
 

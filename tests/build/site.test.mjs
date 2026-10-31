@@ -26,11 +26,22 @@ test('packages an assets-only Worker with search and legacy redirects', () => {
 test('all published local and external entries appear in prerendered HTML', () => {
   const $ = page('index.html');
   assert.equal($('.article-list > li').length, posts.length + external.length);
-  const links = $('.article-summary h3 a').map((_, a) => $(a).attr('href')).get();
+  const links = $('.article-summary h2 a').map((_, a) => $(a).attr('href')).get();
   for (const { id } of posts) assert.ok(links.includes(`/posts/${id}/`), id);
   for (const { url } of external) assert.ok(links.includes(url), url);
   const dates = $('.article-date').map((_, time) => Date.parse($(time).attr('datetime'))).get();
   assert.deepEqual(dates, [...dates].sort((a, b) => b - a));
+});
+
+test('article listings use a page heading followed by article headings one level below', () => {
+  for (const path of ['index.html', 'tags/react/index.html', 'categories/dev/index.html']) {
+    const $ = page(path);
+    const headings = $('main h1, main h2, main h3').toArray();
+    assert.equal(headings[0].tagName, 'h1', path);
+    assert.ok(headings.length > 1, path);
+    assert.ok(headings.slice(1).every((heading) => heading.tagName === 'h2'), path);
+    assert.equal($('.article-summary h2 a').length, $('.article-summary').length, path);
+  }
 });
 
 test('ships the search bundle and restricts local indexing to article content', () => {

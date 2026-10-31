@@ -9,12 +9,12 @@ export default function ArticleList({ articles, excerpts = {} }: { articles: Art
           <article className="article-summary">
             <time className="article-date" dateTime={article.date}>{formatDate(article.date)}</time>
             <div className="article-summary-content">
-              <h3>
+              <h2>
                 <a href={article.url} {...(article.kind === 'external' ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
                   {article.title}
                   {article.kind === 'external' && <span className="external-arrow" aria-label="外部サイトを新しいタブで開く">↗</span>}
                 </a>
-              </h3>
+              </h2>
               {/* Only Pagefind-generated excerpts are HTML: its API escapes content before adding <mark>. */}
               {article.kind === 'local' && excerpts[article.id] && <p className="article-excerpt" dangerouslySetInnerHTML={{ __html: excerpts[article.id] }} />}
               <div className="article-meta">
