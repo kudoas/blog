@@ -14,7 +14,13 @@ test('keeps the 756px body centered and follows scrolling only on wide, tall scr
   expect(paragraphWidth).toBe(756);
   expect(paragraphX).toBe(342);
   await expect(toc).toHaveCSS('position', 'sticky');
-  expect((await toc.boundingBox())!.x).toBeGreaterThan((await prose.boundingBox())!.x + paragraphWidth);
+  const initialToc = (await toc.boundingBox())!;
+  const initialProse = (await prose.boundingBox())!;
+  const header = (await page.locator('.post-header').boundingBox())!;
+  expect(initialToc.x).toBeGreaterThan(initialProse.x + paragraphWidth);
+  expect(initialToc.y).toBeCloseTo(initialProse.y, 1);
+  expect(initialToc.y).toBeGreaterThanOrEqual(header.y + header.height);
+  await page.screenshot({ path: testInfo.outputPath('article-body-toc-start.png') });
   await page.evaluate(() => window.scrollTo(0, 1200));
   await expect.poll(async () => (await toc.boundingBox())!.y).toBe(24);
   await toc.getByRole('link').last().click();
@@ -37,6 +43,7 @@ test('long desktop tables of contents can scroll and every link remains reachabl
   await expect(toc).toHaveAttribute('open');
   await expect(toc).toHaveCSS('position', 'sticky');
   expect((await toc.boundingBox())!.height).toBeLessThanOrEqual(452);
+  expect((await toc.boundingBox())!.y).toBeCloseTo((await page.locator('.prose').boundingBox())!.y, 1);
   const link = toc.getByRole('link').last();
   await link.focus();
   await expect(link).toBeFocused();
