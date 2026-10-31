@@ -87,7 +87,9 @@ for (const theme of ['light', 'dark'] as const) {
     const pre = block.locator('pre');
     const copy = block.getByRole('button', { name: 'コードをコピー' });
     const buttonBefore = (await copy.boundingBox())!;
-    expect((await pre.locator('code').boundingBox())!.y).toBeGreaterThan(buttonBefore.y + buttonBefore.height);
+    const padding = await pre.evaluate(element => ({ top: getComputedStyle(element).paddingTop, bottom: getComputedStyle(element).paddingBottom }));
+    expect(padding.top).toBe(padding.bottom);
+    expect(buttonBefore.y - (await pre.boundingBox())!.y).toBe(parseFloat(padding.top));
     expect(await pre.evaluate(element => element.clientWidth)).toBe(baselineWidth);
     expect(await pre.evaluate(element => element.scrollWidth > element.clientWidth)).toBe(true);
     await pre.evaluate(element => { element.scrollLeft = 100; });
@@ -99,11 +101,13 @@ for (const theme of ['light', 'dark'] as const) {
     await page.screenshot({ path: testInfo.outputPath(`${theme}-code-copy-mobile.png`) });
     await page.setViewportSize({ width: 1440, height: 1000 });
     await block.scrollIntoViewIfNeeded();
+    await expect(pre).toHaveCSS('padding-top', '22px');
+    await expect(pre).toHaveCSS('padding-bottom', '22px');
     await page.screenshot({ path: testInfo.outputPath(`${theme}-code-copy-desktop.png`) });
   });
 }
 
-test('offers a touch target without covering the first code line', async ({ browser, baseURL }) => {
+test('offers a touch target while keeping code padding balanced', async ({ browser, baseURL }) => {
   const context = await browser.newContext({ baseURL, viewport: { width: 320, height: 844 }, hasTouch: true });
   const page = await context.newPage();
   await page.route('https://giscus.app/**', route => route.abort());
@@ -114,7 +118,9 @@ test('offers a touch target without covering the first code line', async ({ brow
   const target = (await button.boundingBox())!;
   expect(target.width).toBeGreaterThanOrEqual(44);
   expect(target.height).toBeGreaterThanOrEqual(44);
-  expect((await block.locator('pre code').boundingBox())!.y).toBeGreaterThan(target.y + target.height);
+  const padding = await block.locator('pre').evaluate(element => ({ top: getComputedStyle(element).paddingTop, bottom: getComputedStyle(element).paddingBottom }));
+  expect(padding.top).toBe('16px');
+  expect(padding.top).toBe(padding.bottom);
   await context.close();
 });
 
