@@ -1,0 +1,9 @@
+@layer prose {
+  .code-block { margin-block: 1.5em; min-width: 0; }
+  .code-toolbar { display: flex; align-items: center; justify-content: flex-end; gap: 12px; padding: 4px 8px; border: 1px solid var(--line); border-bottom: 0; border-radius: 6px 6px 0 0; background: var(--surface); }
+  .code-copy-status { flex: 1; min-width: 0; color: var(--muted); font-family: var(--font); font-size: 12px; line-height: 1.6; }
+  .code-copy { display: inline-flex; flex: none; align-items: center; gap: 6px; min-height: 40px; padding: 6px 8px; border: 0; border-radius: 4px; background: transparent; color: var(--muted); font-family: var(--font); font-size: 12px; }
+  .code-copy:hover { color: var(--accent); }
+  .code-copy[aria-busy="true"] { opacity: .65; }
+  .prose .code-block pre { margin: 0; border-top-left-radius: 0; border-top-right-radius: 0; }
+}
