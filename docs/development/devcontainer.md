@@ -37,7 +37,8 @@ git config --global user.email 'YOUR EMAIL'
 ```
 
 Codex の device auth はアカウントの設定で有効にする必要がある場合があります。
-認証はボリュームに保存し、ホストの `~/.codex` をコピー・共有しません。
+認証と Git の名前・メールアドレスはボリュームに保存し、再ビルド後も保持します。
+`GIT_CONFIG_GLOBAL` も専用の実行状態ボリュームを指し、ホストの `~/.codex` をコピー・共有しません。
 VS Code がホストの Git 設定や credential helper を自動転送するのを避けるには、
 ホストの VS Code ユーザー設定で `dev.containers.copyGitConfig` を `false`、
 `dev.containers.gitCredentialHelperConfigLocation` を `"none"` にします。

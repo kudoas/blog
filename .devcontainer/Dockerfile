@@ -41,6 +41,7 @@ RUN ln -s /usr/local/bin/bun /usr/local/bin/bunx \
        /home/node/.local/state/blog-agent /home/node/.bun/install/cache \
     && chown -R node:node /opt/playwright /workspaces /home/node/.codex /home/node/.config /home/node/.local /home/node/.bun
 
+ENV GIT_CONFIG_GLOBAL=/home/node/.local/state/blog-agent/gitconfig
 USER node
 WORKDIR /workspaces/blog
 ENTRYPOINT ["/usr/bin/tini", "--"]
