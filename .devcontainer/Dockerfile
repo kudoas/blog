@@ -34,6 +34,7 @@ COPY .devcontainer/bootstrap.sh .devcontainer/codex.config.toml /usr/local/share
 COPY scripts/agent/ /usr/local/lib/blog-agent/
 RUN ln -s /usr/local/bin/bun /usr/local/bin/bunx \
     && printf '#!/bin/sh\nexec node /usr/local/lib/blog-agent/run.mjs "$@"\n' > /usr/local/bin/blog-agent \
+    && install -m 755 /usr/local/lib/blog-agent/codex-auto.sh /usr/local/bin/codex-auto \
     && chmod +x /usr/local/bin/blog-agent \
     && touch /etc/blog-devcontainer \
     && mkdir -p /workspaces/blog /home/node/.codex /home/node/.config/gh \

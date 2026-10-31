@@ -34,12 +34,12 @@ if (!process.env.BLOG_AGENT_LOCKED) {
 }
 
 async function run() {
-  const maxAttempts = Number(process.env.BLOG_AGENT_MAX_ATTEMPTS ?? 3);
-  const timeoutSeconds = Number(process.env.BLOG_AGENT_TIMEOUT_SECONDS ?? 7200);
-  if (!Number.isInteger(maxAttempts) || maxAttempts < 1 || !Number.isFinite(timeoutSeconds) || timeoutSeconds <= 0) {
+  const maxAttempts = Number(process.env.BLOG_AGENT_MAX_ATTEMPTS ?? 0);
+  const timeoutSeconds = Number(process.env.BLOG_AGENT_TIMEOUT_SECONDS ?? 0);
+  if (!Number.isInteger(maxAttempts) || maxAttempts < 0 || !Number.isFinite(timeoutSeconds) || timeoutSeconds < 0) {
     throw new Error('Invalid attempt/time limit.');
   }
-  const deadline = Date.now() + timeoutSeconds * 1000;
+  const deadline = timeoutSeconds ? Date.now() + timeoutSeconds * 1000 : Infinity;
   const runDir = path.join(state, new Date().toISOString().replaceAll(':', '-'));
   fs.mkdirSync(runDir);
   const resultFile = path.join(runDir, 'result.json');
@@ -57,7 +57,7 @@ async function run() {
     const stream = log ? fs.createWriteStream(path.join(runDir, log), { flags: 'a' }) : null;
     const child = spawn(bin, args, { cwd, detached: true, env: { ...process.env, GIT_TERMINAL_PROMPT: '0', GH_PROMPT_DISABLED: '1', SSH_AUTH_SOCK: '' }, stdio: ['pipe', 'pipe', 'pipe'] });
     activeChild = child;
-    const timer = setTimeout(stop, remaining);
+    const timer = Number.isFinite(remaining) ? setTimeout(stop, remaining) : undefined;
     let stdout = '';
     const stderr = log ? fs.createWriteStream(path.join(runDir, `${log}.stderr`), { flags: 'a' }) : null;
     child.stdout.on('data', (chunk) => { if (stream) stream.write(chunk); else stdout += chunk; });
@@ -97,17 +97,23 @@ async function run() {
     const repo = (await command('gh', ['repo', 'view', '--json', 'nameWithOwner', '--jq', '.nameWithOwner'])).stdout;
     if (repo !== 'kudoas/blog') throw new Error(`Unexpected repository: ${repo}`);
     let feedback = '';
-    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
-      console.log(`Attempt ${attempt}/${maxAttempts}: ${worktree}`);
+    for (let attempt = 1; !maxAttempts || attempt <= maxAttempts; attempt++) {
+      console.log(`Attempt ${attempt}/${maxAttempts || 'until-complete'}: ${worktree}`);
       const agentFile = path.join(runDir, `agent-${attempt}.json`);
       const prompt = `Implement the following task in this existing worktree. Use this branch only: ${branch}.
 Do not create another worktree, push, create a PR, merge, or deploy; the controller performs publication after verification.
 Do not commit: leave the intended changes for the controller. Preserve existing work on resume.
+Do not ask the user for permission or routine implementation decisions. Work autonomously until the acceptance criteria are met.
+Use blocked only when required credentials or external information are unavailable; explain the exact missing prerequisite.
 Run useful checks, then report status=ready or blocked. Answer title and summary in Japanese.
 The summary will be the PR body: explain the problem, final changes, validation, and limitations.
 Task:\n${task}\n\nFeedback from the previous attempt:\n${feedback || 'None.'}`;
       const agent = await command('codex', ['-a', 'never', '--sandbox', 'danger-full-access', 'exec', '--json', '--output-schema', path.join(toolDir, 'result.schema.json'), '-o', agentFile, '-'], { input: prompt, log: `agent-${attempt}.jsonl`, allowFailure: true });
-      if (agent.code !== 0) throw new Error(`Codex failed; see agent-${attempt}.jsonl`);
+      if (agent.code !== 0) {
+        feedback = `Codex execution failed. Inspect ${path.join(runDir, `agent-${attempt}.jsonl.stderr`)} and continue the task.`;
+        await new Promise((resolve) => setTimeout(resolve, Math.min(10000, Math.max(0, deadline - Date.now()))));
+        continue;
+      }
       const report = JSON.parse(fs.readFileSync(agentFile, 'utf8'));
       if (report.status !== 'ready') throw new Error(`Codex blocked: ${report.summary}`);
       if (await git('branch', '--show-current') !== branch) throw new Error('Codex changed branch.');

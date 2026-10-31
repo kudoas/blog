@@ -64,7 +64,14 @@ blog-agent improve-search /tmp/search-task.md
 worktree、コミット、開いている PR を再利用します。失敗途中の変更も保持します。
 終了した PR を再利用する場合や指示を変える場合は新しい ID を使用します。
 モデルの会話を自動再開するのではなく、保存した作業内容と指示から新しい Codex 実行を開始します。
-対話操作は通常の `codex` でも行えます。
+対話操作も承認なしで始める場合は `codex-auto` を使います。
+
+```sh
+codex-auto "このリポジトリの改善を実装し、検証まで完了して"
+```
+
+`codex-auto` はコンテナ内だけで `codex --ask-for-approval never --sandbox danger-full-access`
+を起動します。初期設定を変更済みでも、この起動コマンドでは承認待ちを無効化します。
 
 処理は次の順に進みます。
 
@@ -77,8 +84,11 @@ worktree、コミット、開いている PR を再利用します。失敗途�
 6. 対象コミットの `ci` と登録された他のチェックが成功するまで確認する。
    ローカル検証か CI が失敗したらログを渡して修正を試みる。
 
-既定は最大3回、認証確認から CI 待機まで合計2時間です。
-変更する場合は `BLOG_AGENT_MAX_ATTEMPTS` と `BLOG_AGENT_TIMEOUT_SECONDS` を指定します。
+既定では修正回数・実行時間で打ち切らず、検証と CI が成功するまで継続します。
+Codex の一時的な実行失敗もログを残して再試行します。停止するときは Ctrl+C を使います。
+必要な認証や外部情報が存在しない場合は、承認を尋ねず不足条件を結果に記録して終了します。
+制限を設けたい場合だけ `BLOG_AGENT_MAX_ATTEMPTS` と `BLOG_AGENT_TIMEOUT_SECONDS` に
+正の値を指定します。どちらも `0` は無制限です。
 起動だけではタスクを実行せず、同じ環境では `flock` で同時実行を防ぎます。
 時限超過時は実行中のプロセス群を停止します。自動で main に変更したり force-push したりしません。
 PR の head が検証対象と変わった場合は成功とせず終了します。
@@ -120,7 +130,7 @@ README/AGENTS のリンク、Playwright の前面実行指定を revert しま�
 2026-10-31 に macOS / Docker Desktop の Linux arm64 コンテナで確認しました。
 Dev Containers CLI で新規作成、main の clone、依存導入、非 root 実行、専用ボリュームの
 所有権、再起動後の設定保持を確認済みです。
-制御スクリプトの統合テスト10件、単体テスト10件、生成サイト検証8件、Chromium E2E 9件、
+制御スクリプトの統合テスト12件、単体テスト10件、生成サイト検証8件、Chromium E2E 9件、
 Cloudflare dry-run が成功しました。既存記事の textlint 警告22件は残っています。
 CI の `agent_container` でもイメージのビルド、制御スクリプトのテスト、サイト全体の検証を行います。
 

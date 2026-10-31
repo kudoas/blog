@@ -27,6 +27,12 @@ if (bin === 'codex') {
   if (args[0] === '--version') console.log(JSON.parse(fs.readFileSync('package.json')).packageManager.slice(4));
   else if (args.join(' ') === 'run verify') {
     if (env.FAKE_MODE === 'verify-fail') process.exit(1);
+    if (env.FAKE_MODE === 'long-repair') {
+      const file = env.FAKE_PR + '.repairs';
+      const count = fs.existsSync(file) ? Number(fs.readFileSync(file, 'utf8')) : 0;
+      fs.writeFileSync(file, String(count + 1));
+      if (count < 4) process.exit(1);
+    }
     if (env.FAKE_MODE === 'repair' && !fs.existsSync(env.FAKE_PR + '.repaired')) {
       fs.writeFileSync(env.FAKE_PR + '.repaired', 'first attempt failed'); process.exit(1);
     }
@@ -120,4 +126,19 @@ test('concurrent invocation is rejected and lock is released after timeout', { s
   await first;
   f.env.FAKE_MODE = 'ok'; f.env.BLOG_AGENT_TIMEOUT_SECONDS = '30';
   const resumed = await f.execute(); assert.equal(resumed.code, 0, resumed.output);
+});
+
+test('default automode continues beyond three failed verifications', { skip: !inside, timeout:15000 }, async t => {
+  const f = fixture(t, 'long-repair');
+  delete f.env.BLOG_AGENT_MAX_ATTEMPTS; delete f.env.BLOG_AGENT_TIMEOUT_SECONDS;
+  const result = await f.execute(); assert.equal(result.code, 0, result.output);
+  assert.equal(f.events().filter(e => e.action === 'implement').length, 5);
+  assert.equal(f.results().at(-1).status, 'complete');
+});
+test('codex-auto supplies never and full-access flags inside the container', { skip: !inside }, t => {
+  const f = fixture(t, 'ok');
+  fs.writeFileSync(path.join(path.dirname(f.env.FAKE_EVENTS),'bin','codex'), '#!/bin/sh\nprintf "%s\\n" "$@"\n', {mode:0o755});
+  const wrapper = fileURLToPath(new URL('../../scripts/agent/codex-auto.sh', import.meta.url));
+  const output = execFileSync('sh', [wrapper, '--version'], {env:f.env,encoding:'utf8'});
+  assert.deepEqual(output.trim().split('\n'), ['--ask-for-approval','never','--sandbox','danger-full-access','--version']);
 });
