@@ -1,3 +1,5 @@
+@layer base, layout, components, prose;
+
 @layer prose {
   .code-block { --copy-success: #157347; position: relative; margin-block: 1.5em; min-width: 0; }
   .code-copy { position: absolute; top: 10px; right: 10px; display: grid; place-items: center; width: 40px; height: 40px; padding: 8px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--muted); }

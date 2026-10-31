@@ -117,3 +117,37 @@ test('offers a touch target without covering the first code line', async ({ brow
   expect((await block.locator('pre code').boundingBox())!.y).toBeGreaterThan(target.y + target.height);
   await context.close();
 });
+
+for (const theme of ['light', 'dark'] as const) {
+  test(`preserves article spacing and muted contents links with and without JavaScript in ${theme}`, async ({ browser, baseURL }) => {
+    const measured: Record<string, unknown>[][] = [];
+    for (const javaScriptEnabled of [false, true]) {
+      const context = await browser.newContext({ baseURL, javaScriptEnabled, colorScheme: theme });
+      const page = await context.newPage();
+      await page.route('https://giscus.app/**', route => route.abort());
+      const sizes: Record<string, unknown>[] = [];
+      for (const width of [390, 1440]) {
+        await page.setViewportSize({ width, height: 1000 });
+        await page.goto(article);
+        const heading = await page.locator('.prose > h2').nth(1).evaluate(element => {
+          const style = getComputedStyle(element);
+          return { fontSize: parseFloat(style.fontSize), before: parseFloat(style.marginTop), after: parseFloat(style.marginBottom) };
+        });
+        const paragraph = await page.locator('.prose > p').first().evaluate(element => {
+          const style = getComputedStyle(element);
+          return { fontSize: parseFloat(style.fontSize), before: parseFloat(style.marginTop), after: parseFloat(style.marginBottom) };
+        });
+        const tocColor = await page.locator('.toc a').first().evaluate(element => getComputedStyle(element).color);
+        expect(heading.before).toBeCloseTo(heading.fontSize * 2.8, 1);
+        expect(heading.after).toBeCloseTo(heading.fontSize, 1);
+        expect(paragraph.before).toBeCloseTo(paragraph.fontSize * 1.5, 1);
+        expect(paragraph.after).toBeCloseTo(paragraph.fontSize * 1.5, 1);
+        expect(tocColor).toBe(theme === 'light' ? 'rgb(82, 101, 122)' : 'rgb(164, 182, 202)');
+        sizes.push({ heading, paragraph, tocColor });
+      }
+      measured.push(sizes);
+      await context.close();
+    }
+    expect(measured[1]).toEqual(measured[0]);
+  });
+}
