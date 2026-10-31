@@ -3,6 +3,7 @@
 /.astro/
 /dist/
 /.wrangler/
+/.cloudflare/
 /test-results/
 /playwright-report/
 /.playwright-mcp/

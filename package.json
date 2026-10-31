@@ -9,8 +9,8 @@
   },
   "repository": "ssh://git@github.com/kudoas/blog.git",
   "scripts": {
-    "dev": "astro dev",
-    "build": "astro build && bun scripts/build-search.ts",
+    "dev": "cf dev",
+    "build": "cf build",
     "preview": "astro preview",
     "check": "astro sync && tsc --noEmit",
     "textlint": "textlint 'content/**/*.md'",
@@ -18,8 +18,8 @@
     "test:build": "node --test tests/build/*.test.mjs",
     "test:e2e": "playwright test",
     "verify": "bun run textlint && bun run check && bun run test && bun run build && bun run test:build",
-    "deploy": "bun run verify && wrangler deploy",
-    "preview:worker": "wrangler dev --port 8787"
+    "deploy": "bun run verify && cf deploy --prebuilt --mode production",
+    "preview:worker": "cf dev"
   },
   "license": "MIT",
   "bugs": {
@@ -27,6 +27,7 @@
   },
   "homepage": "https://github.com/kudoas/blog#readme",
   "dependencies": {
+    "@astrojs/cloudflare": "15.0.0-beta.3",
     "@astrojs/markdown-remark": "7.3.4",
     "@astrojs/react": "7.1.1",
     "@astrojs/rss": "4.0.19",
@@ -42,13 +43,13 @@
     "@types/node": "26.6.5",
     "@types/react": "19.3.0",
     "@types/react-dom": "19.3.0",
+    "cf": "1.0.0-beta.24",
     "cheerio": "1.2.0",
     "pagefind": "1.5.2",
     "textlint": "15.8.0",
     "textlint-rule-preset-ja-spacing": "3.0.4",
     "textlint-rule-preset-ja-technical-writing": "12.0.2",
     "textlint-rule-spellcheck-tech-word": "5.0.0",
-    "typescript": "7.0.2",
-    "wrangler": "4.154.0"
+    "typescript": "7.0.2"
   }
 }

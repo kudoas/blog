@@ -18,8 +18,8 @@ bun run dev
 ```sh
 bun run verify          # textlint、型検査、単体テスト、ビルド、出力検証
 bun run test:e2e        # ブラウザテスト
-bun run preview         # 生成済み dist/ を確認
-bun run preview:worker  # Cloudflare のリダイレクトと404を確認
+bun run preview         # 生成済み Cloudflare Build Output を確認
+bun run preview:worker  # cf dev で開発サーバーを起動
 ```
 
 ブラウザテストには Chrome を使用します。CI では Playwright の Chromium を導入します。
@@ -67,7 +67,8 @@ Zenn に限らず任意の掲載先を `source` に指定できます。
 ブログの記事には検索語を強調した抜粋を表示します。
 RSS にはこのブログの Markdown 記事のみ含めます。
 
-`bun run build` は Astro の生成後に Pagefind の索引を `dist/pagefind/` へ生成します。
+`bun run build` は `cf build` から Astro を実行し、ビルド完了フックで Pagefind の索引を生成します。
+HTML と索引は `.cloudflare/output/v0/workers/default/assets/` に出力します。
 公開記事だけを対象とし、目次・ナビゲーション・一覧ページは索引に含めません。
 記事を更新したら再ビルドして、HTML と索引を一緒に公開してください。
 
@@ -80,8 +81,11 @@ RSS にはこのブログの Markdown 記事のみ含めます。
 無停止移行の判断と切り戻し手順は
 [ADR 0001](docs/adr/0001-vercel-to-cloudflare-workers.md) に記録しています。
 
-`wrangler.jsonc` は Astro の静的生成物 `dist/` を Cloudflare Workers の
-Static Assets として配信します。API やサーバー処理はありません。
+`cloudflare.config.ts` は Cloudflare Workers の配信設定を管理します。
+Cloudflare CLI (`cf`) と Astro の公式 Cloudflare アダプターを使用し、
+Astro と Pagefind の生成物を Static Assets として配信します。
+API やサーバー処理はありません。セッション用 KV と画像処理サービスも使用しません。
+`cf` と対応アダプターはベータ版のため、プロジェクトの依存バージョンを固定しています。
 `vercel.json` は Vercel の Git 自動デプロイを停止し、切り戻し用の旧本番を保持します。
 GitHub Actions は PR と `main` の push で検証を行います。同じリポジトリからの PR は
 Worker `tech-blog` に `pr-<番号>` の Preview を作り、GitHub の `Preview` environment に
@@ -94,7 +98,12 @@ API トークンには対象アカウントの Workers 編集権限が必要で�
 変更を公開した後は記事 URL、`_redirects`、404、RSS、OGP を確認してください。
 公開経路の切り替え判断と当時の手順は ADR に残しています。
 
-ローカルでの確認後、権限がある環境では `bun x wrangler login`、`bun run deploy` で
+`bun run build` で `.cloudflare/output/v0/` を生成し、
+`bun x cf deploy --prebuilt --mode production --dry-run` でアップロードせずに検証できます。
+`bun run preview:worker` は `cf dev` で開発サーバーを起動します。
+`cf` は Node.js で実行してください。Bun は依存管理とスクリプト実行に使用します。
+
+ローカルでの確認後、権限がある環境では `bun x cf auth login`、`bun run deploy` で
 同じ検証を通してデプロイできます。切り戻しに備え、直前のデプロイと
 Vercel の旧本番を保持します。
 デプロイ先の検索やモバイル表示は、

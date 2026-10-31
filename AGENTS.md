@@ -10,9 +10,10 @@ Please answer concisely and politely in Japanese with emoji.
 - `src/pages/` and `src/layouts/` render static Astro pages. React is limited to
   interactive search and filtering in `src/components/`.
 - `src/styles/global.css` owns the one-column dark blue design. `static/` preserves
-  existing public image URLs. `dist/` is generated output.
-- `wrangler.jsonc` configures Cloudflare Workers Static Assets; `static/_redirects`
-  preserves legacy routes.
+  existing public image URLs. `.cloudflare/output/v0/` is generated build output.
+- `cloudflare.config.ts` configures Cloudflare Workers Static Assets.
+  The Astro Cloudflare adapter produces an assets-only deployment.
+  `static/_redirects` preserves legacy routes.
 
 ## Development
 
@@ -21,6 +22,10 @@ Please answer concisely and politely in Japanese with emoji.
 - `bun run verify` runs textlint, TypeScript 7, unit tests, the
   production build, and generated-site tests.
 - `bun run test:e2e` checks the browser flows using installed Chrome.
+- `bun run build` builds the site and Pagefind index through `cf`.
+- Use `bun x cf` for Cloudflare commands. Run
+  `bun x cf deploy --prebuilt --mode production --dry-run` after `bun run build`
+  to validate deployment packaging without uploading.
 
 ## Content and naming
 

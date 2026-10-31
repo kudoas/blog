@@ -22,6 +22,7 @@ jobs:
           bun-version: 1.4.4
       - run: bun install --frozen-lockfile
       - run: bun run verify
+      - run: bun x cf deploy --prebuilt --mode production --dry-run
       - run: bun x playwright install chromium
       - run: bun run test:e2e
 
@@ -50,12 +51,10 @@ jobs:
         with:
           bun-version: 1.4.4
       - run: bun install --frozen-lockfile
-      - run: bun run build
       - id: preview
         run: |
-          export WRANGLER_OUTPUT_FILE_PATH="$RUNNER_TEMP/wrangler-preview.jsonl"
-          bun x wrangler preview --name "pr-${{ github.event.pull_request.number }}"
-          preview_url="$(jq -er 'select(.type == "preview") | .preview_urls[0]' "$WRANGLER_OUTPUT_FILE_PATH")"
+          bun x cf previews deploy "pr-${{ github.event.pull_request.number }}" --mode production > "$RUNNER_TEMP/cf-preview.json"
+          preview_url="$(jq -er '.preview_urls[0]' "$RUNNER_TEMP/cf-preview.json")"
           echo "url=$preview_url" >> "$GITHUB_OUTPUT"
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -99,7 +98,7 @@ jobs:
         with:
           bun-version: 1.4.4
       - run: bun install --frozen-lockfile
-      - run: bun x wrangler preview delete --name "pr-${{ github.event.pull_request.number }}" --skip-confirmation
+      - run: bun x cf previews delete "pr-${{ github.event.pull_request.number }}" --worker tech-blog --force
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
@@ -124,7 +123,7 @@ jobs:
           bun-version: 1.4.4
       - run: bun install --frozen-lockfile
       - run: bun run build
-      - run: bun x wrangler deploy
+      - run: bun x cf deploy --prebuilt --mode production
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

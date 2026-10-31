@@ -6,6 +6,18 @@ import { posts, external } from '../fixtures/content';
 
 const total = posts.length + external.length;
 
+test('serves legacy redirects, trailing slashes and the custom 404 through Workers assets', async ({ request }) => {
+  const legacy = await request.get('/posts/', { maxRedirects: 0 });
+  expect(legacy.status()).toBe(301);
+  expect(new URL(legacy.headers().location, legacy.url()).pathname).toBe('/');
+  const article = await request.get('/posts/func-error-boundary', { maxRedirects: 0 });
+  expect(article.status()).toBe(307);
+  expect(new URL(article.headers().location, article.url()).pathname).toBe('/posts/func-error-boundary/');
+  const missing = await request.get('/missing-page-for-routing-test/');
+  expect(missing.status()).toBe(404);
+  expect(await missing.text()).toContain('ページが見つかりません。');
+});
+
 test('finds body text and external articles through the same search', async ({ page }, testInfo) => {
   const transfers: Promise<{ url: string; transferSize: number }>[] = [];
   page.on('requestfinished', (request) => {
