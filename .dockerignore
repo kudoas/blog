@@ -1,0 +1,7 @@
+**
+!package.json
+!.devcontainer
+!.devcontainer/**
+!scripts
+!scripts/agent
+!scripts/agent/**

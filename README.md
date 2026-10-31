@@ -5,7 +5,7 @@ Astro で生成する日本語の静的ブログです。記事本文は Markdow
 
 ## 開発
 
-Node.js 26 と Bun 1.4.2 を使用します。Bun がインストール済みなら、
+Node.js と Bun のバージョンは `package.json` に指定しています。Bun がインストール済みなら、
 次のコマンドで開始できます。
 
 ```sh
@@ -24,6 +24,9 @@ bun run preview:worker  # cf dev で開発サーバーを起動
 
 ブラウザテストには Chrome を使用します。CI では Playwright の Chromium を導入します。
 既存記事には textlint の警告が22件あります。移行時に本文を変更していません。
+
+Codex に実装・検証・PR 作成を任せる環境は
+[Dev Container の手順](docs/development/devcontainer.md) を参照してください。
 
 ## 記事を書く
 
