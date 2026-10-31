@@ -1,7 +1,7 @@
 import { expect, test, type Page } from '@playwright/test';
 
-const choices = { system: '端末に合わせる', light: 'ライト', dark: 'ダーク' };
-const chooseTheme = (page: Page, theme: keyof typeof choices) => page.getByRole('radio', { name: choices[theme], exact: true }).check();
+const choices = { light: 'ライト', dark: 'ダーク' };
+const chooseTheme = (page: Page, theme: keyof typeof choices) => page.getByRole('radio', { name: choices[theme], exact: true }).click();
 const selection = (page: Page) => page.locator('input[name="theme-preference"]:checked');
 
 const colors = { light: 'rgb(255, 255, 255)', dark: 'rgb(6, 25, 47)' };
@@ -11,14 +11,17 @@ async function expectTheme(page: import('@playwright/test').Page, theme: 'light'
   await expect(page.locator('html')).toHaveCSS('color-scheme', theme);
 }
 
-test('follows the system until explicitly selected, persists navigation and can return to system', async ({ page }) => {
+test('follows the system until explicitly selected, persists navigation', async ({ page }) => {
   await page.emulateMedia({ colorScheme: 'light' });
   await page.goto('/');
   const selected = selection(page);
-  await expect(selected).toHaveValue('system');
+  await expect(selected).toHaveValue('light');
   await expectTheme(page, 'light');
+  await expect(page.getByRole('radio')).toHaveCount(2);
+  expect(await page.evaluate(() => localStorage.getItem('blog-theme'))).toBeNull();
   await page.emulateMedia({ colorScheme: 'dark' });
   await expectTheme(page, 'dark');
+  await expect(selected).toHaveValue('dark');
   await chooseTheme(page, 'light');
   await expectTheme(page, 'light');
   await page.emulateMedia({ colorScheme: 'light' });
@@ -32,11 +35,7 @@ test('follows the system until explicitly selected, persists navigation and can 
   await chooseTheme(page, 'dark');
   await expectTheme(page, 'dark');
   await expect(page.locator('meta[name="theme-color"]').first()).toHaveAttribute('content', '#06192f');
-  await chooseTheme(page, 'system');
-  expect(await page.evaluate(() => localStorage.getItem('blog-theme'))).toBeNull();
-  await page.emulateMedia({ colorScheme: 'light' });
-  await expectTheme(page, 'light');
-  await expect(page.locator('meta[name="theme-color"]').first()).toHaveAttribute('content', /^#(?:fff|ffffff)$/);
+
 });
 
 test('applies a saved preference before body parsing', async ({ page }) => {
@@ -58,7 +57,7 @@ test('invalid preferences fall back to system and blocked storage still permits 
   await page.emulateMedia({ colorScheme: 'light' });
   await page.addInitScript(() => localStorage.setItem('blog-theme', 'invalid'));
   await page.goto('/');
-  await expect(selection(page)).toHaveValue('system');
+  await expect(selection(page)).toHaveValue('light');
   await expectTheme(page, 'light');
   await page.addInitScript(() => {
     Object.defineProperty(window, 'localStorage', { get() { throw new Error('Storage unavailable'); } });
@@ -169,9 +168,8 @@ for (const delayed of [false, true]) {
     await expect(comments).toHaveAttribute('data-theme', 'transparent_dark');
     await chooseTheme(page, 'light');
     await expect(comments).toHaveAttribute('data-theme', 'light');
-    await chooseTheme(page, 'system');
     await page.emulateMedia({ colorScheme: 'dark' });
-    await expect(comments).toHaveAttribute('data-theme', 'transparent_dark');
+    await expect(comments).toHaveAttribute('data-theme', 'light');
     await page.emulateMedia({ colorScheme: 'light' });
     await expect(comments).toHaveAttribute('data-theme', 'light');
   });
@@ -179,14 +177,21 @@ for (const delayed of [false, true]) {
 
 test('switches the icon group using arrow keys', async ({ page }) => {
   await page.goto('/');
-  await chooseTheme(page, 'system');
-  await page.getByRole('radio', { name: '端末に合わせる', exact: true }).focus();
-  await page.keyboard.press('ArrowRight');
-  await expect(page.getByRole('radio', { name: 'ライト', exact: true })).toBeChecked();
-  await expectTheme(page, 'light');
+  await chooseTheme(page, 'light');
+  await page.getByRole('radio', { name: 'ライト', exact: true }).focus();
   await page.keyboard.press('ArrowRight');
   await expect(page.getByRole('radio', { name: 'ダーク', exact: true })).toBeChecked();
   await expectTheme(page, 'dark');
   await page.keyboard.press('ArrowLeft');
+  await expectTheme(page, 'light');
+});
+
+test('clicking the current system color saves an explicit preference', async ({ page }) => {
+  await page.emulateMedia({ colorScheme: 'light' });
+  await page.goto('/');
+  await expect(selection(page)).toHaveValue('light');
+  await chooseTheme(page, 'light');
+  expect(await page.evaluate(() => localStorage.getItem('blog-theme'))).toBe('light');
+  await page.emulateMedia({ colorScheme: 'dark' });
   await expectTheme(page, 'light');
 });

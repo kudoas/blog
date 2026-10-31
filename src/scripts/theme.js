@@ -27,7 +27,7 @@
     syncComments();
     if (!ready) return;
     document.querySelectorAll('input[name="theme-preference"]').forEach((input) => {
-      input.checked = input.value === preference;
+      input.checked = input.value === root.dataset.theme;
     });
     const background = getComputedStyle(root).getPropertyValue('--bg').trim();
     document.querySelectorAll('meta[name="theme-color"]').forEach((meta) => { meta.content = background; });
@@ -49,15 +49,17 @@
     apply();
     const control = document.querySelector('.theme-switcher');
     if (!control) return;
-    control.addEventListener('change', (event) => {
+    function selectTheme(event) {
       if (!(event.target instanceof HTMLInputElement)) return;
-      preference = normalize(event.target.value);
+      const next = normalize(event.target.value);
+      if (next === preference) return;
+      preference = next;
       apply();
-      try {
-        if (preference === 'system') localStorage.removeItem(key);
-        else localStorage.setItem(key, preference);
-      } catch { /* Keep the current selection even when persistence is unavailable. */ }
-    });
+      try { localStorage.setItem(key, preference); } catch { /* Persistence is optional. */ }
+    }
+    // Clicking the already selected system color also counts as an explicit choice.
+    control.addEventListener('click', selectTheme);
+    control.addEventListener('change', selectTheme);
     control.hidden = false;
   }, { once: true });
 })();
