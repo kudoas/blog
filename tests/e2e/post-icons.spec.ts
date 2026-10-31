@@ -49,7 +49,7 @@ test('listing icons survive hydration, search and taxonomy filtering without cha
       await page.goto('/');
       await expect(page.locator('.article-icon')).toHaveCount(iconCount);
       const external = page.getByRole('link', { name: /Angular v21 CDK Overlay/ });
-      await expect(external.locator('.article-icon')).toHaveText('🪟');
+      await expect(external.locator('.article-icon')).toHaveText('🪐');
       await expect(external.locator('.article-icon')).toHaveAttribute('aria-hidden', 'true');
       await page.screenshot({ path: testInfo.outputPath(`listing-icons-${width}-${colorScheme}.png`) });
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
