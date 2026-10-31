@@ -22,6 +22,7 @@ export const externalArticleSchema = z.object({
   url: z.url({ protocol: /^https$/ }),
   date,
   source: text,
+  icon: text.max(32).optional(),
   tags: terms,
   categories: terms,
   description: z.string().default(''),

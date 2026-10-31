@@ -11,6 +11,7 @@ export default function ArticleList({ articles, excerpts = {} }: { articles: Art
             <div className="article-summary-content">
               <h2>
                 <a href={article.url} {...(article.kind === 'external' ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+                  {article.icon && <span className="article-icon" aria-hidden="true">{article.icon}</span>}
                   {article.title}
                   {article.kind === 'external' && <span className="external-arrow" aria-label="外部サイトを新しいタブで開く">↗</span>}
                 </a>

@@ -61,3 +61,14 @@ test('tag links retain existing ASCII routes and support Japanese tags', () => {
 test('dates use Japan time regardless of the machine timezone', () => {
   assert.equal(formatDate('2025-12-06T23:30:00Z'), '2025.12.07');
 });
+
+
+test('preserves optional icons in local and external listing data without changing titles or search', () => {
+  const articles = buildArticleIndex([local('with-icon', { icon: '🪐' }), local('without-icon')], [{ ...external[0], icon: '📝' }]);
+  assert.equal(articles.find(item => item.id === 'local:with-icon')?.icon, '🪐');
+  assert.equal(articles.find(item => item.id === 'local:without-icon')?.icon, undefined);
+  assert.equal(articles.find(item => item.kind === 'external')?.icon, '📝');
+  assert.equal(articles.find(item => item.id === 'local:with-icon')?.title, 'React の記事');
+  assert.equal(filterArticles(articles, 'React', '').length, 2);
+  assert.equal(filterArticles(articles, '🪐', '').length, 0);
+});
