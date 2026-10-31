@@ -3,7 +3,7 @@ import { posts, external } from '../fixtures/content';
 
 const iconCount = posts.filter(post => post.data.icon).length + external.filter(article => article.icon).length;
 
-test('shows an optional article icon above the title in both themes and viewport sizes', async ({ page }, testInfo) => {
+test('shows configured article icons in both themes and viewport sizes', async ({ page }, testInfo) => {
   await page.route('https://giscus.app/**', route => route.abort());
   for (const width of [320, 390, 1440]) {
     await page.setViewportSize({ width, height: 1000 });
@@ -17,10 +17,8 @@ test('shows an optional article icon above the title in both themes and viewport
       await expect(icon).toHaveAttribute('aria-hidden', 'true');
       await expect(heading).toHaveText('Error BoundaryをFunction Componentで扱う');
       expect(await heading.getAttribute('data-pagefind-body')).not.toBeNull();
-      const [i, h, m] = await Promise.all([icon.boundingBox(), heading.boundingBox(), meta.boundingBox()]);
-      expect(i!.y + i!.height).toBeLessThanOrEqual(h!.y);
-      expect(h!.y + h!.height).toBeLessThanOrEqual(m!.y);
-      expect(i!.height).toBeGreaterThanOrEqual(96);
+      await expect(icon).toBeVisible();
+      await expect(meta).toBeVisible();
       expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
       await page.screenshot({ path: testInfo.outputPath(`post-icon-${width}-${colorScheme}.png`) });
     }

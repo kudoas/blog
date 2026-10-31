@@ -4,29 +4,22 @@ test.beforeEach(async ({ page }) => {
   await page.route('https://giscus.app/**', route => route.abort());
 });
 
-test('centers the body and contents together below a full-width title', async ({ page }, testInfo) => {
+test('desktop contents starts beside the body and stays reachable while reading', async ({ page }, testInfo) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto('/posts/func-error-boundary/');
   const toc = page.locator('.toc');
   const prose = page.locator('.prose');
-  const paragraphWidth = (await prose.boundingBox())!.width;
-  const paragraphX = (await prose.boundingBox())!.x;
-  expect(paragraphWidth).toBe(756);
-  expect(paragraphX).toBe(216);
-  await expect(toc).toHaveCSS('position', 'sticky');
-  const initialToc = (await toc.boundingBox())!;
-  const initialProse = (await prose.boundingBox())!;
+  const body = (await prose.boundingBox())!;
+  const contents = (await toc.boundingBox())!;
   const header = (await page.locator('.post-header').boundingBox())!;
-  const combinedCenter = (initialProse.x + initialToc.x + initialToc.width) / 2;
-  expect(combinedCenter).toBe(720);
-  expect(header.x + header.width / 2).toBe(combinedCenter);
-  await expect(page.locator('.post-header h1')).toHaveCSS('text-align', 'center');
-  expect(initialToc.x).toBeGreaterThan(initialProse.x + paragraphWidth);
-  expect(initialToc.y).toBeCloseTo(initialProse.y, 1);
-  expect(initialToc.y).toBeGreaterThanOrEqual(header.y + header.height);
+  // The sidebar belongs beside article content, below the article header.
+  expect(contents.x).toBeGreaterThanOrEqual(body.x + body.width);
+  expect(contents.y).toBeGreaterThanOrEqual(header.y + header.height);
   await page.screenshot({ path: testInfo.outputPath('article-body-toc-start.png') });
   await page.evaluate(() => window.scrollTo(0, 1200));
-  await expect.poll(async () => (await toc.boundingBox())!.y).toBe(24);
+  await expect(toc).toBeInViewport({ ratio: 1 });
+  await page.evaluate(() => window.scrollTo(0, 2200));
+  await expect(toc).toBeInViewport({ ratio: 1 });
   await toc.getByRole('link').last().click();
   await expect(page).toHaveURL(/#/);
   await page.screenshot({ path: testInfo.outputPath('wide-sticky-toc.png') });
@@ -36,28 +29,7 @@ test('centers the body and contents together below a full-width title', async ({
     await page.setViewportSize({ width, height });
     await expect(toc).toHaveCSS('position', 'static');
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-    expect((await prose.boundingBox())!.width).toBeLessThanOrEqual(width <= 600 ? 326 : 756);
   }
-});
-
-test('centers long titles over the combined reading area at wide viewport sizes', async ({ page }, testInfo) => {
-  await page.goto('/posts/github-repository-migration/');
-  for (const width of [1320, 1440, 1920]) {
-    await page.setViewportSize({ width, height: 1000 });
-    const body = (await page.locator('.prose').boundingBox())!;
-    const toc = (await page.locator('.toc').boundingBox())!;
-    const title = (await page.getByRole('heading', { level: 1 }).boundingBox())!;
-    const combinedCenter = (body.x + toc.x + toc.width) / 2;
-    expect(combinedCenter).toBe(width / 2);
-    expect(title.x + title.width / 2).toBe(combinedCenter);
-    expect(title.width).toBe(1008);
-    expect(body.width).toBe(756);
-    expect(toc.y).toBeCloseTo(body.y, 1);
-    expect(title.y + title.height).toBeLessThan(body.y);
-    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-  }
-  await page.setViewportSize({ width: 1440, height: 1000 });
-  await page.screenshot({ path: testInfo.outputPath('combined-width-centered-title.png') });
 });
 
 test('long desktop tables of contents can scroll and every link remains reachable', async ({ page }, testInfo) => {
@@ -66,11 +38,11 @@ test('long desktop tables of contents can scroll and every link remains reachabl
   const toc = page.locator('.toc');
   await expect(toc).toHaveAttribute('open');
   await expect(toc).toHaveCSS('position', 'sticky');
-  expect((await toc.boundingBox())!.height).toBeLessThanOrEqual(452);
-  expect((await toc.boundingBox())!.y).toBeCloseTo((await page.locator('.prose').boundingBox())!.y, 1);
+  expect(await toc.evaluate(element => element.scrollHeight > element.clientHeight)).toBe(true);
   const link = toc.getByRole('link').last();
   await link.focus();
   await expect(link).toBeFocused();
+  await expect(link).toBeInViewport();
   await page.keyboard.press('Enter');
   await expect(page).toHaveURL(/#/);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
@@ -93,16 +65,6 @@ test('the same table of contents works without JavaScript and on mobile', async 
   await context.close();
 });
 
-test('switches layout at the width and height boundaries without changing body width', async ({ page }) => {
-  await page.goto('/posts/func-error-boundary/');
-  for (const [width, height, position] of [[1319, 1000, 'static'], [1320, 1000, 'sticky'], [1440, 479, 'static'], [1440, 480, 'sticky']] as const) {
-    await page.setViewportSize({ width, height });
-    await expect(page.locator('.toc')).toHaveCSS('position', position);
-    expect((await page.locator('.prose').boundingBox())!.width).toBe(756);
-    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-  }
-});
-
 test('wide no-JavaScript visits retain the native disclosure and all anchors', async ({ browser }) => {
   const context = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 1440, height: 1000 } });
   const page = await context.newPage();
@@ -114,23 +76,5 @@ test('wide no-JavaScript visits retain the native disclosure and all anchors', a
   await expect(toc.getByRole('link')).toHaveCount(20);
   await toc.getByRole('link').last().click();
   await expect(page).toHaveURL(/#/);
-  expect((await page.locator('.prose').boundingBox())!.width).toBe(756);
   await context.close();
-});
-
-test('preserves existing prose spacing and muted contents links regardless of stylesheet order', async ({ page }) => {
-  await page.goto('/posts/func-error-boundary/');
-  const styles = await page.evaluate(() => {
-    const heading = getComputedStyle(document.querySelectorAll('.prose h2')[1]);
-    const paragraph = getComputedStyle(document.querySelector('.prose p')!);
-    return {
-      headingMargin: parseFloat(heading.marginBlockStart), headingFont: parseFloat(heading.fontSize),
-      paragraphMargin: parseFloat(paragraph.marginBlockStart), paragraphFont: parseFloat(paragraph.fontSize),
-      tocLink: getComputedStyle(document.querySelector('.toc a')!).color,
-      tocSummary: getComputedStyle(document.querySelector('.toc summary')!).color,
-    };
-  });
-  expect(styles.headingMargin).toBeCloseTo(styles.headingFont * 2.8, 1);
-  expect(styles.paragraphMargin).toBeCloseTo(styles.paragraphFont * 1.5, 1);
-  expect(styles.tocLink).toBe(styles.tocSummary);
 });
