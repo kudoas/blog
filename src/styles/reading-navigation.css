@@ -1,8 +1,7 @@
 @layer base, layout, components, prose;
 
 @layer components {
-  /* 756px of article text + 32px gap + 220px navigation, within the viewport.
-     Keep the article's existing horizontal position instead of narrowing it. */
+  /* Center the complete reading area; the title spans both columns. */
   @media screen and (min-width: 1320px) and (min-height: 480px) {
     .post:has(> .toc) {
       display: grid;
@@ -11,10 +10,13 @@
       align-items: start;
       width: 1008px;
       max-width: none;
-      margin-inline: 22px 0;
+      margin-inline: calc((100% - 1008px) / 2);
     }
     .post:has(> .toc) > :not(.toc) { grid-column: 1; min-width: 0; }
-    .post:has(> .toc) > .post-header { grid-row: 1; }
+    .post:has(> .toc) > .post-header { grid-column: 1 / -1; grid-row: 1; }
+    .post:has(> .toc) > .post-header h1 { text-align: center; }
+    .post:has(> .toc) > .post-header .post-meta,
+    .post:has(> .toc) > .post-header .post-tags { justify-content: center; }
     .post:has(> .toc) > .prose { grid-row: 2; }
     .post > .toc {
       grid-column: 2;

@@ -4,7 +4,7 @@ test.beforeEach(async ({ page }) => {
   await page.route('https://giscus.app/**', route => route.abort());
 });
 
-test('keeps the 756px body centered and follows scrolling only on wide, tall screens', async ({ page }, testInfo) => {
+test('centers the body and contents together below a full-width title', async ({ page }, testInfo) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto('/posts/func-error-boundary/');
   const toc = page.locator('.toc');
@@ -12,11 +12,15 @@ test('keeps the 756px body centered and follows scrolling only on wide, tall scr
   const paragraphWidth = (await prose.boundingBox())!.width;
   const paragraphX = (await prose.boundingBox())!.x;
   expect(paragraphWidth).toBe(756);
-  expect(paragraphX).toBe(342);
+  expect(paragraphX).toBe(216);
   await expect(toc).toHaveCSS('position', 'sticky');
   const initialToc = (await toc.boundingBox())!;
   const initialProse = (await prose.boundingBox())!;
   const header = (await page.locator('.post-header').boundingBox())!;
+  const combinedCenter = (initialProse.x + initialToc.x + initialToc.width) / 2;
+  expect(combinedCenter).toBe(720);
+  expect(header.x + header.width / 2).toBe(combinedCenter);
+  await expect(page.locator('.post-header h1')).toHaveCSS('text-align', 'center');
   expect(initialToc.x).toBeGreaterThan(initialProse.x + paragraphWidth);
   expect(initialToc.y).toBeCloseTo(initialProse.y, 1);
   expect(initialToc.y).toBeGreaterThanOrEqual(header.y + header.height);
@@ -34,6 +38,26 @@ test('keeps the 756px body centered and follows scrolling only on wide, tall scr
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     expect((await prose.boundingBox())!.width).toBeLessThanOrEqual(width <= 600 ? 326 : 756);
   }
+});
+
+test('centers long titles over the combined reading area at wide viewport sizes', async ({ page }, testInfo) => {
+  await page.goto('/posts/github-repository-migration/');
+  for (const width of [1320, 1440, 1920]) {
+    await page.setViewportSize({ width, height: 1000 });
+    const body = (await page.locator('.prose').boundingBox())!;
+    const toc = (await page.locator('.toc').boundingBox())!;
+    const title = (await page.getByRole('heading', { level: 1 }).boundingBox())!;
+    const combinedCenter = (body.x + toc.x + toc.width) / 2;
+    expect(combinedCenter).toBe(width / 2);
+    expect(title.x + title.width / 2).toBe(combinedCenter);
+    expect(title.width).toBe(1008);
+    expect(body.width).toBe(756);
+    expect(toc.y).toBeCloseTo(body.y, 1);
+    expect(title.y + title.height).toBeLessThan(body.y);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+  }
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.screenshot({ path: testInfo.outputPath('combined-width-centered-title.png') });
 });
 
 test('long desktop tables of contents can scroll and every link remains reachable', async ({ page }, testInfo) => {
