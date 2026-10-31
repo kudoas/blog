@@ -1,0 +1,36 @@
+---
+import { site } from '../site';
+
+interface Props { pathname: string }
+const { pathname } = Astro.props;
+const discussions = new URL(`https://github.com/${site.comments.repo}/discussions`);
+discussions.searchParams.set('discussions_q', `category:${site.comments.category} "${pathname}"`);
+---
+<section id="comments" class="post-comments" aria-labelledby="comments-heading" data-pagefind-ignore>
+  <h2 id="comments-heading">コメント・リアクション</h2>
+  <p class="post-comments-description">GitHub アカウントで、感想やリアクションを残せます。</p>
+  <div class="giscus">
+    <script
+      is:inline
+      src="https://giscus.app/client.js"
+      data-repo={site.comments.repo}
+      data-repo-id={site.comments.repoId}
+      data-category={site.comments.category}
+      data-category-id={site.comments.categoryId}
+      data-mapping="specific"
+      data-term={pathname}
+      data-strict="1"
+      data-reactions-enabled="1"
+      data-emit-metadata="0"
+      data-input-position="top"
+      data-theme="transparent_dark"
+      data-lang="ja"
+      data-loading="lazy"
+      crossorigin="anonymous"
+      async
+    ></script>
+  </div>
+  <p class="post-comments-fallback">
+    表示されない場合は、<a href={discussions.href} target="_blank" rel="noopener noreferrer">GitHub でコメントを見る<span aria-hidden="true"> ↗</span></a>
+  </p>
+</section>
