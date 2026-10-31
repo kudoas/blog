@@ -1,0 +1,11 @@
+@layer components {
+  .related-articles { margin-top: 48px; padding-top: 28px; border-top: 1px solid var(--line); }
+  .related-articles h2 { font-size: 20px; font-weight: 600; }
+  .related-articles-help { margin-top: 6px; color: var(--muted); font-size: 13px; }
+  .related-articles ul { list-style: none; margin: 18px 0 0; padding: 0; }
+  .related-articles li { padding-block: 14px; }
+  .related-articles li + li { border-top: 1px solid var(--line); }
+  .related-articles li > a { font-size: 15px; line-height: 1.8; }
+  .related-articles li > p { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 4px; color: var(--muted); font-size: 12px; }
+  .related-external { white-space: nowrap; }
+}
