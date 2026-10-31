@@ -4,6 +4,7 @@ export interface ArticleSummary {
   id: string;
   kind: 'local' | 'external';
   title: string;
+  icon?: string;
   url: string;
   date: string;
   tags: string[];
@@ -27,6 +28,7 @@ export function buildArticleIndex(
       id: `local:${id}`,
       kind: 'local' as const,
       title: data.title,
+      icon: data.icon,
       url: `/posts/${id}/`,
       date: data.date.toISOString(),
       tags: data.tags,
@@ -39,6 +41,7 @@ export function buildArticleIndex(
       id: `external:${data.id}`,
       kind: 'external' as const,
       title: data.title,
+      icon: data.icon,
       url: data.url,
       date: data.date.toISOString(),
       tags: data.tags,

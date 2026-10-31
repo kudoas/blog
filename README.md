@@ -33,6 +33,7 @@ bun run preview:worker  # cf dev で開発サーバーを起動
 ```yaml
 ---
 title: 記事のタイトル
+icon: "🪐"
 date: 2026-09-25T12:00:00+09:00
 description: 記事の説明
 tags: [Astro, React]
@@ -42,6 +43,11 @@ images: [tcard/example.png]
 ---
 ```
 
+`icon` は省略可能な絵文字アイコンです。指定すると、記事ページのタイトル上部へ大きく表示します。
+トップ・タグ・カテゴリの一覧と検索結果では、タイトルの先頭へ小さく表示します。
+未指定の記事にはアイコンやそのための余白を表示しません。RSS・OG画像には反映しません。
+絵文字の見た目は閲覧環境のフォントに依存します。
+
 `draft: true` は開発プレビューだけで表示します。公開時に `false` に変更してください。
 古い記事のように `draft` がない場合は公開記事として扱います。
 画像は `static/` に置き、`/posts/example.png` などのルート相対 URL で参照します。
@@ -49,12 +55,13 @@ images: [tcard/example.png]
 
 外部記事は `content/external.yaml` に1件ずつ追記します。`id` は重複しない
 kebab-case とし、`title`、`url`、`date`、`source` は必須です。
-`tags`、`categories`、`description` は省略できます。
+`icon`、`tags`、`categories`、`description` は省略できます。外部記事の `icon` も一覧に表示します。
 Zenn に限らず任意の掲載先を `source` に指定できます。
 
 ```yaml
 - id: my-guest-post
   title: 外部の記事
+  icon: "📝"
   url: https://example.com/articles/my-guest-post
   date: "2026-09-25T12:00:00+09:00"
   source: Example

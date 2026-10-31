@@ -1,5 +1,6 @@
 ---
 title: Pythonでのソートアルゴリズムの実装
+icon: "🔢"
 date: 2020-06-01T09:43:00+09:00
 description: "Python でバブルソート・挿入ソート・選択ソートを実装し、それぞれの並べ替え方を確認します。"
 author: daichi

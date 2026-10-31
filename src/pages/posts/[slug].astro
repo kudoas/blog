@@ -6,9 +6,10 @@ import type { CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import RelatedArticles from '../../components/related-articles.astro';
 import PostComments from '../../components/PostComments.astro';
+import PostMeta from '../../components/post-meta.astro';
 import '../../styles/code-copy.css';
 import { getPosts } from '../../lib/content';
-import { formatDate, tagSlug, tagUrl } from '../../lib/articles';
+import { tagSlug, tagUrl } from '../../lib/articles';
 export async function getStaticPaths() {
   return (await getPosts()).map((post) => ({ params: { slug: post.id }, props: { post } }));
 }
@@ -24,10 +25,12 @@ const longToc = toc.length > 10;
 ---
 <BaseLayout title={post.data.title} description={post.data.description} image={post.data.images[0]} date={post.data.date} article noindex={post.data.draft}>
   <article class="post">
-    <header class="post-header">
+    <header class:list={["post-header", { "post-header-with-icon": post.data.icon }]}>
       <a href="/" class="back-link" data-article-return-link="top" data-return-taxonomies={JSON.stringify(returnTaxonomies)}>← 記事一覧</a>
-      <div class="post-meta"><time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time><span>{post.data.author}</span>{post.data.draft && <span class="draft-label">下書き</span>}</div>
+      {!post.data.icon && <PostMeta {...post.data} />}
+      {post.data.icon && <div class="post-icon" aria-hidden="true">{post.data.icon}</div>}
       <h1 data-pagefind-body>{post.data.title}</h1>
+      {post.data.icon && <PostMeta {...post.data} />}
       {post.data.tags.length > 0 && <div class="post-tags" data-pagefind-body>{post.data.tags.map((tag) => <a class="tag" href={tagUrl(tag)} data-pagefind-filter="tag[data-search-tag]" data-search-tag={tagSlug(tag)}>#{tag}</a>)}</div>}
     </header>
     {toc.length > 0 && <details class="toc" open={!longToc}>

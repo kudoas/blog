@@ -1,0 +1,6 @@
+---
+import { formatDate } from '../lib/articles';
+interface Props { date: Date; author: string; draft: boolean }
+const { date, author, draft } = Astro.props;
+---
+<div class="post-meta"><time datetime={date.toISOString()}>{formatDate(date)}</time><span>{author}</span>{draft && <span class="draft-label">下書き</span>}</div>

@@ -1,5 +1,6 @@
 ---
 title: 非同期処理でハマったこと
+icon: "⏳"
 date: 2020-03-01T09:43:00+09:00
 description: "JavaScript の非同期処理でつまずいた点を、Promise と async/await の実装例を交えて整理します。"
 author: daichi
