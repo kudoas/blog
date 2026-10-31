@@ -1,8 +1,32 @@
-<div class="theme-switcher" hidden>
-  <label for="theme-preference">配色</label>
-  <select id="theme-preference">
-    <option value="system">端末に合わせる</option>
-    <option value="light">ライト</option>
-    <option value="dark">ダーク</option>
-  </select>
-</div>
+<fieldset class="theme-switcher" hidden>
+  <legend class="sr-only">配色</legend>
+  <label class="theme-option" title="端末に合わせる">
+    <input type="radio" name="theme-preference" value="system" checked />
+    <span class="theme-icon">
+      <span class="sr-only">端末に合わせる</span>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="3" y="4" width="18" height="13" rx="2" />
+        <path d="M8 21h8M12 17v4" />
+      </svg>
+    </span>
+  </label>
+  <label class="theme-option" title="ライト">
+    <input type="radio" name="theme-preference" value="light" />
+    <span class="theme-icon">
+      <span class="sr-only">ライト</span>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="4" />
+        <path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42" />
+      </svg>
+    </span>
+  </label>
+  <label class="theme-option" title="ダーク">
+    <input type="radio" name="theme-preference" value="dark" />
+    <span class="theme-icon">
+      <span class="sr-only">ダーク</span>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M20.9 13.3A9 9 0 0 1 10.7 3.1 9 9 0 1 0 20.9 13.3Z" />
+      </svg>
+    </span>
+  </label>
+</fieldset>

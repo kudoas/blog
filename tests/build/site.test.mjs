@@ -127,7 +127,7 @@ test('published posts connect comments and reactions to their canonical article 
     assert.equal(client.attr('data-input-position'), 'top');
     assert.equal(client.attr('data-lang'), 'ja');
     assert.equal(client.attr('data-loading'), 'lazy');
-    assert.equal(client.attr('data-theme'), 'transparent_dark');
+    assert.equal(client.attr('data-theme'), 'preferred_color_scheme');
     assert.equal($('meta[name="giscus:backlink"]').attr('content'), `https://blog.da1chi.net/posts/${id}/`);
     const fallback = new URL(section.find('a').attr('href'));
     assert.equal(fallback.origin, 'https://github.com');
