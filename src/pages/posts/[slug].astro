@@ -2,6 +2,7 @@
 import { render } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostComments from '../../components/PostComments.astro';
 import { getPosts } from '../../lib/content';
 import { formatDate, tagSlug, tagUrl } from '../../lib/articles';
 export async function getStaticPaths() {
@@ -25,6 +26,7 @@ const toc = headings.filter(({ depth }) => depth >= 2 && depth <= 3);
       <nav aria-label="目次"><ul>{toc.map((heading) => <li class:list={{ 'toc-nested': heading.depth === 3 }}><a href={`#${heading.slug}`}>{heading.text}</a></li>)}</ul></nav>
     </details>}
     <div class="prose" data-pagefind-body><Content /></div>
+    {!post.data.draft && <PostComments pathname={`/posts/${post.id}/`} />}
     <div class="post-end"><a href="/">← 記事一覧へ戻る</a></div>
   </article>
 </BaseLayout>

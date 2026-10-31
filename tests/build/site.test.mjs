@@ -106,3 +106,44 @@ test('legacy public assets remain available at their original paths', () => {
     assert.ok(existsSync(`${output}/${path}`), path);
   }
 });
+
+
+test('published posts connect comments and reactions to their canonical article path', () => {
+  for (const { id } of posts) {
+    const $ = page(`posts/${id}/index.html`);
+    const section = $('#comments');
+    const client = section.find('script[src="https://giscus.app/client.js"]');
+    assert.equal(section.length, 1);
+    assert.equal(section.attr('aria-labelledby'), 'comments-heading');
+    assert.equal(section.find('h2').text(), 'コメント・リアクション');
+    assert.equal(client.length, 1);
+    assert.equal(client.attr('data-repo'), 'kudoas/blog');
+    assert.equal(client.attr('data-repo-id'), 'MDEwOlJlcG9zaXRvcnkzMDgxODE2MTY=');
+    assert.equal(client.attr('data-category-id'), 'DIC_kwDOEl56cM4DKE7U');
+    assert.equal(client.attr('data-mapping'), 'specific');
+    assert.equal(client.attr('data-term'), `/posts/${id}/`);
+    assert.equal(client.attr('data-strict'), '1');
+    assert.equal(client.attr('data-reactions-enabled'), '1');
+    assert.equal(client.attr('data-input-position'), 'top');
+    assert.equal(client.attr('data-lang'), 'ja');
+    assert.equal(client.attr('data-loading'), 'lazy');
+    assert.equal(client.attr('data-theme'), 'transparent_dark');
+    assert.equal($('meta[name="giscus:backlink"]').attr('content'), `https://blog.da1chi.net/posts/${id}/`);
+    const fallback = new URL(section.find('a').attr('href'));
+    assert.equal(fallback.origin, 'https://github.com');
+    assert.equal(fallback.pathname, '/kudoas/blog/discussions');
+    assert.equal(fallback.searchParams.get('discussions_q'), `category:Announcements "/posts/${id}/"`);
+    assert.equal(section.parents('[data-pagefind-body]').length, 0);
+    assert.equal(section.find('[data-pagefind-body]').length, 0);
+    assert.notEqual(section.attr('data-pagefind-ignore'), undefined);
+  }
+});
+
+test('article discussion integration is absent on listing and error pages', () => {
+  for (const path of ['index.html', 'tags/index.html', 'categories/index.html', '404.html']) {
+    const $ = page(path);
+    assert.equal($('#comments').length, 0);
+    assert.equal($('script[src="https://giscus.app/client.js"]').length, 0);
+    assert.equal($('meta[name="giscus:backlink"]').length, 0);
+  }
+});

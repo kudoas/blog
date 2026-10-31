@@ -5,6 +5,12 @@ export const site = {
   description: 'Ruby、Angular、Web 標準を中心に、開発で学んだことを綴るブログ。',
   about: 'https://da1chi.net',
   image: '/img/og.png',
+  comments: {
+    repo: 'kudoas/blog',
+    repoId: 'MDEwOlJlcG9zaXRvcnkzMDgxODE2MTY=',
+    category: 'Announcements',
+    categoryId: 'DIC_kwDOEl56cM4DKE7U',
+  },
   social: [
     { label: 'GitHub', url: 'https://github.com/kudoas' },
     { label: 'X', url: 'https://twitter.com/da1chi24' },

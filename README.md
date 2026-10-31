@@ -79,6 +79,29 @@ HTML と索引は `.cloudflare/output/v0/workers/default/assets/` に出力し�
 `bun run dev` はタイトル・タグ検索のみです。公開サイトで全文検索の読み込みに
 失敗した場合も、画面で案内したうえでタイトル・タグ検索を使用します。
 
+## コメント・リアクション
+
+公開記事の末尾に [giscus](https://giscus.app/ja) を表示します。
+コメントと記事へのリアクションは `kudoas/blog` の GitHub Discussions
+（Announcements カテゴリ）に保存され、投稿には閲覧者自身の GitHub ログインが必要です。
+リポジトリの Discussions と [giscus GitHub App](https://github.com/apps/giscus) を有効にしてください。
+ブラウザや CI に管理用トークンを渡す必要はありません。
+
+接続先のリポジトリ ID・カテゴリ ID は `src/site.ts` の `comments` が正本です。
+カテゴリを削除・再作成したりリポジトリを移したりする場合は、[giscus の設定画面](https://giscus.app/ja)
+で新しい ID を確認して更新します。
+記事の固定パス（例: `/posts/func-error-boundary/`）を厳密照合し、タイトルやクエリの変更では
+コメントを分割しません。Preview と本番は同じ記事のコメントを共有し、Discussion の
+記事リンクは本番の canonical URL に固定します。パス自体を変更する場合は Discussion の
+タイトルと厳密照合用ハッシュの移行も必要なので、既存パスを維持してください。
+
+下書きと一覧には読み込まず、公開記事では iframe を遅延読み込みします。
+JavaScript が無効、または外部サービスが利用できない場合も、記事末尾の
+「GitHub でコメントを見る・書く」から参加できます。管理・編集・削除は GitHub Discussions
+で行い、リアクションの変更は投稿した GitHub アカウントで行います。
+外す場合は記事ページの `PostComments` と backlink メタデータを削除します。
+既存のコメントは GitHub に残り、アプリ連携を外しても自動削除しません。
+
 ## 公開
 
 無停止移行の判断と切り戻し手順は
