@@ -19,7 +19,8 @@
     "test:e2e": "playwright test",
     "verify": "bun run textlint && bun run check && bun run test && bun run build && bun run test:build",
     "deploy": "bun run verify && cf deploy --prebuilt --mode production",
-    "preview:worker": "cf dev"
+    "preview:worker": "cf dev",
+    "links:update": "bun scripts/update-link-metadata.ts"
   },
   "license": "MIT",
   "bugs": {
