@@ -125,8 +125,6 @@ images: ["tcard/yumemi-intern.png"]
 
 - Jenkins, Circle CI, AWS CodePipLine
 
-![jenkince](https://tomokazu-kozuma.com/wp-content/uploads/2017/11/download.png)
-
 - AWS Amplify
 
 ### テスト
