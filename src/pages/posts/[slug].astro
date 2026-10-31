@@ -50,6 +50,7 @@ const longToc = toc.length > 10;
   <script>
     import { articleReturnLink } from '../../lib/article-return';
     import '../../scripts/code-copy';
+    import '../../scripts/link-favicons';
 
     const first = document.querySelector<HTMLAnchorElement>('[data-return-taxonomies]');
     const taxonomies: string[] = JSON.parse(first?.dataset.returnTaxonomies ?? '[]');

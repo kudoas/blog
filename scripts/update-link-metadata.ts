@@ -1,5 +1,4 @@
-import { readFile, readdir, mkdir, writeFile } from 'node:fs/promises';
-import { createHash } from 'node:crypto';
+import { readFile, readdir, writeFile } from 'node:fs/promises';
 import { createMarkdownProcessor } from '@astrojs/markdown-remark';
 import { rehypeLinkMetadata, validateLinkMetadata } from '../src/lib/markdown/link-metadata.ts';
 import { pageMetadata, fetchResource } from './lib/link-metadata.ts';
@@ -12,22 +11,6 @@ for (const file of (await readdir('content/ja/posts')).filter(name => name.endsW
   const raw = await readFile(`content/ja/posts/${file}`, 'utf8');
   await renderer.render(raw.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/, ''));
 }
-const extension: Record<string, string> = { 'image/png': 'png', 'image/x-icon': 'ico', 'image/vnd.microsoft.icon': 'ico', 'image/svg+xml': 'svg', 'image/webp': 'webp', 'image/gif': 'gif', 'image/jpeg': 'jpg' };
-await mkdir('static/link-icons', { recursive: true });
-const icons = new Map<string, Promise<string | undefined>>();
-function cacheIcon(url: string) {
-  if (!icons.has(url)) icons.set(url, (async () => {
-    try {
-      const resource = await fetchResource(url, 512 * 1024);
-      const ext = resource.type && extension[resource.type];
-      if (!ext || resource.data.length === 0) return;
-      const file = `${createHash('sha256').update(url).digest('hex').slice(0, 20)}.${ext}`;
-      await writeFile(`static/link-icons/${file}`, resource.data);
-      return `/link-icons/${file}`;
-    } catch { return; }
-  })());
-  return icons.get(url)!;
-}
 let failures = 0;
 const queue = [...urls].sort();
 await Promise.all(Array.from({ length: Math.min(4, queue.length) }, async () => {
@@ -37,12 +20,7 @@ await Promise.all(Array.from({ length: Math.min(4, queue.length) }, async () => 
       const response = await fetchResource(url, 2 * 1024 * 1024);
       if (response.type !== 'text/html' && response.type !== 'application/xhtml+xml') throw new Error('Not an HTML page');
       const page = pageMetadata(response.data.toString('utf8'), response.url);
-      let icon: string | undefined;
-      for (const candidate of page.icons.slice(0, 3)) {
-        icon = await cacheIcon(candidate);
-        if (icon) break;
-      }
-      const savedIcon = icon ?? metadata[url]?.icon;
+      const savedIcon = page.icons[0] ?? metadata[url]?.icon;
       metadata[url] = { title: page.title, ...(savedIcon ? { icon: savedIcon } : {}) };
       console.log(`Updated: ${url}`);
     } catch (error) {

@@ -5,10 +5,11 @@ export function pageMetadata(html: string, pageUrl: string) {
   const $ = load(html);
   const title = ($('meta[property="og:title"]').first().attr('content') || $('title').first().text()).replace(/\s+/g, ' ').trim().slice(0, 300);
   if (!title || /^(just a moment|access denied|attention required|403 forbidden)/i.test(title)) throw new Error('No usable page title');
-  const icons = $('link[rel]').toArray().filter(el => /\bicon\b/i.test($(el).attr('rel') ?? ''))
+  const icons = $('link[rel]').toArray().filter(el => ($(el).attr('rel') ?? '').toLowerCase().split(/\s+/).includes('icon'))
     .map(el => $(el).attr('href')).filter((href): href is string => Boolean(href))
-    .map(href => linkKey(href, pageUrl)).filter((href): href is string => Boolean(href));
-  return { title, icons: [...new Set([...icons, new URL('/favicon.ico', pageUrl).href])] };
+    .map(href => linkKey(href, pageUrl)).filter((href): href is string => Boolean(href && new URL(href).protocol === 'https:'));
+  const fallback = new URL('/favicon.ico', pageUrl);
+  return { title, icons: [...new Set([...icons, ...(fallback.protocol === 'https:' ? [fallback.href] : [])])] };
 }
 
 export async function fetchResource(url: string, maximum: number, fetcher: typeof fetch = fetch) {

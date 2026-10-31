@@ -24,7 +24,11 @@ export function validateLinkMetadata(input: unknown): LinkMetadataIndex {
     if (linkKey(url) !== url || !entry || typeof entry !== 'object') throw new Error(`Invalid link metadata: ${url}`);
     const { title, icon } = entry as LinkMetadata;
     if (typeof title !== 'string' || !title.trim() || title.length > 300) throw new Error(`Invalid link title: ${url}`);
-    if (icon !== undefined && (typeof icon !== 'string' || !/^\/link-icons\/[a-f0-9]{20}\.(png|ico|svg|webp|gif|jpg)$/.test(icon))) throw new Error(`Invalid link icon: ${url}`);
+    if (icon !== undefined) {
+      if (typeof icon !== 'string') throw new Error(`Invalid link icon: ${url}`);
+      const parsed = new URL(icon);
+      if (parsed.protocol !== 'https:' || parsed.username || parsed.password) throw new Error(`Invalid link icon: ${url}`);
+    }
   }
   return input as LinkMetadataIndex;
 }
@@ -44,11 +48,10 @@ export function rehypeLinkMetadata(options: { metadata?: LinkMetadataIndex; onLi
         const original = node.children ?? [];
         node.properties.className = [...(Array.isArray(node.properties.className) ? node.properties.className : []), 'link-with-metadata'];
         node.children = [
-          { type: 'element', tagName: 'img', properties: {
-            src: entry?.icon ?? '/link-icons/default.svg', alt: '', width: 16, height: 16,
+          ...(entry?.icon ? [{ type: 'element', tagName: 'img', properties: {
+            src: entry.icon, alt: '', width: 16, height: 16, referrerPolicy: 'no-referrer',
             className: ['link-favicon'], loading: 'lazy', decoding: 'async', ariaHidden: 'true',
-          }, children: [] },
-          { type: 'text', value: ' ' },
+          }, children: [] }, { type: 'text', value: ' ' }] : []),
           ...(entry ? [{ type: 'text', value: entry.title }] : original),
         ];
         return;

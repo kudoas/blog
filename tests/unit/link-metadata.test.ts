@@ -6,7 +6,7 @@ import { linkKey, rehypeLinkMetadata, validateLinkMetadata } from '../../src/lib
 import { pageMetadata, fetchResource } from '../../scripts/lib/link-metadata.ts';
 
 const destination = 'https://example.com/page';
-const metadata = { [destination]: { title: 'Page title <b>is text</b>', icon: '/link-icons/0123456789abcdef0123.png' } };
+const metadata = { [destination]: { title: 'Page title <b>is text</b>', icon: 'https://example.com/favicon.png' } };
 async function render(markdown: string, data = metadata) {
   const processor = await createMarkdownProcessor({ syntaxHighlight: false, rehypePlugins: [rehypeHeadingIds, [rehypeLinkMetadata, { metadata: data }]] });
   return load((await processor.render(markdown)).code);
@@ -20,13 +20,14 @@ test('enhances inline, standalone, bare and reference links without changing the
   assert.equal($('a b').length, 0);
   assert.equal($('a img').first().attr('alt'), '');
   assert.equal($('a img').first().attr('aria-hidden'), 'true');
+  assert.equal($('a img').first().attr('referrerpolicy'), 'no-referrer');
 });
 
 test('keeps text when metadata is unavailable and leaves images, anchors and code untouched', async () => {
   const $ = await render(`- [元の説明](https://unknown.example/)\n\n[章](#section)\n\n[![画像](/image.png)](${destination})\n\n\`[code](${destination})\`\n\n\`\`\`md\n[code](${destination})\n\`\`\``);
   assert.equal($('a.link-with-metadata').length, 1);
   assert.equal($('a.link-with-metadata').text().trim(), '元の説明');
-  assert.equal($('a.link-with-metadata img').attr('src'), '/link-icons/default.svg');
+  assert.equal($('a.link-with-metadata img').length, 0);
   assert.equal($('a[href="#section"]').text(), '章');
   assert.equal($('a[href="https://example.com/page"] img').attr('src'), '/image.png');
   assert.equal($('code img').length, 0);
@@ -38,19 +39,24 @@ test('preserves the original heading anchors even when a linked heading gets a p
   assert.equal($('h2 a').first().text().trim(), metadata[destination].title);
 });
 
-test('validates local metadata and normalizes fragments without accepting executable destinations', () => {
+test('validates cached metadata and normalizes fragments without accepting executable destinations', () => {
   assert.equal(linkKey(`${destination}#anchor`), destination);
   assert.equal(linkKey('javascript:alert(1)'), null);
   assert.equal(linkKey('mailto:me@example.com'), null);
   assert.equal(linkKey('#part'), null);
   assert.equal(validateLinkMetadata(metadata), metadata);
   assert.throws(() => validateLinkMetadata({ [destination]: { title: '', icon: '/link-icons/a.svg' } }));
-  assert.throws(() => validateLinkMetadata({ [destination]: { title: 'Title', icon: 'https://tracker.example/icon' } }));
+  for (const icon of ['javascript:alert(1)', '/icon.png', 'http://example.com/icon', 'https://user:password@example.com/icon']) {
+    assert.throws(() => validateLinkMetadata({ [destination]: { title: 'Title', icon } }));
+  }
+  assert.equal(validateLinkMetadata(metadata), metadata);
 });
 
 test('extracts titles and icons using the final page URL and decodes HTML entities', () => {
   assert.deepEqual(pageMetadata('<title>fallback</title><meta property="og:title" content="A &amp; B"><link rel="shortcut icon" href="../icon.png">', 'https://example.com/docs/page'), { title: 'A & B', icons: ['https://example.com/icon.png', 'https://example.com/favicon.ico'] });
   assert.throws(() => pageMetadata('<title>Just a moment...</title>', destination));
+  assert.deepEqual(pageMetadata('<title>Example</title><link rel="apple-touch-icon" href="/touch.png"><link rel="icon" href="http://example.com/icon.png">', 'http://example.com/page').icons, []);
+  assert.deepEqual(pageMetadata('<title>Example</title><link rel="fluid-icon" href="/large.png"><link rel="icon" href="/favicon.svg">', destination).icons, ['https://example.com/favicon.svg', 'https://example.com/favicon.ico']);
 });
 
 test('refresh requests follow bounded redirects and report failures instead of caching error pages', async () => {

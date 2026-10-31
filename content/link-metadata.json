@@ -1,70 +1,70 @@
 {
   "https://dev.to/": {
     "title": "DEV Community",
-    "icon": "/link-icons/9d8be165ce554d44dae6.webp"
+    "icon": "https://media2.dev.to/dynamic/image/width=32,height=,fit=scale-down,gravity=auto,format=auto/https%3A%2F%2Fdev-to-uploads.s3.amazonaws.com%2Fuploads%2Farticles%2F8j7kvp660rqzt99zui8e.png"
   },
   "https://developer.mozilla.org/ja/docs/Web/API/Intersection_Observer_API": {
     "title": "交差オブザーバー API - Web API | MDN",
-    "icon": "/link-icons/fa98f310beccfae77d46.ico"
+    "icon": "https://developer.mozilla.org/favicon.ico"
   },
   "https://emotion.sh/docs/styled": {
     "title": "Emotion – Styled Components",
-    "icon": "/link-icons/8ef855f20e8e0e30d6ac.png"
+    "icon": "https://emotion.sh/logo-32x32.png"
   },
   "https://git-scm.com/docs/git-merge": {
     "title": "Git - git-merge Documentation",
-    "icon": "/link-icons/b7af722cb303e46d8ebc.ico"
+    "icon": "https://git-scm.com/favicon.ico"
   },
   "https://github.com/bvaughn/react-error-boundary": {
     "title": "GitHub - bvaughn/react-error-boundary: Simple reusable React error boundary component",
-    "icon": "/link-icons/3a308f44abebbb794d1d.png"
+    "icon": "https://github.githubassets.com/favicons/favicon.png"
   },
   "https://github.com/motdotla/dotenv": {
     "title": "GitHub - motdotla/dotenv: Loads environment variables from .env for nodejs projects.",
-    "icon": "/link-icons/3a308f44abebbb794d1d.png"
+    "icon": "https://github.githubassets.com/favicons/favicon.png"
   },
   "https://github.com/thebuilder/react-intersection-observer": {
     "title": "GitHub - thebuilder/react-intersection-observer: React implementation of the Intersection Observer API to tell you when an element enters or leaves the viewport.",
-    "icon": "/link-icons/3a308f44abebbb794d1d.png"
+    "icon": "https://github.githubassets.com/favicons/favicon.png"
   },
   "https://github.com/typicode/husky/tree/v5.0.0": {
     "title": "GitHub - typicode/husky at v5.0.0",
-    "icon": "/link-icons/3a308f44abebbb794d1d.png"
+    "icon": "https://github.githubassets.com/favicons/favicon.png"
   },
   "https://ja.reactjs.org/docs/error-boundaries.html": {
     "title": "Error Boundary – React",
-    "icon": "/link-icons/76032e6e07184500458f.ico"
+    "icon": "https://ja.legacy.reactjs.org/favicon.ico"
   },
   "https://ja.reactjs.org/docs/react-component.html": {
     "title": "React.Component – React",
-    "icon": "/link-icons/76032e6e07184500458f.ico"
+    "icon": "https://ja.legacy.reactjs.org/favicon.ico"
   },
   "https://kudoa-portfolio.vercel.app/": {
     "title": "Da1chi's Portfolio",
-    "icon": "/link-icons/52d4ed7ce0564db2fcb1.ico"
+    "icon": "https://kudoa-portfolio.vercel.app/favicon.ico"
   },
   "https://qiita.com/7tsuno/items/6d5a27ffe9143b35defe": {
     "title": "ラーメンで理解するasync/await - Qiita",
-    "icon": "/link-icons/2a7c32c23c7588167818.ico"
+    "icon": "https://cdn.qiita.com/assets/favicons/public/production-c620d3e403342b1022967ba5e3db1aaa.ico"
   },
   "https://qiita.com/suin/items/97041d3e0691c12f4974": {
     "title": "Promiseの使い方、それに代わるasync/awaitの使い方 - Qiita",
-    "icon": "/link-icons/2a7c32c23c7588167818.ico"
+    "icon": "https://cdn.qiita.com/assets/favicons/public/production-c620d3e403342b1022967ba5e3db1aaa.ico"
   },
   "https://twitter.com/da1chi24": {
     "title": "daichi (@da1chi24) on X",
-    "icon": "/link-icons/8e5a608504a343b3ccdc.png"
+    "icon": "https://x.com/favicon.ico"
   },
   "https://www.amazon.co.jp/Web%E3%83%95%E3%83%AD%E3%83%B3%E3%83%88%E3%82%A8%E3%83%B3%E3%83%89-%E3%83%8F%E3%82%A4%E3%83%91%E3%83%95%E3%82%A9%E3%83%BC%E3%83%9E%E3%83%B3%E3%82%B9-%E3%83%81%E3%83%A5%E3%83%BC%E3%83%8B%E3%83%B3%E3%82%B0-%E4%B9%85%E4%BF%9D%E7%94%B0-%E5%85%89%E5%89%87/dp/4774189677": {
     "title": "Webフロントエンド ハイパフォーマンス チューニング | 久保田 光則 |本 | 通販 | Amazon",
-    "icon": "/link-icons/455ec962d84b49c17918.ico"
+    "icon": "https://www.amazon.co.jp/favicon.ico"
   },
   "https://www.amazon.co.jp/Web%E3%83%9A%E3%83%BC%E3%82%B8%E9%80%9F%E5%BA%A6%E6%94%B9%E5%96%84%E3%82%AC%E3%82%A4%E3%83%89-%E4%BD%BF%E3%81%84%E3%82%84%E3%81%99%E3%81%95%E3%81%AF%E3%80%8C%E9%80%9F%E3%81%95%E3%80%8D%E3%81%8B%E3%82%89%E5%A7%8B%E3%81%BE%E3%82%8B-WEB-PRESS-plus/dp/477419400X/ref=pd_lpo_14_t_0/358-2141100-0492308?_encoding=UTF8&pd_rd_i=477419400X&pd_rd_r=29d34a0a-29c7-43ed-85dd-d0c3ee47b6a0&pd_rd_w=X8DXq&pd_rd_wg=Q3jhU&pf_rd_p=4b55d259-ebf0-4306-905a-7762d1b93740&pf_rd_r=QEJ37MNHAPBW4T4ATKSK&psc=1&refRID=QEJ37MNHAPBW4T4ATKSK": {
     "title": "超速! Webページ速度改善ガイド ── 使いやすさは「速さ」から始まる (WEB+DB PRESS plus) | 佐藤 歩, 泉水 翔吾 |本 | 通販 | Amazon",
-    "icon": "/link-icons/455ec962d84b49c17918.ico"
+    "icon": "https://www.amazon.co.jp/favicon.ico"
   },
   "https://www.yumemi.co.jp/": {
     "title": "ゆめみ | DX推進、システム・アプリ開発、内製化支援、プロダクトデザイン支援",
-    "icon": "/link-icons/95d28ce5c949c9224c58.ico"
+    "icon": "https://www.yumemi.co.jp/favicon.ico"
   }
 }
