@@ -12,6 +12,7 @@ interface Props { post: CollectionEntry<'posts'> }
 const { post } = Astro.props;
 const { Content, headings } = await render(post);
 const toc = headings.filter(({ depth }) => depth >= 2 && depth <= 3);
+const longToc = toc.length > 10;
 ---
 <BaseLayout title={post.data.title} description={post.data.description} image={post.data.images[0]} date={post.data.date} article noindex={post.data.draft}>
   <article class="post">
@@ -21,10 +22,18 @@ const toc = headings.filter(({ depth }) => depth >= 2 && depth <= 3);
       <h1 data-pagefind-body>{post.data.title}</h1>
       {post.data.tags.length > 0 && <div class="post-tags" data-pagefind-body>{post.data.tags.map((tag) => <a class="tag" href={tagUrl(tag)} data-pagefind-filter="tag[data-search-tag]" data-search-tag={tagSlug(tag)}>#{tag}</a>)}</div>}
     </header>
-    {toc.length > 0 && <details class="toc" open>
+    {toc.length > 0 && <details class="toc" open={!longToc}>
       <summary>目次</summary>
       <nav aria-label="目次"><ul>{toc.map((heading) => <li class:list={{ 'toc-nested': heading.depth === 3 }}><a href={`#${heading.slug}`}>{heading.text}</a></li>)}</ul></nav>
     </details>}
+    {longToc && <script is:inline>
+      {
+        const toc = document.currentScript.previousElementSibling;
+        if (toc instanceof HTMLDetailsElement && window.matchMedia('(min-width: 601px)').matches) {
+          toc.open = true;
+        }
+      }
+    </script>}
     <div class="prose" data-pagefind-body><Content /></div>
     {!post.data.draft && <PostComments pathname={`/posts/${post.id}/`} />}
     <div class="post-end"><a href="/">← 記事一覧へ戻る</a></div>
