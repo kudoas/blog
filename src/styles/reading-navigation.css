@@ -1,0 +1,35 @@
+@layer components {
+  /* 756px of article text + 32px gap + 220px navigation, within the viewport.
+     Keep the article's existing horizontal position instead of narrowing it. */
+  @media screen and (min-width: 1320px) and (min-height: 480px) {
+    .post:has(> .toc) {
+      display: grid;
+      grid-template-columns: minmax(0, 756px) 220px;
+      column-gap: 32px;
+      align-items: start;
+      width: 1008px;
+      max-width: none;
+      margin-inline: 22px 0;
+    }
+    .post:has(> .toc) > :not(.toc) { grid-column: 1; min-width: 0; }
+    .post:has(> .toc) > .post-header { grid-row: 1; }
+    .post:has(> .toc) > .prose { grid-row: 2; }
+    .post > .toc {
+      grid-column: 2;
+      grid-row: 1 / span 2;
+      position: sticky;
+      top: 24px;
+      align-self: start;
+      min-width: 0;
+      max-height: calc(100svh - 48px);
+      overflow-y: auto;
+      margin-block: 42px 0;
+      padding: 16px;
+      scrollbar-gutter: stable;
+      overscroll-behavior-y: contain;
+    }
+    .post > .toc ul { font-size: 12px; line-height: 1.9; }
+    .post > .toc a { display: inline-block; padding-block: 3px; }
+    .post > .toc:focus-within { outline: 1px solid var(--line); }
+  }
+}
