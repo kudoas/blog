@@ -153,6 +153,7 @@
   .term-list a { display: flex; gap: 16px; justify-content: space-between; padding: 18px 20px; border: 1px solid var(--line); border-radius: 6px; font-size: 14px; }
   .term-count { color: var(--muted); font-family: var(--mono); }
   .back-link { color: var(--muted); font-size: 13px; }
+  .post { max-width: 756px; margin-inline: auto; }
   .post-header { margin-block: 42px; }
   .post-meta { margin-block: 35px 16px; display: flex; gap: 20px; color: var(--muted); font-family: var(--mono); font-size: 12px; }
   .post-header h1 { font-size: clamp(25px, 4vw, 34px); line-height: 1.7; letter-spacing: .02em; font-weight: 650; }
@@ -181,7 +182,7 @@
 }
 
 @layer prose {
-  .prose { font-size: 16px; line-height: 2; }
+  .prose { font-size: 17px; line-height: 2; }
   .prose > :first-child { margin-top: 0; }
   .prose p, .prose ul, .prose ol, .prose blockquote, .prose pre, .prose table { margin-block: 1.5em; }
   .prose h2 { font-size: 24px; margin-block: 2.8em 1em; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
@@ -203,7 +204,7 @@
   .prose th { background: var(--surface); }
   .prose hr { border: 0; border-top: 1px solid var(--line); margin-block: 3em; }
   @media (max-width: 600px) {
-    .prose { font-size: 15px; }
+    .prose { font-size: 16px; line-height: 1.9; max-width: 326px; margin-inline: auto; }
     .prose h2 { font-size: 21px; }
     .prose h3 { font-size: 18px; }
     .prose pre { padding: 16px; }
