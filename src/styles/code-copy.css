@@ -11,7 +11,7 @@
   .code-copy[data-state="copied"] .code-copy-check { display: block; }
   .code-copy-feedback { position: absolute; top: calc(var(--copy-inset) + 4px); right: calc(var(--copy-inset) + 50px); max-width: calc(100% - var(--copy-inset) * 2 - 50px); color: var(--muted); font-family: var(--font); font-size: 12px; line-height: 1.6; }
   .code-copy-feedback:not(:empty) { padding: 5px 9px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
-  .code-copy-feedback[data-state="copied"] { color: var(--copy-success); }
+  .code-copy-feedback[data-state="copied"] { color: #fff; }
   .code-copy-feedback[data-state="failed"] { color: var(--draft-text); }
   .code-copy-status:not([data-state="failed"]) { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
   .code-copy-status[data-state="failed"] { display: block; margin-top: 8px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--muted); font-family: var(--font); font-size: 12px; line-height: 1.6; }
