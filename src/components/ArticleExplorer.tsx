@@ -55,6 +55,10 @@ export default function ArticleExplorer({ articles }: { articles: ArticleSummary
     return () => { cancelled = true; window.clearTimeout(timer); };
   }, [articles, state.query, state.tag, ready, fullText, composing]);
 
+  useEffect(() => {
+    if (ready && window.location.hash === '#article-search') searchInput.current?.focus();
+  }, [ready]);
+
   function update(next: SearchState) {
     setState(next);
     const url = new URL(window.location.href);

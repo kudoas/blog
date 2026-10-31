@@ -1,6 +1,7 @@
 ---
 import { site } from '../site';
 import '../styles/global.css';
+import SearchEntry from '../components/search-entry.astro';
 import ThemeSwitcher from '../components/theme-switcher.astro';
 import themeScript from '../scripts/theme.js?raw';
 
@@ -52,6 +53,7 @@ const imageUrl = new URL(image.startsWith('http') || image.startsWith('/') ? ima
         <nav aria-label="メインナビゲーション">
           <a href="/" aria-current={Astro.url.pathname === '/' ? 'page' : undefined}>記事</a>
           <a href="/tags/" aria-current={Astro.url.pathname.startsWith('/tags/') ? 'page' : undefined}>タグ</a>
+          <SearchEntry />
           <a href={site.about}>About <span aria-hidden="true">↗</span></a>
         </nav>
         <ThemeSwitcher />
