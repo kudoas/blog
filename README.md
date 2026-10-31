@@ -25,9 +25,6 @@ bun run preview:worker  # cf dev で開発サーバーを起動
 ブラウザテストには Chrome を使用します。CI では Playwright の Chromium を導入します。
 既存記事には textlint の警告が22件あります。移行時に本文を変更していません。
 
-Codex に実装・検証・PR 作成を任せる環境は
-[Dev Container の手順](docs/development/devcontainer.md) を参照してください。
-
 ## 記事を書く
 
 `content/ja/posts/<slug>.md` に Markdown を追加します。ファイル名が

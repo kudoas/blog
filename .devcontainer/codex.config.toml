@@ -1,4 +1,0 @@
-# Docker is the isolation boundary. Do not copy this profile to the host.
-approval_policy = "never"
-sandbox_mode = "danger-full-access"
-cli_auth_credentials_store = "file"
