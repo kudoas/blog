@@ -4,7 +4,24 @@ import { existsSync, readFileSync } from 'node:fs';
 import { load } from 'cheerio';
 import { posts, external } from '../fixtures/content.ts';
 
-const page = (path) => load(readFileSync(`dist/${path}`, 'utf8'));
+const output = '.cloudflare/output/v0/workers/default/assets';
+
+const page = (path) => load(readFileSync(`${output}/${path}`, 'utf8'));
+
+test('packages an assets-only Worker with search and legacy redirects', () => {
+  const config = JSON.parse(readFileSync('.cloudflare/output/v0/workers/default/worker.config.json', 'utf8'));
+  const root = JSON.parse(readFileSync('.cloudflare/output/v0/config.json', 'utf8'));
+  assert.equal(config.name, 'tech-blog');
+  assert.equal(config.assets.htmlHandling, 'force-trailing-slash');
+  assert.equal(config.assets.notFoundHandling, '404-page');
+  assert.equal(root.buildContext.isPreview, false);
+  assert.equal(root.buildContext.mode, 'production');
+  assert.equal(config.manifest, undefined);
+  assert.equal(existsSync('.cloudflare/output/v0/workers/default/bundle'), false);
+  assert.deepEqual(Object.values(config.env).map(({ type }) => type), ['assets']);
+  assert.equal(readFileSync(`${output}/_redirects`, 'utf8'), readFileSync('static/_redirects', 'utf8'));
+  assert.ok(existsSync(`${output}/pagefind/pagefind.js`));
+});
 
 test('all published local and external entries appear in prerendered HTML', () => {
   const $ = page('index.html');
@@ -17,7 +34,7 @@ test('all published local and external entries appear in prerendered HTML', () =
 });
 
 test('ships the search bundle and restricts local indexing to article content', () => {
-  assert.ok(existsSync('dist/pagefind/pagefind.js'));
+  assert.ok(existsSync(`${output}/pagefind/pagefind.js`));
   assert.equal(page('index.html')('[data-pagefind-body]').length, 0);
   for (const { id } of posts) {
     const $ = page(`posts/${id}/index.html`);
@@ -39,14 +56,14 @@ test('each Markdown article retains its URL, metadata, image paths and heading a
     assert.ok($('meta[name="description"]').attr('content'));
     const image = $('meta[property="og:image"]').attr('content');
     assert.ok(image.startsWith('https://blog.da1chi.net/'));
-    assert.ok(existsSync(`dist${new URL(image).pathname}`));
+    assert.ok(existsSync(`${output}${new URL(image).pathname}`));
     for (const a of $('.toc a').toArray()) {
       const fragment = $(a).attr('href').slice(1);
       assert.ok($('[id]').toArray().some((heading) => $(heading).attr('id') === fragment), fragment);
     }
     for (const img of $('.prose img').toArray()) {
       const url = new URL($(img).attr('src'), 'https://blog.da1chi.net');
-      if (url.host === 'blog.da1chi.net') assert.ok(existsSync(`dist${url.pathname}`), url.pathname);
+      if (url.host === 'blog.da1chi.net') assert.ok(existsSync(`${output}${url.pathname}`), url.pathname);
     }
     assert.equal($('astro-island').length, 0, 'article pages must not hydrate React');
   }
@@ -61,21 +78,21 @@ test('Markdown rendering preserves code, inline HTML and hard line breaks', () =
 });
 
 test('RSS includes exactly the published local posts and tag feeds stay filtered', () => {
-  const $ = load(readFileSync('dist/index.xml', 'utf8'), { xml: true });
+  const $ = load(readFileSync(`${output}/index.xml`, 'utf8'), { xml: true });
   assert.equal($('item').length, posts.length);
-  const react = load(readFileSync('dist/tags/react/index.xml', 'utf8'), { xml: true });
+  const react = load(readFileSync(`${output}/tags/react/index.xml`, 'utf8'), { xml: true });
   assert.equal(react('item').length, posts.filter(({ data }) => data.tags?.includes('React')).length);
   assert.equal($('item link').toArray().some((node) => $(node).text().includes('zenn.dev')), false);
 });
 
 test('taxonomy links and the sitemap point at generated pages', () => {
   const $ = page('tags/index.html');
-  for (const a of $('.term-list a').toArray()) assert.ok(existsSync(`dist${decodeURI($(a).attr('href'))}index.html`));
-  const sitemap = load(readFileSync('dist/sitemap-0.xml', 'utf8'), { xml: true });
+  for (const a of $('.term-list a').toArray()) assert.ok(existsSync(`${output}${decodeURI($(a).attr('href'))}index.html`));
+  const sitemap = load(readFileSync(`${output}/sitemap-0.xml`, 'utf8'), { xml: true });
   const urls = sitemap('loc').map((_, node) => sitemap(node).text()).get();
   for (const { id } of posts) assert.ok(urls.includes(`https://blog.da1chi.net/posts/${id}/`));
   assert.equal(urls.some((url) => url.includes('/404')), false);
-  assert.ok(existsSync('dist/categories/dev/index.html'));
+  assert.ok(existsSync(`${output}/categories/dev/index.html`));
 });
 
 test('legacy public assets remain available at their original paths', () => {
@@ -86,6 +103,6 @@ test('legacy public assets remain available at their original paths', () => {
     'images/header/background.jpg',
     'manifest.json',
   ]) {
-    assert.ok(existsSync(`dist/${path}`), path);
+    assert.ok(existsSync(`${output}/${path}`), path);
   }
 });
