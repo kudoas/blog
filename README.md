@@ -97,7 +97,10 @@ HTML と索引は `.cloudflare/output/v0/workers/default/assets/` に出力し�
 
 下書きと一覧には読み込まず、公開記事では iframe を遅延読み込みします。
 JavaScript が無効、または外部サービスが利用できない場合も、記事末尾の
-「GitHub でコメントを見る・書く」から参加できます。管理・編集・削除は GitHub Discussions
+「GitHub でコメントを見る」から作成済みの Discussion を開けます。
+記事ごとの Discussion は最初のコメントまたはリアクションで自動作成されます。
+まだ作成されていない記事への初回投稿には、記事上の giscus 欄を使用してください。
+管理・編集・削除は GitHub Discussions
 で行い、リアクションの変更は投稿した GitHub アカウントで行います。
 外す場合は記事ページの `PostComments` と backlink メタデータを削除します。
 既存のコメントは GitHub に残り、アプリ連携を外しても自動削除しません。

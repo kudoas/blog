@@ -74,7 +74,7 @@ test('keeps article links and the body readable without JavaScript', async ({ br
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Error BoundaryをFunction Componentで扱う');
   await expect(page.locator('.prose pre').first()).toBeVisible();
   await expect(page.getByRole('heading', { name: 'コメント・リアクション' })).toBeVisible();
-  const discussion = page.getByRole('link', { name: 'GitHub でコメントを見る・書く' });
+  const discussion = page.getByRole('link', { name: 'GitHub でコメントを見る' });
   await expect(discussion).toBeVisible();
   expect(new URL((await discussion.getAttribute('href'))!).searchParams.get('discussions_q')).toBe('category:Announcements "/posts/func-error-boundary/"');
   await context.close();
@@ -181,7 +181,7 @@ test('article content and GitHub fallback remain usable when comments cannot loa
   await page.route('https://giscus.app/**', route => route.abort());
   await page.goto('/posts/func-error-boundary/?source=comments-test#comments');
   await expect(page.getByRole('heading', { name: 'コメント・リアクション' })).toBeVisible();
-  const fallback = page.getByRole('link', { name: 'GitHub でコメントを見る・書く' });
+  const fallback = page.getByRole('link', { name: 'GitHub でコメントを見る' });
   await expect(fallback).toBeVisible();
   await fallback.focus();
   await expect(fallback).toBeFocused();
