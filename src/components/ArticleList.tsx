@@ -16,7 +16,9 @@ export default function ArticleList({ articles, excerpts = {} }: { articles: Art
                 </a>
               </h2>
               {/* Only Pagefind-generated excerpts are HTML: its API escapes content before adding <mark>. */}
-              {article.kind === 'local' && excerpts[article.id] && <p className="article-excerpt" dangerouslySetInnerHTML={{ __html: excerpts[article.id] }} />}
+              {article.kind === 'local' && excerpts[article.id]
+                ? <p className="article-excerpt" dangerouslySetInnerHTML={{ __html: excerpts[article.id] }} />
+                : article.description && <p className="article-description">{article.description}</p>}
               <div className="article-meta">
                 <span className={article.kind === 'external' ? 'article-source' : 'article-source local-source'}>{article.source}</span>
                 {article.draft && <span className="draft-label">下書き</span>}

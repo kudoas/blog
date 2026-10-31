@@ -4,7 +4,8 @@
   url: https://zenn.dev/da1chi/articles/8651e73d044cc2
   date: 2025-12-07T12:25:22.742+09:00
   source: Zenn
-  tags: []
+  tags: [Angular, Web Components]
+  description: Angular CDK Overlay でネイティブ popover を使う設定と、Angular Elements のカプセル化への利点を紹介します。
   categories:
     - DEV
 - id: zenn-939f27321ba016
@@ -12,7 +13,8 @@
   url: https://zenn.dev/da1chi/articles/939f27321ba016
   date: 2024-04-17T08:30:00.600+09:00
   source: Zenn
-  tags: []
+  tags: [Renovate, GitHub Actions, Docker]
+  description: Renovate の推奨プリセットを読み解き、Docker・GitHub Actions・npm のバージョン固定と依存関係管理を考えます。
   categories:
     - DEV
 - id: zenn-43c4a9538a177f
@@ -20,7 +22,8 @@
   url: https://zenn.dev/da1chi/articles/43c4a9538a177f
   date: 2024-12-11T09:19:24.853+09:00
   source: Zenn
-  tags: []
+  tags: [Angular, OSS]
+  description: Angular 日本語ドキュメントの軽微なミスを、ブラウザ上の編集から Pull Request で修正する手順を紹介します。
   categories:
     - DEV
 - id: zenn-377ffc4d08d22c
@@ -28,7 +31,8 @@
   url: https://zenn.dev/da1chi/articles/377ffc4d08d22c
   date: 2024-05-18T08:04:30.746+09:00
   source: Zenn
-  tags: []
+  tags: [Angular, Signals]
+  description: 非同期処理後に描画される要素を、ViewChild と Signals の変更検知を使って参照する方法を紹介します。
   categories:
     - DEV
 - id: zenn-ec2f211f31fc40
@@ -36,7 +40,8 @@
   url: https://zenn.dev/da1chi/articles/ec2f211f31fc40
   date: 2024-04-03T18:30:00.369+09:00
   source: Zenn
-  tags: []
+  tags: [Angular, Bun]
+  description: Angular CLI で利用できる Bun・npm・yarn・pnpm のインストールとビルド時間を GitHub Actions 上で比較します。
   categories:
     - DEV
 - id: zenn-1d39e61b1b28f4
@@ -44,7 +49,8 @@
   url: https://zenn.dev/da1chi/articles/1d39e61b1b28f4
   date: 2024-04-08T18:26:35.229+09:00
   source: Zenn
-  tags: []
+  tags: [Bun, GitHub Actions]
+  description: バイナリ形式の bun.lockb の差分を、GitHub Actions と github-comment で Pull Request に表示する方法を紹介します。
   categories:
     - DEV
 - id: zenn-8d4f5672792d82
@@ -52,7 +58,8 @@
   url: https://zenn.dev/da1chi/articles/8d4f5672792d82
   date: 2024-09-05T21:29:53.237+09:00
   source: Zenn
-  tags: []
+  tags: [Ruby, RuboCop, GitHub Actions]
+  description: RuboCop の TODO 設定を CI で再生成し、コード変更に伴う .rubocop_todo.yml の更新漏れを検出します。
   categories:
     - DEV
 - id: zenn-4acc42272926e6
@@ -60,7 +67,8 @@
   url: https://zenn.dev/da1chi/articles/4acc42272926e6
   date: 2024-06-02T23:13:30.217+09:00
   source: Zenn
-  tags: []
+  tags: [Angular, Forms]
+  description: ValidatorFn と AsyncValidatorFn の仕組みを確認し、Angular のフォームに独自の検証ルールを実装します。
   categories:
     - DEV
 - id: zenn-972d9290e3d7b8
@@ -68,7 +76,8 @@
   url: https://zenn.dev/da1chi/articles/972d9290e3d7b8
   date: 2024-05-05T20:50:28.775+09:00
   source: Zenn
-  tags: []
+  tags: [Angular]
+  description: Angular v18 の ng-content に既定のコンテンツを設定する書き方と、動的な切り替えに関する注意点を紹介します。
   categories:
     - DEV
 - id: zenn-e4369860b67d66
@@ -76,7 +85,8 @@
   url: https://zenn.dev/da1chi/articles/e4369860b67d66
   date: 2025-02-09T10:15:27.121+09:00
   source: Zenn
-  tags: []
+  tags: [Angular, Testing]
+  description: Angular CLI の実験的な Web Test Runner ビルダーを有効にし、設定方法とサポートされる機能を確認します。
   categories:
     - DEV
 - id: zenn-5e8adbbf12c634
@@ -84,7 +94,8 @@
   url: https://zenn.dev/da1chi/articles/5e8adbbf12c634
   date: 2024-07-21T20:22:12.650+09:00
   source: Zenn
-  tags: []
+  tags: [Docker, AWS, GitHub Actions]
+  description: docker/build-push-action から Amazon ECR にイメージを送る際に必要な IAM 権限と、403 エラーの原因を整理します。
   categories:
     - DEV
 - id: zenn-806fa57b4eff3c
@@ -92,7 +103,8 @@
   url: https://zenn.dev/da1chi/articles/806fa57b4eff3c
   date: 2024-05-12T08:58:34.912+09:00
   source: Zenn
-  tags: []
+  tags: [Go, SQLite, SQLBoiler]
+  description: SQLite の日付フィールドと SQLBoiler の自動タイムスタンプ処理で起きる型の不整合と、その対処方法を紹介します。
   categories:
     - DEV
 - id: zenn-fdf271a44ba6b1
@@ -100,6 +112,7 @@
   url: https://zenn.dev/da1chi/articles/fdf271a44ba6b1
   date: 2024-04-28T17:28:00.183+09:00
   source: Zenn
-  tags: []
+  tags: [GitHub, GitHub API]
+  description: GitHub Projects の種類ごとに利用できる REST・GraphQL API と、操作に必要なトークンの違いを整理します。
   categories:
     - DEV

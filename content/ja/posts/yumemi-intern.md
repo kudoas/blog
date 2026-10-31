@@ -1,7 +1,7 @@
 ---
 title: "ゆめみのインターンに参加した"
 date: 2020-12-06T09:00:00+09:00
-description: ""
+description: "ゆめみのフロントエンド開発インターンで、Figma の画面実装からコンポーネント設計・テスト・開発ツールについて学んだことをまとめます。"
 author: daichi
 categories: ["DEV"]
 tags: ["intern"]

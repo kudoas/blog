@@ -126,6 +126,7 @@
   .search-input input { width: 100%; padding: 10px 12px 10px 42px; }
   .search-input input::placeholder { color: var(--muted); opacity: 1; }
   .search-help { color: var(--muted); font-size: 12px; line-height: 1.8; margin-top: 10px; }
+  .article-description { color: var(--muted); font-size: 14px; line-height: 1.8; margin-top: 8px; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; }
   .article-excerpt { color: var(--muted); font-size: 13px; line-height: 1.9; margin-top: 8px; overflow-wrap: anywhere; }
   .article-excerpt mark { background: var(--highlight-bg); color: var(--text); border-radius: 2px; }
   .search-fields select { max-width: 185px; padding-inline: 12px 24px; }
