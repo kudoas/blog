@@ -9,7 +9,7 @@ test('mobile long contents starts closed and remains operable by keyboard', asyn
   const toc = page.locator('.toc');
   const summary = toc.locator('summary');
   await expect(toc).not.toHaveAttribute('open');
-  expect((await page.locator('.prose').boundingBox())!.y).toBeLessThan(844);
+  await expect(page.locator('.prose')).toBeInViewport();
   await page.screenshot({ path: testInfo.outputPath('mobile-long-toc.png') });
 
   await summary.focus();

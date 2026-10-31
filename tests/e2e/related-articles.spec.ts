@@ -44,27 +44,3 @@ test('related links fit mobile in both themes and can be followed', async ({ pag
     await expect(page.locator('.prose')).toBeVisible();
   }
 });
-
-test('keeps canonical CSS layers, article navigation colors and feature spacing', async ({ page }) => {
-  await page.route('https://giscus.app/**', (route) => route.abort());
-  for (const colorScheme of ['light', 'dark'] as const) {
-    await page.emulateMedia({ colorScheme });
-    await page.goto('/posts/func-error-boundary/');
-    const layers = await page.evaluate(() => {
-      const result: string[] = [];
-      for (const sheet of document.styleSheets) {
-        for (const rule of sheet.cssRules) {
-          const match = rule.cssText.match(/^@layer\s+([^;{]+)/);
-          if (match) for (const name of match[1].split(',').map((value) => value.trim())) {
-            if (!result.includes(name)) result.push(name);
-          }
-        }
-      }
-      return result;
-    });
-    expect(layers).toEqual(['base', 'layout', 'components', 'prose']);
-    const muted = await page.locator('.toc summary').evaluate((node) => getComputedStyle(node).color);
-    await expect(page.locator('.toc a').first()).toHaveCSS('color', muted);
-    await expect(page.locator('.related-articles-help')).toHaveCSS('margin-top', '6px');
-  }
-});

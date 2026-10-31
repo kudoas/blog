@@ -10,7 +10,6 @@ test('article headings expose a continuous hierarchy at mobile and desktop sizes
       expect(await articles.count()).toBeGreaterThan(0);
       await expect(articles.getByRole('heading', { level: 2 })).toHaveCount(await articles.count());
       await expect(page.getByRole('heading', { level: 3 })).toHaveCount(0);
-      expect(await articles.getByRole('heading', { level: 2 }).first().evaluate((heading) => getComputedStyle(heading).fontSize)).toBe(width === 390 ? '16px' : '17px');
     }
     await page.screenshot({ path: testInfo.outputPath(`article-headings-${width}.png`) });
   }

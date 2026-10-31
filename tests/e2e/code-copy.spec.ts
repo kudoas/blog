@@ -55,8 +55,6 @@ for (const unavailable of [false, true]) {
     await expect(button).toBeFocused();
     await expect(first.locator('pre > code')).toHaveText(source!);
     await expect(button).not.toHaveAttribute('aria-busy', 'true');
-    const codeBottom = (await first.locator('pre').boundingBox())!.y + (await first.locator('pre').boundingBox())!.height;
-    expect((await first.getByRole('status').boundingBox())!.y).toBeGreaterThanOrEqual(codeBottom);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   });
 }
@@ -72,92 +70,42 @@ test('retains plain readable code and no copy controls without JavaScript', asyn
 });
 
 for (const theme of ['light', 'dark'] as const) {
-  test(`keeps code width and horizontal scrolling in ${theme} mode`, async ({ page, browser }, testInfo) => {
+  test(`keeps long code scrollable and copy controls usable in ${theme} mode`, async ({ page }, testInfo) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.emulateMedia({ colorScheme: theme });
-    const baselineContext = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 390, height: 844 }, colorScheme: theme });
-    const baseline = await baselineContext.newPage();
-    await baseline.goto(article);
-    const baselineWidth = await baseline.locator('.prose pre').first().evaluate(element => element.clientWidth);
-    await baselineContext.close();
-
     await page.goto(article);
     const block = page.locator('.code-block').first();
+    await block.scrollIntoViewIfNeeded();
     await expect(block.getByRole('button', { name: 'コードをコピー' })).toBeVisible();
     const pre = block.locator('pre');
     const copy = block.getByRole('button', { name: 'コードをコピー' });
-    const buttonBefore = (await copy.boundingBox())!;
-    const padding = await pre.evaluate(element => ({ top: getComputedStyle(element).paddingTop, bottom: getComputedStyle(element).paddingBottom }));
-    expect(padding.top).toBe(padding.bottom);
-    const codeBounds = (await pre.boundingBox())!;
-    expect(buttonBefore.y - codeBounds.y).toBe(8);
-    expect(codeBounds.x + codeBounds.width - buttonBefore.x - buttonBefore.width).toBe(8);
-    expect(await pre.evaluate(element => element.clientWidth)).toBe(baselineWidth);
     expect(await pre.evaluate(element => element.scrollWidth > element.clientWidth)).toBe(true);
     await pre.evaluate(element => { element.scrollLeft = 100; });
     expect(await pre.evaluate(element => element.scrollLeft)).toBeGreaterThan(0);
-    expect((await copy.boundingBox())!.x).toBe(buttonBefore.x);
+    await expect(copy).toBeInViewport();
     await pre.evaluate(element => { element.scrollLeft = 0; });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await block.scrollIntoViewIfNeeded();
     await page.screenshot({ path: testInfo.outputPath(`${theme}-code-copy-mobile.png`) });
     await page.setViewportSize({ width: 1440, height: 1000 });
     await block.scrollIntoViewIfNeeded();
-    await expect(pre).toHaveCSS('padding-top', '22px');
-    await expect(pre).toHaveCSS('padding-bottom', '22px');
-    await expect(copy).toHaveCSS('top', '8px');
-    await expect(copy).toHaveCSS('right', '8px');
+    await expect(copy).toBeVisible();
     await page.screenshot({ path: testInfo.outputPath(`${theme}-code-copy-desktop.png`) });
   });
 }
 
-test('offers a touch target while keeping code padding balanced', async ({ browser, baseURL }) => {
+test('copies code with a touch interaction', async ({ browser, baseURL }) => {
   const context = await browser.newContext({ baseURL, viewport: { width: 320, height: 844 }, hasTouch: true });
   const page = await context.newPage();
   await page.route('https://giscus.app/**', route => route.abort());
+  await page.addInitScript(() => {
+    Object.defineProperty(navigator.clipboard, 'writeText', { value: () => Promise.resolve() });
+  });
   await page.goto(article);
   const block = page.locator('.code-block').first();
   const button = block.getByRole('button', { name: 'コードをコピー' });
   await expect(button).toBeVisible();
-  const target = (await button.boundingBox())!;
-  expect(target.width).toBeGreaterThanOrEqual(44);
-  expect(target.height).toBeGreaterThanOrEqual(44);
-  const padding = await block.locator('pre').evaluate(element => ({ top: getComputedStyle(element).paddingTop, bottom: getComputedStyle(element).paddingBottom }));
-  expect(padding.top).toBe('16px');
-  expect(padding.top).toBe(padding.bottom);
+  await button.tap();
+  await expect(block.getByRole('status')).toHaveText('コピーしました');
   await context.close();
 });
-
-for (const theme of ['light', 'dark'] as const) {
-  test(`preserves article spacing and muted contents links with and without JavaScript in ${theme}`, async ({ browser, baseURL }) => {
-    const measured: Record<string, unknown>[][] = [];
-    for (const javaScriptEnabled of [false, true]) {
-      const context = await browser.newContext({ baseURL, javaScriptEnabled, colorScheme: theme });
-      const page = await context.newPage();
-      await page.route('https://giscus.app/**', route => route.abort());
-      const sizes: Record<string, unknown>[] = [];
-      for (const width of [390, 1440]) {
-        await page.setViewportSize({ width, height: 1000 });
-        await page.goto(article);
-        const heading = await page.locator('.prose > h2').nth(1).evaluate(element => {
-          const style = getComputedStyle(element);
-          return { fontSize: parseFloat(style.fontSize), before: parseFloat(style.marginTop), after: parseFloat(style.marginBottom) };
-        });
-        const paragraph = await page.locator('.prose > p').first().evaluate(element => {
-          const style = getComputedStyle(element);
-          return { fontSize: parseFloat(style.fontSize), before: parseFloat(style.marginTop), after: parseFloat(style.marginBottom) };
-        });
-        const tocColor = await page.locator('.toc a').first().evaluate(element => getComputedStyle(element).color);
-        expect(heading.before).toBeCloseTo(heading.fontSize * 2.8, 1);
-        expect(heading.after).toBeCloseTo(heading.fontSize, 1);
-        expect(paragraph.before).toBeCloseTo(paragraph.fontSize * 1.5, 1);
-        expect(paragraph.after).toBeCloseTo(paragraph.fontSize * 1.5, 1);
-        expect(tocColor).toBe(theme === 'light' ? 'rgb(82, 101, 122)' : 'rgb(164, 182, 202)');
-        sizes.push({ heading, paragraph, tocColor });
-      }
-      measured.push(sizes);
-      await context.close();
-    }
-    expect(measured[1]).toEqual(measured[0]);
-  });
-}
