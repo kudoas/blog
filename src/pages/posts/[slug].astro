@@ -3,6 +3,7 @@ import '../../styles/reading-navigation.css';
 import { render } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import RelatedArticles from '../../components/related-articles.astro';
 import PostComments from '../../components/PostComments.astro';
 import '../../styles/code-copy.css';
 import { getPosts } from '../../lib/content';
@@ -41,6 +42,7 @@ const longToc = toc.length > 10;
       }
     </script>}
     <div class="prose" data-pagefind-body><Content /></div>
+    {!post.data.draft && <RelatedArticles id={post.id} tags={post.data.tags} />}
     {!post.data.draft && <PostComments pathname={`/posts/${post.id}/`} />}
     <div class="post-end"><a href="/" data-article-return-link="end">← 記事一覧へ戻る</a></div>
   </article>
