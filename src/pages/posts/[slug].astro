@@ -10,12 +10,12 @@ export async function getStaticPaths() {
 }
 interface Props { post: CollectionEntry<'posts'> }
 const { post } = Astro.props;
-const { Content, headings } = await render(post);
-const toc = headings.filter(({ depth }) => depth >= 2 && depth <= 3);
 const returnTaxonomies = [
   ...post.data.tags.map(tagUrl),
   ...post.data.categories.map((category) => `/categories/${encodeURIComponent(tagSlug(category))}/`),
 ];
+const { Content, headings } = await render(post);
+const toc = headings.filter(({ depth }) => depth >= 2 && depth <= 3);
 ---
 <BaseLayout title={post.data.title} description={post.data.description} image={post.data.images[0]} date={post.data.date} article noindex={post.data.draft}>
   <article class="post">
