@@ -13,14 +13,17 @@ export default function ArticleExplorer({ articles }: { articles: ArticleSummary
   const [state, setState] = useState<SearchState>({ query: '', tag: '' });
   const [ready, setReady] = useState(false);
   const [composing, setComposing] = useState(false);
-  const [result, setResult] = useState<SearchResult | null>(null);
+  const [result, setResult] = useState<SearchResult>(() => ({
+    query: '', tag: '', hits: articles.map((article) => ({ article, excerpt: '' })), failed: false,
+  }));
   const tags = collectTerms(articles);
   const fullText = !import.meta.env.DEV && Boolean(normalizeText(state.query));
   const current = result?.query === state.query && result.tag === state.tag ? result : null;
   const busy = ready && fullText && (composing || !current);
   const fallback = !fullText || current?.failed;
-  const visible = fallback ? filterArticles(articles, state.query, state.tag) : current?.hits.map(({ article }) => article) ?? [];
-  const excerpts = !fallback && current ? Object.fromEntries(current.hits.map(({ article, excerpt }) => [article.id, excerpt])) : {};
+  const displayed = current ?? result;
+  const visible = fallback ? filterArticles(articles, state.query, state.tag) : displayed.hits.map(({ article }) => article);
+  const excerpts = !fallback ? Object.fromEntries(displayed.hits.map(({ article, excerpt }) => [article.id, excerpt])) : {};
   const active = Boolean(state.query || state.tag);
 
   useEffect(() => {
@@ -35,14 +38,18 @@ export default function ArticleExplorer({ articles }: { articles: ArticleSummary
   }, []);
 
   useEffect(() => {
-    if (!ready || !fullText || composing) return;
+    if (!ready || composing) return;
+    if (!fullText) {
+      setResult({ ...state, hits: filterArticles(articles, state.query, state.tag).map((article) => ({ article, excerpt: '' })), failed: false });
+      return;
+    }
     let cancelled = false;
     const timer = window.setTimeout(async () => {
       try {
         const hits = await searchArticles(articles, state.query, state.tag);
         if (!cancelled) setResult({ ...state, hits, failed: false });
       } catch {
-        if (!cancelled) setResult({ ...state, hits: [], failed: true });
+        if (!cancelled) setResult({ ...state, hits: filterArticles(articles, state.query, state.tag).map((article) => ({ article, excerpt: '' })), failed: true });
       }
     }, 300);
     return () => { cancelled = true; window.clearTimeout(timer); };
@@ -85,7 +92,8 @@ export default function ArticleExplorer({ articles }: { articles: ArticleSummary
         {active && <button type="button" className="clear-search" onClick={() => { update({ query: '', tag: '' }); searchInput.current?.focus(); }}>条件をクリア</button>}
       </div>
       <div aria-busy={busy}>
-        {!busy && (visible.length > 0 ? <ArticleList articles={visible} excerpts={excerpts} /> : <p className="empty-state">条件に合う記事が見つかりませんでした。</p>)}
+        {busy && <p className="search-help">検索中は変更前の一覧を表示しています。</p>}
+        {visible.length > 0 ? <ArticleList articles={visible} excerpts={excerpts} /> : <p className="empty-state">{busy ? '変更前の条件に合う記事はありません。' : '条件に合う記事が見つかりませんでした。'}</p>}
       </div>
     </div>
   );
