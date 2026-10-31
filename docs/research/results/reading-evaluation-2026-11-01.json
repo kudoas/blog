@@ -1,0 +1,112 @@
+{
+  "sourceCommit": "fe32bddeb95875677d4d55915b4a5f413c87aeb0",
+  "date": "2026-10-31T15:53:40.160Z",
+  "conditions": {
+    "viewportWidths": [
+      320,
+      390,
+      1440
+    ],
+    "height": 1000,
+    "themes": [
+      "light",
+      "dark"
+    ],
+    "giscus": "network blocked to isolate layout",
+    "humanEvaluation": false,
+    "browsers": {
+      "chrome": "156.0.8078.80",
+      "firefox": "157.0",
+      "webkit": "27.2"
+    }
+  },
+  "density": [
+    {
+      "width": 390,
+      "candidate": "baseline-three-lines",
+      "listHeight": 5123,
+      "visibleTitles": 2,
+      "descriptions": 22,
+      "clippedDescriptions": 4,
+      "documentOverflow": false
+    },
+    {
+      "width": 390,
+      "candidate": "two-lines",
+      "listHeight": 4695,
+      "visibleTitles": 3,
+      "descriptions": 22,
+      "clippedDescriptions": 17,
+      "documentOverflow": false
+    },
+    {
+      "width": 390,
+      "candidate": "compact-spacing",
+      "listHeight": 4903,
+      "visibleTitles": 3,
+      "descriptions": 22,
+      "clippedDescriptions": 4,
+      "documentOverflow": false
+    },
+    {
+      "width": 1440,
+      "candidate": "baseline-three-lines",
+      "listHeight": 3791,
+      "visibleTitles": 4,
+      "descriptions": 22,
+      "clippedDescriptions": 0,
+      "documentOverflow": false
+    },
+    {
+      "width": 1440,
+      "candidate": "two-lines",
+      "listHeight": 3765,
+      "visibleTitles": 4,
+      "descriptions": 22,
+      "clippedDescriptions": 1,
+      "documentOverflow": false
+    },
+    {
+      "width": 1440,
+      "candidate": "compact-spacing",
+      "listHeight": 3351,
+      "visibleTitles": 4,
+      "descriptions": 22,
+      "clippedDescriptions": 0,
+      "documentOverflow": false
+    }
+  ],
+  "reading": {
+    "cases": 162,
+    "articles": 9,
+    "documentOverflowCases": 0
+  },
+  "zoom": [
+    {
+      "factor": 1,
+      "width": 1440,
+      "height": 913,
+      "dpr": 1,
+      "visualScale": 1,
+      "documentOverflow": false,
+      "proseWidth": 756,
+      "proseFont": "17px",
+      "proseHeight": 4492.1875,
+      "codeWidth": 754,
+      "codeScrollWidth": 754
+    },
+    {
+      "factor": 2,
+      "width": 720,
+      "height": 456,
+      "dpr": 2,
+      "visualScale": 1,
+      "documentOverflow": false,
+      "proseWidth": 672,
+      "proseFont": "17px",
+      "proseHeight": 4560.25,
+      "codeWidth": 670,
+      "codeScrollWidth": 670
+    }
+  ]
+}

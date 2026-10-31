@@ -1,0 +1,47 @@
+{
+  "baseCommit": "fe32bddeb95875677d4d55915b4a5f413c87aeb0",
+  "featureCommits": {
+    "108": "fa3196ad8ce2ba23cf55dc973a3cfdc4a926293b",
+    "110": "668ac74ce25e58be17bdd798cadf685633dc524f",
+    "112": "3053279691e6e4a508e38bf0b66916f7cc0ed460",
+    "113": "10dc903543fb3e4874a071e7e61e7b3ddd0d2188"
+  },
+  "date": "2026-10-31T21:57:58.648Z",
+  "chromeE2ECases": 67,
+  "readingCases": 162,
+  "documentOverflowCases": 0,
+  "versions": {
+    "chrome": "156.0.8078.80",
+    "firefox": "157.0",
+    "webkit": "27.2"
+  },
+  "zoom": [
+    {
+      "factor": 1,
+      "width": 1440,
+      "height": 913,
+      "dpr": 1,
+      "visualScale": 1,
+      "documentOverflow": false,
+      "proseWidth": 756,
+      "proseFont": "17px",
+      "proseHeight": 4517.6875,
+      "codeWidth": 754,
+      "codeScrollWidth": 754
+    },
+    {
+      "factor": 2,
+      "width": 720,
+      "height": 456,
+      "dpr": 2,
+      "visualScale": 1,
+      "documentOverflow": false,
+      "proseWidth": 672,
+      "proseFont": "17px",
+      "proseHeight": 4560.25,
+      "codeWidth": 670,
+      "codeScrollWidth": 670
+    }
+  ],
+  "deployed": false
+}

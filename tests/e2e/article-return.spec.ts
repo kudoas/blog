@@ -18,7 +18,7 @@ test('returns from an article to its tag or category listing', async ({ page }) 
     await page.getByRole('link', { name: 'Error BoundaryをFunction Componentで扱う', exact: true }).click();
     await expect(page.locator('[data-article-return-link="top"]')).toHaveText(`← ${label}の記事一覧`);
     await page.locator('[data-article-return-link="end"]').click();
-    expect(new URL(page.url()).pathname).toBe(path);
+    await expect(page).toHaveURL(url => url.pathname === path);
   }
 });
 
