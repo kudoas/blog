@@ -42,15 +42,3 @@ Please answer concisely and politely in Japanese with emoji.
 - Keep tests about observable behavior, including route and asset compatibility.
 - Preserve unrelated work. Stage only intended files. Commit locally after checks;
   do not push without an explicit request.
-
-## Autonomous tasks in the Dev Container
-
-- See `docs/development/devcontainer.md` for authentication, execution, and recovery.
-- The `blog-agent` controller creates a task worktree from the latest main. When
-  invoked by that controller, reuse its worktree and branch; do not create another.
-- Make routine decisions autonomously; do not ask for command approvals. Continue
-  implementation and repair until verification succeeds.
-- Implement and verify, leaving changes uncommitted for the controller. It commits
-  only after independent verification, then pushes the task branch and creates a PR.
-- Do not merge, push main, force-push, or deploy from the container. Cloudflare
-  credentials remain in GitHub Actions.
