@@ -157,6 +157,8 @@
   .post-header { margin-block: 42px; }
   .post-meta { margin-block: 35px 16px; display: flex; gap: 20px; color: var(--muted); font-family: var(--mono); font-size: 12px; }
   .post-header h1 { font-size: clamp(25px, 4vw, 34px); line-height: 1.7; letter-spacing: .02em; font-weight: 650; }
+  .post-icon { margin-block: 36px 40px; text-align: center; font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif; font-size: clamp(96px, 12vw, 160px); line-height: 1.2; user-select: none; }
+  .post-header-with-icon .post-meta { margin-block: 18px 0; }
   .post-tags { font-size: 12px; margin-top: 22px; }
   .toc { padding: 18px 22px; border: 1px solid var(--line); border-radius: 6px; margin-block: 38px 48px; }
   .toc summary { cursor: pointer; font-size: 13px; color: var(--muted); }

@@ -33,6 +33,7 @@ bun run preview:worker  # cf dev で開発サーバーを起動
 ```yaml
 ---
 title: 記事のタイトル
+icon: "🪐"
 date: 2026-09-25T12:00:00+09:00
 description: 記事の説明
 tags: [Astro, React]
@@ -41,6 +42,10 @@ draft: true
 images: [tcard/example.png]
 ---
 ```
+
+`icon` は省略可能な絵文字アイコンです。指定すると、記事ページのタイトル上部へ大きく表示します。
+未指定の記事にはアイコンやそのための余白を表示しません。一覧・RSS・OG画像には反映しません。
+絵文字の見た目は閲覧環境のフォントに依存します。
 
 `draft: true` は開発プレビューだけで表示します。公開時に `false` に変更してください。
 古い記事のように `draft` がない場合は公開記事として扱います。

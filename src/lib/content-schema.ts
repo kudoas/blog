@@ -6,6 +6,7 @@ const terms = z.array(text).default([]);
 
 export const postSchema = z.object({
   title: text,
+  icon: text.max(32).optional(),
   date,
   draft: z.boolean().default(false),
   description: z.string().default(''),

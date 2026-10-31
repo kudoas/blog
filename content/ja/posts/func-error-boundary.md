@@ -1,5 +1,6 @@
 ---
 title: "Error BoundaryをFunction Componentで扱う"
+icon: "⚛️"
 date: 2020-10-09T09:43:00+09:00
 description: "React では Error Boundary という子コンポーネントツリーでエラーが発生した際にクラッシュした UI を表示させる代わりに、フォールバック用の UI を表示するコンポーネントがあります。"
 author: daichi
