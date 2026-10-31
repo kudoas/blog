@@ -1,0 +1,17 @@
+@layer components {
+  .search-entry { white-space: nowrap; }
+  .search-dialog { width: min(560px, calc(100% - 32px)); max-height: calc(100dvh - 32px); overflow: auto; padding: 24px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); color: var(--text); }
+  .search-dialog::backdrop { background: rgb(0 0 0 / 55%); }
+  .search-dialog-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 20px; }
+  .search-dialog h2 { font-size: 20px; }
+  .search-dialog-close { width: 44px; height: 44px; padding: 0; border: 0; border-radius: 6px; background: var(--surface); color: var(--text); font-size: 24px; }
+  .search-dialog label { display: block; margin-bottom: 8px; font-size: 14px; }
+  .search-dialog-fields { display: flex; gap: 10px; }
+  .search-dialog input { width: 100%; min-width: 0; height: 46px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--text); }
+  .search-dialog button[type="submit"] { flex: none; min-height: 46px; padding: 10px 16px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--accent); }
+  .search-dialog form > p { margin-top: 14px; color: var(--muted); font-size: 12px; }
+  @media (max-width: 400px) {
+    .search-dialog { padding: 20px; }
+    .search-dialog-fields { flex-direction: column; }
+  }
+}
