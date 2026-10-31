@@ -3,6 +3,7 @@ import { render } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostComments from '../../components/PostComments.astro';
+import '../../styles/code-copy.css';
 import { getPosts } from '../../lib/content';
 import { formatDate, tagSlug, tagUrl } from '../../lib/articles';
 export async function getStaticPaths() {
@@ -44,6 +45,7 @@ const longToc = toc.length > 10;
   </article>
   <script>
     import { articleReturnLink } from '../../lib/article-return';
+    import '../../scripts/code-copy';
 
     const first = document.querySelector<HTMLAnchorElement>('[data-return-taxonomies]');
     const taxonomies: string[] = JSON.parse(first?.dataset.returnTaxonomies ?? '[]');
