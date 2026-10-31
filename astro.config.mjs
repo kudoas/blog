@@ -24,6 +24,6 @@ export default defineConfig({
   }],
   markdown: {
     processor: unified({ remarkPlugins: [remarkBreaks] }),
-    shikiConfig: { theme: 'github-dark' },
+    shikiConfig: { themes: { light: 'github-light', dark: 'github-dark' }, defaultColor: false },
   },
 });
