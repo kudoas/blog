@@ -86,3 +86,20 @@ test('wide no-JavaScript visits retain the native disclosure and all anchors', a
   expect((await page.locator('.prose').boundingBox())!.width).toBe(756);
   await context.close();
 });
+
+test('preserves existing prose spacing and muted contents links regardless of stylesheet order', async ({ page }) => {
+  await page.goto('/posts/func-error-boundary/');
+  const styles = await page.evaluate(() => {
+    const heading = getComputedStyle(document.querySelectorAll('.prose h2')[1]);
+    const paragraph = getComputedStyle(document.querySelector('.prose p')!);
+    return {
+      headingMargin: parseFloat(heading.marginBlockStart), headingFont: parseFloat(heading.fontSize),
+      paragraphMargin: parseFloat(paragraph.marginBlockStart), paragraphFont: parseFloat(paragraph.fontSize),
+      tocLink: getComputedStyle(document.querySelector('.toc a')!).color,
+      tocSummary: getComputedStyle(document.querySelector('.toc summary')!).color,
+    };
+  });
+  expect(styles.headingMargin).toBeCloseTo(styles.headingFont * 2.8, 1);
+  expect(styles.paragraphMargin).toBeCloseTo(styles.paragraphFont * 1.5, 1);
+  expect(styles.tocLink).toBe(styles.tocSummary);
+});

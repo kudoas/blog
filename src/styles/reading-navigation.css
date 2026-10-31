@@ -1,3 +1,5 @@
+@layer base, layout, components, prose;
+
 @layer components {
   /* 756px of article text + 32px gap + 220px navigation, within the viewport.
      Keep the article's existing horizontal position instead of narrowing it. */
