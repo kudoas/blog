@@ -26,6 +26,23 @@ jobs:
       - run: bun x playwright install chromium
       - run: bun run test:e2e
 
+  agent_container:
+    if: github.event_name != 'pull_request' || github.event.action != 'closed'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - run: docker build -f .devcontainer/Dockerfile -t blog-codex:ci .
+      - run: >-
+          docker run --rm --entrypoint node
+          --mount type=bind,source=${{ github.workspace }},target=/repo,readonly
+          blog-codex:ci --test /repo/tests/agent/runner.test.mjs
+      - run: >-
+          docker run --rm --shm-size=1g --entrypoint bash
+          --mount type=bind,source=${{ github.workspace }},target=/repo,readonly
+          blog-codex:ci -lc
+          'cp -R /repo/. /workspaces/blog/ && bash /usr/local/lib/blog-agent/verify.sh'
+
   preview:
     if: github.event_name == 'pull_request' && github.event.action != 'closed' && github.event.pull_request.head.repo.full_name == github.repository
     needs: ci
