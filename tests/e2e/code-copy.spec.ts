@@ -17,9 +17,14 @@ test('copies only the selected code, preserves whitespace, and works with the ke
   await button.focus();
   await page.keyboard.press('Enter');
   await expect(first.getByRole('status')).toHaveText('コピーしました');
+  await expect(button.locator('.code-copy-check')).toBeVisible();
+  await expect(button.locator('.code-copy-icon')).toBeHidden();
   expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(source);
   await expect(button).toBeFocused();
   await expect(first.locator('pre > code')).toHaveText(source!);
+  await expect(first.getByRole('status')).toHaveText('');
+  await expect(button.locator('.code-copy-icon')).toBeVisible();
+  await expect(button).toBeFocused();
 
   const second = blocks.nth(1);
   const secondSource = await second.locator('pre > code').textContent();
@@ -45,9 +50,13 @@ for (const unavailable of [false, true]) {
     await button.focus();
     await page.keyboard.press('Space');
     await expect(first.getByRole('status')).toHaveText('コピーできませんでした。コードを選択してコピーしてください。');
+    await expect(first.locator('.code-copy-feedback')).toHaveText('コピーできませんでした');
+    await expect(first.locator('.code-copy-feedback')).toBeVisible();
     await expect(button).toBeFocused();
     await expect(first.locator('pre > code')).toHaveText(source!);
     await expect(button).not.toHaveAttribute('aria-busy', 'true');
+    const codeBottom = (await first.locator('pre').boundingBox())!.y + (await first.locator('pre').boundingBox())!.height;
+    expect((await first.getByRole('status').boundingBox())!.y).toBeGreaterThanOrEqual(codeBottom);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   });
 }
@@ -76,10 +85,14 @@ for (const theme of ['light', 'dark'] as const) {
     const block = page.locator('.code-block').first();
     await expect(block.getByRole('button', { name: 'コードをコピー' })).toBeVisible();
     const pre = block.locator('pre');
+    const copy = block.getByRole('button', { name: 'コードをコピー' });
+    const buttonBefore = (await copy.boundingBox())!;
+    expect((await pre.locator('code').boundingBox())!.y).toBeGreaterThan(buttonBefore.y + buttonBefore.height);
     expect(await pre.evaluate(element => element.clientWidth)).toBe(baselineWidth);
     expect(await pre.evaluate(element => element.scrollWidth > element.clientWidth)).toBe(true);
     await pre.evaluate(element => { element.scrollLeft = 100; });
     expect(await pre.evaluate(element => element.scrollLeft)).toBeGreaterThan(0);
+    expect((await copy.boundingBox())!.x).toBe(buttonBefore.x);
     await pre.evaluate(element => { element.scrollLeft = 0; });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await block.scrollIntoViewIfNeeded();
@@ -89,3 +102,18 @@ for (const theme of ['light', 'dark'] as const) {
     await page.screenshot({ path: testInfo.outputPath(`${theme}-code-copy-desktop.png`) });
   });
 }
+
+test('offers a touch target without covering the first code line', async ({ browser, baseURL }) => {
+  const context = await browser.newContext({ baseURL, viewport: { width: 320, height: 844 }, hasTouch: true });
+  const page = await context.newPage();
+  await page.route('https://giscus.app/**', route => route.abort());
+  await page.goto(article);
+  const block = page.locator('.code-block').first();
+  const button = block.getByRole('button', { name: 'コードをコピー' });
+  await expect(button).toBeVisible();
+  const target = (await button.boundingBox())!;
+  expect(target.width).toBeGreaterThanOrEqual(44);
+  expect(target.height).toBeGreaterThanOrEqual(44);
+  expect((await block.locator('pre code').boundingBox())!.y).toBeGreaterThan(target.y + target.height);
+  await context.close();
+});
