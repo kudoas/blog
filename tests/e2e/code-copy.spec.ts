@@ -89,7 +89,9 @@ for (const theme of ['light', 'dark'] as const) {
     const buttonBefore = (await copy.boundingBox())!;
     const padding = await pre.evaluate(element => ({ top: getComputedStyle(element).paddingTop, bottom: getComputedStyle(element).paddingBottom }));
     expect(padding.top).toBe(padding.bottom);
-    expect(buttonBefore.y - (await pre.boundingBox())!.y).toBe(parseFloat(padding.top));
+    const codeBounds = (await pre.boundingBox())!;
+    expect(buttonBefore.y - codeBounds.y).toBe(8);
+    expect(codeBounds.x + codeBounds.width - buttonBefore.x - buttonBefore.width).toBe(8);
     expect(await pre.evaluate(element => element.clientWidth)).toBe(baselineWidth);
     expect(await pre.evaluate(element => element.scrollWidth > element.clientWidth)).toBe(true);
     await pre.evaluate(element => { element.scrollLeft = 100; });
@@ -103,6 +105,8 @@ for (const theme of ['light', 'dark'] as const) {
     await block.scrollIntoViewIfNeeded();
     await expect(pre).toHaveCSS('padding-top', '22px');
     await expect(pre).toHaveCSS('padding-bottom', '22px');
+    await expect(copy).toHaveCSS('top', '8px');
+    await expect(copy).toHaveCSS('right', '8px');
     await page.screenshot({ path: testInfo.outputPath(`${theme}-code-copy-desktop.png`) });
   });
 }
