@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { collectTerms, filterArticles, normalizeText } from '../lib/articles';
 import type { ArticleSummary } from '../lib/articles';
 import { searchArticles } from '../lib/search';
@@ -9,6 +9,7 @@ interface SearchState { query: string; tag: string }
 interface SearchResult extends SearchState { hits: SearchHit[]; failed: boolean }
 
 export default function ArticleExplorer({ articles }: { articles: ArticleSummary[] }) {
+  const searchInput = useRef<HTMLInputElement>(null);
   const [state, setState] = useState<SearchState>({ query: '', tag: '' });
   const [ready, setReady] = useState(false);
   const [composing, setComposing] = useState(false);
@@ -65,7 +66,7 @@ export default function ArticleExplorer({ articles }: { articles: ArticleSummary
           <div className="search-input">
             <label htmlFor="article-search" className="sr-only">記事を検索</label>
             <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="10.5" cy="10.5" r="6.5" /><path d="m16 16 5 5" /></svg>
-            <input id="article-search" type="search" placeholder="記事を検索" aria-describedby="search-help" value={state.query}
+            <input ref={searchInput} id="article-search" type="search" placeholder="記事を検索" aria-describedby="search-help" value={state.query}
               onCompositionStart={() => setComposing(true)} onCompositionEnd={() => setComposing(false)}
               onChange={(event) => update({ ...state, query: event.target.value })} />
           </div>
@@ -81,7 +82,7 @@ export default function ArticleExplorer({ articles }: { articles: ArticleSummary
       {fullText && current?.failed && <p className="search-help" role="alert">本文検索を読み込めませんでした。タイトル・タグから検索しています。</p>}
       <div className="list-status">
         <p role="status" aria-live="polite" aria-atomic="true">{busy ? '検索中…' : <><span className="result-number">{visible.length}</span> 件の記事{active && ` / 全${articles.length}件`}</>}</p>
-        {active && <button type="button" className="clear-search" onClick={() => update({ query: '', tag: '' })}>条件をクリア</button>}
+        {active && <button type="button" className="clear-search" onClick={() => { update({ query: '', tag: '' }); searchInput.current?.focus(); }}>条件をクリア</button>}
       </div>
       <div aria-busy={busy}>
         {!busy && (visible.length > 0 ? <ArticleList articles={visible} excerpts={excerpts} /> : <p className="empty-state">条件に合う記事が見つかりませんでした。</p>)}
