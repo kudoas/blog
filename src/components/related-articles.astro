@@ -1,0 +1,22 @@
+---
+import { getArticles } from '../lib/content';
+import { relatedArticles } from '../lib/related-articles';
+import { formatDate } from '../lib/articles';
+import { site } from '../site';
+import '../styles/related-articles.css';
+interface Props { id: string; tags: string[] }
+const { id, tags } = Astro.props;
+const articles = relatedArticles({ id: `local:${id}`, url: `/posts/${id}/`, tags }, await getArticles(), site.url);
+---
+{articles.length > 0 && <section class="related-articles" aria-labelledby="related-articles-heading" data-pagefind-ignore>
+  <h2 id="related-articles-heading">関連記事</h2>
+  <p class="related-articles-help">共通のタグがある記事</p>
+  <ul>
+    {articles.map((article) => <li>
+      <a href={article.url} {...(article.kind === 'external' ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+        {article.title}{article.kind === 'external' && <span class="related-external" aria-label="外部サイトを新しいタブで開く"> ↗</span>}
+      </a>
+      <p><time datetime={article.date}>{formatDate(article.date)}</time><span>{article.source}</span></p>
+    </li>)}
+  </ul>
+</section>}
