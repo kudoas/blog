@@ -12,11 +12,15 @@ interface Props { post: CollectionEntry<'posts'> }
 const { post } = Astro.props;
 const { Content, headings } = await render(post);
 const toc = headings.filter(({ depth }) => depth >= 2 && depth <= 3);
+const returnTaxonomies = [
+  ...post.data.tags.map(tagUrl),
+  ...post.data.categories.map((category) => `/categories/${encodeURIComponent(tagSlug(category))}/`),
+];
 ---
 <BaseLayout title={post.data.title} description={post.data.description} image={post.data.images[0]} date={post.data.date} article noindex={post.data.draft}>
   <article class="post">
     <header class="post-header">
-      <a href="/" class="back-link">← 記事一覧</a>
+      <a href="/" class="back-link" data-article-return-link="top" data-return-taxonomies={JSON.stringify(returnTaxonomies)}>← 記事一覧</a>
       <div class="post-meta"><time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time><span>{post.data.author}</span>{post.data.draft && <span class="draft-label">下書き</span>}</div>
       <h1 data-pagefind-body>{post.data.title}</h1>
       {post.data.tags.length > 0 && <div class="post-tags" data-pagefind-body>{post.data.tags.map((tag) => <a class="tag" href={tagUrl(tag)} data-pagefind-filter="tag[data-search-tag]" data-search-tag={tagSlug(tag)}>#{tag}</a>)}</div>}
@@ -27,6 +31,19 @@ const toc = headings.filter(({ depth }) => depth >= 2 && depth <= 3);
     </details>}
     <div class="prose" data-pagefind-body><Content /></div>
     {!post.data.draft && <PostComments pathname={`/posts/${post.id}/`} />}
-    <div class="post-end"><a href="/">← 記事一覧へ戻る</a></div>
+    <div class="post-end"><a href="/" data-article-return-link="end">← 記事一覧へ戻る</a></div>
   </article>
+  <script>
+    import { articleReturnLink } from '../../lib/article-return';
+
+    const first = document.querySelector<HTMLAnchorElement>('[data-return-taxonomies]');
+    const taxonomies: string[] = JSON.parse(first?.dataset.returnTaxonomies ?? '[]');
+    const destination = articleReturnLink(document.referrer, window.location.origin, taxonomies);
+    if (destination) {
+      for (const link of document.querySelectorAll<HTMLAnchorElement>('[data-article-return-link]')) {
+        link.href = destination.href;
+        link.textContent = `← ${destination.label}${link.dataset.articleReturnLink === 'end' ? 'へ戻る' : ''}`;
+      }
+    }
+  </script>
 </BaseLayout>
