@@ -33,36 +33,13 @@ const longToc = toc.length > 10;
       {post.data.icon && <PostMeta {...post.data} />}
       {post.data.tags.length > 0 && <div class="post-tags" data-pagefind-body>{post.data.tags.map((tag) => <a class="tag" href={tagUrl(tag)} data-pagefind-filter="tag[data-search-tag]" data-search-tag={tagSlug(tag)}>#{tag}</a>)}</div>}
     </header>
-    {toc.length > 0 && <details class="toc" open={!longToc}>
+    {toc.length > 0 && <details class="toc" open={!longToc} data-long-toc={longToc ? "" : undefined}>
       <summary>目次</summary>
       <nav aria-label="目次"><ul>{toc.map((heading) => <li class:list={{ 'toc-nested': heading.depth === 3 }}><a href={`#${heading.slug}`}>{heading.text}</a></li>)}</ul></nav>
     </details>}
-    {longToc && <script is:inline>
-      {
-        const toc = document.currentScript.previousElementSibling;
-        if (toc instanceof HTMLDetailsElement && window.matchMedia('(min-width: 601px)').matches) {
-          toc.open = true;
-        }
-      }
-    </script>}
     <div class="prose" data-pagefind-body><Content /></div>
     {!post.data.draft && <RelatedArticles id={post.id} tags={post.data.tags} />}
     {!post.data.draft && <PostComments pathname={`/posts/${post.id}/`} />}
     <div class="post-end"><a href="/" data-article-return-link="end">← 記事一覧へ戻る</a></div>
   </article>
-  <script>
-    import { articleReturnLink } from '../../lib/article-return';
-    import '../../scripts/code-copy';
-    import '../../scripts/link-favicons';
-
-    const first = document.querySelector<HTMLAnchorElement>('[data-return-taxonomies]');
-    const taxonomies: string[] = JSON.parse(first?.dataset.returnTaxonomies ?? '[]');
-    const destination = articleReturnLink(document.referrer, window.location.origin, taxonomies);
-    if (destination) {
-      for (const link of document.querySelectorAll<HTMLAnchorElement>('[data-article-return-link]')) {
-        link.href = destination.href;
-        link.textContent = `← ${destination.label}${link.dataset.articleReturnLink === 'end' ? 'へ戻る' : ''}`;
-      }
-    }
-  </script>
 </BaseLayout>

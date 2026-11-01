@@ -5,6 +5,7 @@
   const normalize = (value) => value === 'light' || value === 'dark' ? value : 'system';
   let preference = 'system';
   let ready = false;
+  let controls;
   try { preference = normalize(localStorage.getItem(key)); } catch { /* Storage is optional. */ }
 
   function syncComments() {
@@ -41,7 +42,9 @@
       apply();
     }
   });
-  document.addEventListener('DOMContentLoaded', () => {
+  function initializePage() {
+    controls?.abort();
+    controls = new AbortController();
     ready = true;
     commentsObserver.disconnect();
     const comments = document.querySelector('.giscus');
@@ -58,8 +61,17 @@
       try { localStorage.setItem(key, preference); } catch { /* Persistence is optional. */ }
     }
     // Clicking the already selected system color also counts as an explicit choice.
-    control.addEventListener('click', selectTheme);
-    control.addEventListener('change', selectTheme);
+    control.addEventListener('click', selectTheme, { signal: controls.signal });
+    control.addEventListener('change', selectTheme, { signal: controls.signal });
     control.hidden = false;
-  }, { once: true });
+  }
+  document.addEventListener('DOMContentLoaded', initializePage, { once: true });
+  document.addEventListener('astro:before-swap', (event) => {
+    controls?.abort();
+    commentsObserver.disconnect();
+    // Apply the preference before the incoming page can be painted or snapshotted.
+    event.newDocument.documentElement.dataset.theme = root.dataset.theme;
+  });
+  document.addEventListener('astro:after-swap', initializePage);
+  document.addEventListener('astro:page-load', initializePage);
 })();
