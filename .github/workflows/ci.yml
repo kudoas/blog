@@ -25,6 +25,10 @@ jobs:
       - run: bun x cf deploy --prebuilt --mode production --dry-run
       - run: bun x playwright install chromium
       - run: bun run test:e2e
+      - run: bun x playwright install --with-deps firefox
+      - run: bun run test:e2e tests/e2e/view-transitions.spec.ts
+        env:
+          E2E_BROWSER: firefox
 
   preview:
     if: github.event_name == 'pull_request' && github.event.action != 'closed' && github.event.pull_request.head.repo.full_name == github.repository

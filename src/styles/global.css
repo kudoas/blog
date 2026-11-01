@@ -1,18 +1,6 @@
 @layer base, layout, components, prose;
 
 @layer base {
-  /* Keep native document navigation and opt in only when motion is welcome. */
-  @media (prefers-reduced-motion: no-preference) {
-    @view-transition { navigation: auto; }
-
-    ::view-transition-group(root),
-    ::view-transition-old(root),
-    ::view-transition-new(root) {
-      animation-duration: 160ms;
-      animation-timing-function: ease-out;
-    }
-  }
-
   :root {
     color-scheme: light;
     --bg: #ffffff;

@@ -4,6 +4,7 @@ import '../styles/global.css';
 import SearchEntry from '../components/search-entry.astro';
 import ThemeSwitcher from '../components/theme-switcher.astro';
 import themeScript from '../scripts/theme.js?raw';
+import { ClientRouter, fade } from 'astro:transitions';
 
 interface Props {
   title?: string;
@@ -19,13 +20,20 @@ const canonical = new URL(Astro.url.pathname, site.url).href;
 const imageUrl = new URL(image.startsWith('http') || image.startsWith('/') ? image : `/${image}`, site.url).href;
 ---
 <!doctype html>
-<html lang="ja">
+<html lang="ja" transition:name="root" transition:animate={fade({ duration: '160ms' })}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
     <meta name="theme-color" content="#06192f" media="(prefers-color-scheme: dark)" />
     <script is:inline set:html={themeScript} />
+    <ClientRouter fallback="swap" />
+    <script>
+      import '../scripts/page-navigation';
+      import '../scripts/article-page';
+      import '../scripts/code-copy';
+      import '../scripts/link-favicons';
+    </script>
     <title>{pageTitle}</title>
     <meta name="description" content={description || site.description} />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
