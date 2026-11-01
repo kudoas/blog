@@ -1,5 +1,14 @@
 # 外部の記事はここへ追記します。id は重複しない名前にしてください。
-# Classi寄稿記事: portfolio 432be1c の usecase.ts:91-128。公開日時は原文のdatePublishedで確認。
+# Classi寄稿記事の公開日時は原文のdatePublishedで確認。
+- id: classi-oss-gathering-one-year
+  icon: "🏢"
+  title: Classiエンジニアの「OSSやっていきの集い」 〜活動1年を経て得られたプロセスによる学び〜
+  url: https://tech.classi.jp/entry/2026/03/09/123000
+  date: 2026-03-09T12:30:00+09:00
+  source: Classi開発者ブログ
+  tags: [OSS, Herb, HTML, Rails]
+  description: HerbのHTMLパーサーへの貢献と、チーム横断のOSS活動を1年間続ける中で得た問題の再現・原因調査・改善提案の学びを紹介します。
+  categories: [DEV]
 - id: classi-matz-programming-talk
   icon: "🏢"
   title: RubyとRailsのコミッターである松田明さんの講演でプログラミングを楽しむモチベーションが上がりました
