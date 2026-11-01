@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { posts, external } from '../fixtures/content';
 
 const article = '/posts/func-error-boundary/';
 
@@ -56,6 +57,6 @@ test('the search entry remains a usable listing link without JavaScript', async 
   await page.getByRole('link', { name: '検索を開く' }).click();
   await expect(page).toHaveURL(/\/#article-search$/);
   await expect(page.getByRole('searchbox', { name: '記事を検索' })).toBeDisabled();
-  await expect(page.locator('.article-list > li')).toHaveCount(22);
+  await expect(page.locator('.article-list > li')).toHaveCount(posts.length + external.length);
   await context.close();
 });
