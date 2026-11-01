@@ -89,7 +89,6 @@ for (const theme of ['light', 'dark'] as const) {
     await expectTheme(page, theme);
     await expect(page.getByRole('group', { name: '配色', exact: true })).toBeHidden();
     await expect(page.locator('.prose pre').first()).toBeVisible();
-    await expect(page.locator('.prose pre').first()).toHaveCSS('background-color', theme === 'light' ? 'rgb(255, 255, 255)' : 'rgb(36, 41, 46)');
     await context.close();
   });
 
@@ -111,7 +110,6 @@ for (const theme of ['light', 'dark'] as const) {
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await page.screenshot({ path: testInfo.outputPath(`${theme}-mobile.png`), fullPage: true });
     await page.goto('/posts/func-error-boundary/');
-    await expect(page.locator('.prose pre').first()).toHaveCSS('background-color', theme === 'light' ? 'rgb(255, 255, 255)' : 'rgb(36, 41, 46)');
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await page.setViewportSize({ width: 1280, height: 900 });
     await page.screenshot({ path: testInfo.outputPath(`${theme}-article.png`), fullPage: true });

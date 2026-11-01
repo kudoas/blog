@@ -123,7 +123,7 @@ ReactDOM.render(
 
 これによりエラーの際に、`<ErrorFallback/>` で定義した代わりの UI を表示させることができます。
 
-![error-message](https://blog.da1chi.net/posts/func-error-boundary1.png)
+![エラー時の代替UI。「Error Message」「Something went wrong!」と表示され、再試行用の「Try again」ボタンがある](https://blog.da1chi.net/posts/func-error-boundary1.png)
 
 より詳しく知りたい方は参考資料をご覧ください。
 

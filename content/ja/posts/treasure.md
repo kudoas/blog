@@ -13,7 +13,7 @@ images: ["tcard/treasure.png"]
 
 8/1, 8, 15 の土曜日と 8/17~28 の約 1 ヶ月の期間、VOYAGE GROUP の Treasure というインターンに参加してきました。
 
-![treasure1](https://blog.da1chi.net/posts/treasure1.png)
+![Treasureインターンで使った、工藤大地の自己紹介スライド](https://blog.da1chi.net/posts/treasure1.png)
 
 参加してからだいぶ日にちが空いてしまいましたが、振り返りを残しておきます。最初は参加の経緯や事前講義、チーム開発まで色々書こうと思っていたのですが、考えあぐねている間に時間だけ過ぎてしまいました...汗。なので Treasure の詳細は他の参加者の方に任せるとして、ここでは自分が特に学んだことについて言及します。
 
@@ -31,7 +31,7 @@ Treasure では 3 日間という短い期間で Web 技術全般を網羅的学
 
 失敗して改善するサイクルを早く回す手法の 1 つとして KPT というものを導入しました。KPT とは、**Keep：続けるべきこと、P：抱えている問題、Try：次にトライしたいこと**の 3 つで改善のサイクルを早く回すフレームワークの 1 つです。実際には 1 日に 2-3 回ずつ 5 分程度時間をとり、行いました。
 
-![treasure2](https://blog.da1chi.net/posts/treasure2.png)
+![チームのKPT記録。並行開発の難しさをProblem、issueによる進捗共有をKeep、フロントエンドも進捗や調べ物をissueに残すことをTryとして挙げている](https://blog.da1chi.net/posts/treasure2.png)
 
 > 私たちのチームで使用した実際の KPT
 
@@ -46,7 +46,7 @@ Treasure では 3 日間という短い期間で Web 技術全般を網羅的学
 
 開発の初期段階に CI の導入し、静的解析や自動テストを行いました。CI は失敗を先に検知する 1 つの手段です。本番環境でバグる前にあらかじめ、先にバグを見つけることで効率的に開発ができました。
 
-![treasure3](https://blog.da1chi.net/posts/treasure3.png)
+![GitHub Actionsのワークフロー一覧。reviewdog、ci、migrate、frontend、backendが登録されている](https://blog.da1chi.net/posts/treasure3.png)
 
 > チームで使用していた GitHub Actions Workflows
 
@@ -102,6 +102,6 @@ Treasure では 3 日間という短い期間で Web 技術全般を網羅的学
 
 Treasure はサポーターや TA の支援が厚く、技術的と精神的ともに成長できる素晴らしいインターンでした。今までの人生単位でもここまでのものは少なく、一生を通して忘れらない経験になりました。この場で学んだことをここで終わりとせずに、コンフォートゾーンを超えてより成長できるように頑張ります。ありがとうございました。
 
-![treasure4](https://blog.da1chi.net/posts/treasure4.png)
+![Treasureインターンの全課程修了を証明する、革製の修了証書](https://blog.da1chi.net/posts/treasure4.png)
 
 > 卒業証書が革製で良質だった

@@ -13,7 +13,7 @@ images: ["tcard/react-intersection-observer.png"]
 
 いろいろなサイトを見ていると、画面へ入る瞬間にヌルッと下から出てくる UI を見つけました。以下のようなものです。
 
-![ezgif.com-gif-maker.gif](https://blog.da1chi.net/posts/react-intersection-observer.gif)
+![スクロールで要素が画面内に入ると、下から滑らかに現れるアニメーションの実演](https://blog.da1chi.net/posts/react-intersection-observer.gif)
 
 > 画面に入るとヌルッとしたから出てくるものですが、GIF だと分かりづらいのでちゃんと見たい人は[**私が作成したページ**](https://kudoa-portfolio.vercel.app/)で見ることができます。
 

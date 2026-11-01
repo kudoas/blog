@@ -26,6 +26,6 @@ export default defineConfig({
   }],
   markdown: {
     processor: unified({ remarkPlugins: [remarkBreaks], rehypePlugins: [rehypeHeadingIds, [rehypeLinkMetadata, { metadata: validateLinkMetadata(linkMetadata) }]] }),
-    shikiConfig: { themes: { light: 'github-light', dark: 'github-dark' }, defaultColor: false },
+    shikiConfig: { themes: { light: 'github-light-high-contrast', dark: 'github-dark-high-contrast' }, defaultColor: false },
   },
 });
