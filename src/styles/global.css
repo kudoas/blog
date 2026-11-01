@@ -27,33 +27,33 @@
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
       color-scheme: dark;
-      --bg: #06192f;
-      --surface: #0c223b;
-      --text: #e4ecf5;
-      --muted: #a4b6ca;
+      --bg: #0d1117;
+      --surface: #161b22;
+      --text: #f0f3f6;
+      --muted: #b1bac4;
       --accent: #91c7f4;
-      --line: #233950;
+      --line: #30363d;
       --accent-hover: #d4eaff;
       --selection-bg: #355f83;
       --selection-text: #ffffff;
       --highlight-bg: #17476b;
-      --quote-line: #466986;
+      --quote-line: #59636e;
       --draft-text: #f6d38f;
     }
   }
   :root[data-theme="dark"] {
     color-scheme: dark;
-    --bg: #06192f;
-    --surface: #0c223b;
-    --text: #e4ecf5;
-    --muted: #a4b6ca;
+    --bg: #0d1117;
+    --surface: #161b22;
+    --text: #f0f3f6;
+    --muted: #b1bac4;
     --accent: #91c7f4;
-    --line: #233950;
+    --line: #30363d;
     --accent-hover: #d4eaff;
     --selection-bg: #355f83;
     --selection-text: #ffffff;
     --highlight-bg: #17476b;
-    --quote-line: #466986;
+    --quote-line: #59636e;
     --draft-text: #f6d38f;
   }
   *, *::before, *::after { box-sizing: border-box; }
