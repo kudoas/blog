@@ -4,7 +4,7 @@ const choices = { light: 'ライト', dark: 'ダーク' };
 const chooseTheme = (page: Page, theme: keyof typeof choices) => page.getByRole('radio', { name: choices[theme], exact: true }).click();
 const selection = (page: Page) => page.locator('input[name="theme-preference"]:checked');
 
-const colors = { light: 'rgb(255, 255, 255)', dark: 'rgb(6, 25, 47)' };
+const colors = { light: 'rgb(255, 255, 255)', dark: 'rgb(13, 17, 23)' };
 
 async function expectTheme(page: import('@playwright/test').Page, theme: 'light' | 'dark') {
   await expect(page.locator('html')).toHaveCSS('background-color', colors[theme]);
@@ -34,7 +34,7 @@ test('follows the system until explicitly selected, persists navigation', async 
   await expectTheme(page, 'light');
   await chooseTheme(page, 'dark');
   await expectTheme(page, 'dark');
-  await expect(page.locator('meta[name="theme-color"]').first()).toHaveAttribute('content', '#06192f');
+  await expect(page.locator('meta[name="theme-color"]').first()).toHaveAttribute('content', '#0d1117');
 
 });
 
