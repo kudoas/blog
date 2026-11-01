@@ -80,6 +80,7 @@
   .wordmark span { color: var(--accent); padding-inline: 2px; }
   .wordmark:hover { text-decoration: none; }
   .site-header nav, .site-footer nav { display: flex; align-items: center; gap: 25px; font-size: 13px; }
+  .site-header nav a, .site-footer nav a { display: inline-flex; align-items: center; min-height: 24px; min-width: 24px; }
   .site-header nav a, .site-footer a { color: var(--muted); }
   .site-header nav [aria-current="page"] { color: var(--text); }
   main { min-height: 60vh; }
@@ -147,7 +148,7 @@
   .article-meta, .post-tags { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 14px; margin-top: 10px; font-size: 11px; }
   .article-source { color: var(--muted); }
   .local-source { color: var(--accent); }
-  .tag { color: var(--muted); }
+  .tag { display: inline-flex; align-items: center; min-height: 24px; min-width: 24px; color: var(--muted); }
   .draft-label { color: var(--draft-text); }
   .empty-state { text-align: center; padding: 64px 16px; border-block: 1px solid var(--line); color: var(--muted); font-size: 14px; }
   .term-list { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }

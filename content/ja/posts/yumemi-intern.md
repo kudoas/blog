@@ -64,7 +64,7 @@ images: ["tcard/yumemi-intern.png"]
 
   以下はシンプルなカードですが、フィードバックを元に正方形の画像や右側のコンテンツをコンポーネント化したり、タグとそれらをまとめたタググループのコンポーネントを作成しました。
 
-  ![スクリーンショット 2020-11-18 9.59.19](https://user-images.githubusercontent.com/45157831/99479863-57d1c600-299a-11eb-97b0-15987dbf7fd1.png)
+  ![写真と説明・価格を並べたカード。「期間限定」「特別価格」「新商品」のタグが付いている](https://user-images.githubusercontent.com/45157831/99479863-57d1c600-299a-11eb-97b0-15987dbf7fd1.png)
 
 - **ディレクトリ管理**
 
@@ -116,7 +116,7 @@ images: ["tcard/yumemi-intern.png"]
 
   - Template, Modules のようなまとまったコンポーネントを別のフォルダに管理しました。
 
-    ![folder](https://user-images.githubusercontent.com/45157831/99767068-bdae8100-2b45-11eb-8811-80b1e6d4ca83.png)
+    ![Reactコンポーネントをatom・icon・layouts・module・pagesに分類したsrcディレクトリ構成](https://user-images.githubusercontent.com/45157831/99767068-bdae8100-2b45-11eb-8811-80b1e6d4ca83.png)
 
 ### 静的解析
 

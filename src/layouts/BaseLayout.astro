@@ -67,7 +67,7 @@ const imageUrl = new URL(image.startsWith('http') || image.startsWith('/') ? ima
         <ThemeSwitcher />
       </div>
     </header>
-    <main id="main" class="shell" tabindex="-1"><slot /></main>
+    <main id="main" class="shell" tabindex="-1" aria-label={article ? '記事本文' : 'メインコンテンツ'}><slot /></main>
     <footer class="site-footer shell">
       <p>© {new Date().getFullYear()} {site.author}</p>
       <nav aria-label="関連リンク">
