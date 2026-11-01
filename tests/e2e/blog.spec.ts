@@ -1,10 +1,16 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import * as pagefind from 'pagefind';
 import { posts, external } from '../fixtures/content';
 
 const total = posts.length + external.length;
+const renovateUrls = external.filter(article => [article.title, ...(article.tags ?? [])].join(' ').includes('Renovate')).map(article => article.url).sort();
+async function expectRenovateResults(page: Page) {
+  await expect.poll(() => page.locator('.article-summary h2 a').evaluateAll(links => links.map(link => link.getAttribute('href')).sort()))
+    .toEqual(renovateUrls);
+}
+
 
 test('serves legacy redirects, trailing slashes and the custom 404 through Workers assets', async ({ request }) => {
   const legacy = await request.get('/posts/', { maxRedirects: 0 });
@@ -40,8 +46,7 @@ test('finds body text and external articles through the same search', async ({ p
   await search.fill('クイックソート');
   await expect(page.getByRole('link', { name: 'Pythonでのソートアルゴリズムの実装', exact: true })).toBeVisible();
   await search.fill('Renovate');
-  await expect(page.locator('.article-summary h2 a')).toHaveCount(1);
-  await expect(page.locator('.article-summary h2 a')).toHaveAttribute('href', /zenn.dev/);
+  await expectRenovateResults(page);
   await search.fill('zzzxxyy');
   await expect(page.getByText('条件に合う記事が見つかりませんでした。')).toBeVisible();
 });
@@ -137,8 +142,7 @@ test('falls back to title and tag search when the index cannot load', async ({ p
   await page.route('**/pagefind/**', (route) => route.abort());
   await page.goto('/?q=Renovate');
   await expect(page.getByRole('alert')).toContainText('タイトル・タグから検索しています');
-  await expect(page.locator('.article-summary h2 a')).toHaveCount(1);
-  await expect(page.locator('.article-summary h2 a')).toHaveAttribute('href', /zenn.dev/);
+  await expectRenovateResults(page);
   await page.getByRole('searchbox').fill('ｒｅａｃｔ');
   await page.getByLabel('タグで絞り込む').selectOption('nodejs');
   await expect(page.getByText('条件に合う記事が見つかりませんでした。')).toBeVisible();
@@ -170,8 +174,7 @@ test('does not search during composition or let a pending search replace cleared
   await expect(page.locator('.article-list > li')).toHaveCount(total);
   release();
   await input.fill('Renovate');
-  await expect(page.locator('.article-summary h2 a')).toHaveCount(1);
-  await expect(page.locator('.article-summary h2 a')).toContainText('Renovate');
+  await expectRenovateResults(page);
   await expect(page).toHaveURL(/q=Renovate/);
 });
 

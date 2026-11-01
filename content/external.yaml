@@ -1,4 +1,59 @@
 # 外部の記事はここへ追記します。id は重複しない名前にしてください。
+# Classi寄稿記事の公開日時は原文のdatePublishedで確認。
+- id: classi-oss-gathering-one-year
+  icon: "🏢"
+  title: Classiエンジニアの「OSSやっていきの集い」 〜活動1年を経て得られたプロセスによる学び〜
+  url: https://tech.classi.jp/entry/2026/03/09/123000
+  date: 2026-03-09T12:30:00+09:00
+  source: Classi開発者ブログ
+  tags: [OSS, Herb, HTML, Rails]
+  description: HerbのHTMLパーサーへの貢献と、チーム横断のOSS活動を1年間続ける中で得た問題の再現・原因調査・改善提案の学びを紹介します。
+  categories: [DEV]
+- id: classi-matz-programming-talk
+  icon: "🏢"
+  title: RubyとRailsのコミッターである松田明さんの講演でプログラミングを楽しむモチベーションが上がりました
+  url: https://tech.classi.jp/entry/2022/09/07/120000
+  date: 2022-09-07T12:00:00+09:00
+  source: Classi開発者ブログ
+  tags: [Ruby, Rails, OSS]
+  description: 新卒研修で開かれた松田明さんの講演を振り返り、コミュニティやOSS活動を通じてプログラミングを楽しむヒントを紹介します。
+  categories: [DEV]
+- id: classi-angular-upgrade
+  icon: "🏢"
+  title: 新卒がAngularのアップデート対応から経験したこと
+  url: https://tech.classi.jp/entry/2022/12/10/120000
+  date: 2022-12-10T12:00:00+09:00
+  source: Classi開発者ブログ
+  tags: [Angular]
+  description: Angular 12から13への移行で直面した依存ライブラリやチーム間連携の課題と、アップデート対応から得た学びをまとめます。
+  categories: [DEV]
+- id: classi-dependency-update-automation
+  icon: "🏢"
+  title: ライブラリのアップデートを自動化した仕組みの紹介
+  url: https://tech.classi.jp/entry/2023/10/04/180000
+  date: 2023-10-04T18:00:00+09:00
+  source: Classi開発者ブログ
+  tags: [GitHub Actions, Dependabot, Renovate]
+  description: Dependabot・Renovateの更新PRをGitHub Actionsで自動マージする仕組みと、テストやビルド差分による判断基準を紹介します。
+  categories: [DEV]
+- id: classi-gitlab-book-retrospective
+  icon: "🏢"
+  title: GitLab本輪読会、他社と合同で振り返りを行いました
+  url: https://tech.classi.jp/entry/2024/04/26/170000
+  date: 2024-04-26T17:00:00+09:00
+  source: Classi開発者ブログ
+  tags: [GitLab, 輪読会, 振り返り]
+  description: GitLab本の社内輪読会と他社との合同振り返りを通して、リモートワークやドキュメント文化について得た気づきを共有します。
+  categories: [DEV]
+- id: classi-kaigi-on-rails-2025
+  icon: "🏢"
+  title: Kaigi on Rails 2025 に「Web Componentsで実現する Hotwire とフロントエンドフレームワークの橋渡し」というタイトルで登壇します
+  url: https://tech.classi.jp/entry/2025/09/12/180000
+  date: 2025-09-12T18:00:00+09:00
+  source: Classi開発者ブログ
+  tags: [Kaigi on Rails, Web Components, Hotwire, Rails, Angular]
+  description: Kaigi on Rails 2025での登壇に向け、Web ComponentsでAngularのUI資産とHotwireをつなぐ取り組みの背景と発表のねらいを紹介します。
+  categories: [DEV]
 - id: zenn-8651e73d044cc2
   icon: "🪐"
   title: Angular v21 CDK Overlay でサポートされたネイティブ popover の紹介

@@ -9,4 +9,4 @@ export const posts = readdirSync('content/ja/posts').filter((file) => file.endsW
   return { id: file.slice(0, -3), data };
 }).filter(({ data }) => !data.draft);
 
-export const external = parse(readFileSync('content/external.yaml', 'utf8')) as { title: string; icon?: string; url: string; date: string }[];
+export const external = parse(readFileSync('content/external.yaml', 'utf8')) as { title: string; icon?: string; url: string; date: string; tags?: string[]; source: string }[];
