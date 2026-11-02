@@ -24,6 +24,16 @@ test('only accepts known taxonomy listings for this article', () => {
   }
 });
 
+test('retains supported publication conditions and discards unknown values', () => {
+  assert.deepEqual(articleReturnLink(`${origin}/?q=React&tag=react&publication=personal`, origin, taxonomies), {
+    href: '/?q=React&tag=react&publication=personal', label: '検索結果',
+  });
+  assert.deepEqual(articleReturnLink(`${origin}/?publication=contribution`, origin, taxonomies), {
+    href: '/?publication=contribution', label: '検索結果',
+  });
+  assert.equal(articleReturnLink(`${origin}/?publication=unknown`, origin, taxonomies), null);
+});
+
 test('falls back for direct visits, external origins, credentials and unsupported URLs', () => {
   for (const referrer of ['', '/', `${origin}/`, `${origin}/?tracking=ignored`,
     'https://example.com/?q=Figma', 'http://blog.da1chi.net/?q=Figma',

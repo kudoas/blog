@@ -1,5 +1,6 @@
 import { normalizeText, tagSlug } from './articles.ts';
 import type { ArticleSummary } from './articles.ts';
+import { matchesPublication, type PublicationFilter } from './publication.ts';
 
 export interface SearchHit { article: ArticleSummary; excerpt: string }
 interface SearchIndex {
@@ -12,14 +13,14 @@ interface SearchIndex {
 // result loading together, even when a newer input arrives while loading.
 export function createArticleSearch(load: () => Promise<SearchIndex>) {
   let queue: Promise<unknown> = Promise.resolve();
-  return (articles: ArticleSummary[], query: string, tag: string): Promise<SearchHit[]> => {
+  return (articles: ArticleSummary[], query: string, tag: string, publication: PublicationFilter = ''): Promise<SearchHit[]> => {
     const task = queue.then(async () => {
       const index = await load();
       const result = await index.search(normalizeText(query), {
         filters: tag ? { tag: tagSlug(tag) } : {},
       });
       const data = await Promise.all(result.results.map((item) => item.data()));
-      const byUrl = new Map(articles.map((article) => [article.url, article]));
+      const byUrl = new Map(articles.filter(article => matchesPublication(article, publication)).map((article) => [article.url, article]));
       return data.flatMap(({ url, excerpt }) => {
         const article = byUrl.get(url);
         return article ? [{ article, excerpt }] : [];

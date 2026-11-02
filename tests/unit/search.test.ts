@@ -4,7 +4,7 @@ import { createArticleSearch } from '../../src/lib/search.ts';
 import { buildArticleIndex } from '../../src/lib/articles.ts';
 
 const articles = buildArticleIndex([], [{
-  id: 'example', title: 'Example', url: 'https://example.com/article',
+  publication: 'personal', id: 'example', title: 'Example', url: 'https://example.com/article',
   date: new Date('2026-01-01'), tags: ['React'], categories: [], source: 'Example', description: '',
 }]);
 
@@ -42,4 +42,19 @@ test('can search again after a failed load and ignores records absent from the a
   });
   await assert.rejects(search(articles, 'first', ''), /offline/);
   assert.deepEqual(await search(articles, 'second', ''), [{ article: articles[0], excerpt: 'found' }]);
+});
+
+test('filters full-text hits by publication without discarding matching excerpts or rank', async () => {
+  const contributed = { ...articles[0], id: 'external:contributed', url: 'https://company.example/post', publication: 'contribution' as const };
+  const mixed = [articles[0], contributed];
+  const search = createArticleSearch(async () => ({
+    async search() { return { results: [...mixed].reverse().map(article => ({ async data() {
+      return { url: article.url, excerpt: `excerpt for ${article.id}` };
+    } })) }; },
+  }));
+  assert.deepEqual((await search(mixed, 'Example', '', 'personal')).map(hit => hit.article.id), [articles[0].id]);
+  const hits = await search(mixed, 'Example', '', 'contribution');
+  assert.equal(hits[0].article, contributed);
+  assert.equal(hits[0].excerpt, 'excerpt for external:contributed');
+  assert.deepEqual((await search(mixed, 'Example', '')).map(hit => hit.article.id), [contributed.id, articles[0].id]);
 });

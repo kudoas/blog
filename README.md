@@ -1,7 +1,7 @@
 # daichi/tech
 
 Astro で生成する日本語の静的ブログです。記事本文は Markdown で管理し、
-外部の記事も同じ一覧に掲載します。React は一覧の検索とタグ絞り込みに使用します。
+外部の記事も同じ一覧に掲載します。React は一覧の検索・分類・タグ絞り込みに使用します。
 
 ## 開発
 
@@ -58,6 +58,8 @@ images: [tcard/example.png]
 外部記事は `content/external.yaml` に1件ずつ追記します。`id` は重複しない
 kebab-case とし、`title`、`url`、`date`、`source` は必須です。
 `icon`、`tags`、`categories`、`description` は省略できます。外部記事の `icon` も一覧に表示します。
+企業などへの寄稿は `publication: contribution` を設定します。省略時は
+`personal`（個人記事）です。分類は掲載先ドメインから推測せず、記事ごとに指定します。
 Zenn に限らず任意の掲載先を `source` に指定できます。
 
 ```yaml
@@ -67,12 +69,18 @@ Zenn に限らず任意の掲載先を `source` に指定できます。
   url: https://example.com/articles/my-guest-post
   date: "2026-09-25T12:00:00+09:00"
   source: Example
+  publication: contribution
   tags: [Astro]
 ```
 
 公開記事と外部記事を日付順に一覧へ表示します。検索すると Pagefind の関連度順で
 表示します。ブログ内はタイトル・タグ・本文、外部記事は `external.yaml` に登録した
 タイトル・タグ・説明が検索対象です。外部サイトの本文は取得しません。
+
+一覧の「すべて／個人記事／寄稿記事」は検索・タグと組み合わせて使えます。
+分類は `?publication=personal` または `?publication=contribution` に保存され、
+再読み込み・記事からの戻り・検索ダイアログにも引き継ぎます。
+分類なし・不明な値は「すべて」として扱います。JavaScript無効時は全記事を閲覧できます。
 ブログの記事には検索語を強調した抜粋を表示します。
 RSS にはこのブログの Markdown 記事のみ含めます。
 
