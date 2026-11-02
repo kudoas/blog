@@ -8,6 +8,8 @@ import '../styles/search-entry.css';
     <button type="button" class="search-dialog-close" data-search-close aria-label="検索を閉じる">×</button>
   </div>
   <form action="/#article-search" method="get" role="search" aria-label="サイト内検索">
+    <input type="hidden" name="tag" data-search-tag disabled />
+    <input type="hidden" name="publication" data-search-publication disabled />
     <label for="site-search-query">検索キーワード</label>
     <div class="search-dialog-fields">
       <input id="site-search-query" type="search" name="q" placeholder="キーワードを入力" autofocus />
@@ -17,6 +19,7 @@ import '../styles/search-entry.css';
   </form>
 </dialog>
 <script>
+  import { publicationFilter } from '../lib/publication';
   let controller: AbortController | undefined;
   document.addEventListener('astro:before-swap', () => controller?.abort());
   function initializeSearch() {
@@ -31,6 +34,16 @@ import '../styles/search-entry.css';
       function openSearch() {
         if (!dialog || !input) return;
         if (!dialog.open) {
+          const returnLink = document.querySelector<HTMLAnchorElement>('[data-article-return-link="top"]');
+          const listing = new URL(location.pathname === '/' ? location.href : returnLink?.href ?? '/', location.origin);
+          const conditions = listing.pathname === '/' ? listing.searchParams : new URLSearchParams();
+          input.value = conditions.get('q') ?? '';
+          const tag = dialog.querySelector<HTMLInputElement>('[data-search-tag]')!;
+          tag.value = conditions.get('tag') ?? '';
+          tag.disabled = !tag.value;
+          const publication = dialog.querySelector<HTMLInputElement>('[data-search-publication]')!;
+          publication.value = publicationFilter(conditions.get('publication'));
+          publication.disabled = !publication.value;
           previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
           dialog.showModal();
         }

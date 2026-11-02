@@ -3,8 +3,10 @@ import { z } from 'astro/zod';
 const text = z.string().trim().min(1);
 const date = z.union([text, z.date()]).pipe(z.coerce.date());
 const terms = z.array(text).default([]);
+const publication = z.enum(['personal', 'contribution']).default('personal');
 
 export const postSchema = z.object({
+  publication,
   title: text,
   icon: text.max(32).optional(),
   date,
@@ -17,6 +19,7 @@ export const postSchema = z.object({
 });
 
 export const externalArticleSchema = z.object({
+  publication,
   id: text.regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, 'Use a kebab-case identifier'),
   title: text,
   url: z.url({ protocol: /^https$/ }),

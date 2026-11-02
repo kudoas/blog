@@ -62,6 +62,20 @@ test('dates use Japan time regardless of the machine timezone', () => {
   assert.equal(formatDate('2025-12-06T23:30:00Z'), '2025.12.07');
 });
 
+test('classifies articles by editorial metadata, defaults to personal and combines all filters', () => {
+  const contributions = externalArticlesSchema.parse([
+    { ...external[0], id: 'contributed', url: 'https://another-company.example/post', source: '別の企業', publication: 'contribution' },
+    { ...external[0], id: 'personal', url: 'https://example.com/personal' },
+  ]);
+  const articles = buildArticleIndex([local('local')], contributions);
+  assert.equal(articles.find(article => article.kind === 'local')?.publication, 'personal');
+  assert.deepEqual(filterArticles(articles, '', '', 'personal').map(article => article.id), ['external:personal', 'local:local']);
+  assert.deepEqual(filterArticles(articles, 'Angular', 'angular', 'contribution').map(article => article.id), ['external:contributed']);
+  assert.equal(filterArticles(articles, 'React', 'angular', 'contribution').length, 0);
+  assert.equal(filterArticles(articles, '', '').length, 3);
+  assert.equal(externalArticlesSchema.safeParse([{ ...external[0], publication: 'Classi' }]).success, false);
+});
+
 
 test('preserves optional icons in local and external listing data without changing titles or search', () => {
   const articles = buildArticleIndex([local('with-icon', { icon: '🪐' }), local('without-icon')], [{ ...external[0], icon: '📝' }]);

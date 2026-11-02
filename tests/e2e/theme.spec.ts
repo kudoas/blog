@@ -17,7 +17,7 @@ test('follows the system until explicitly selected, persists navigation', async 
   const selected = selection(page);
   await expect(selected).toHaveValue('light');
   await expectTheme(page, 'light');
-  await expect(page.getByRole('radio')).toHaveCount(2);
+  await expect(page.getByRole('group', { name: '配色', exact: true }).getByRole('radio')).toHaveCount(2);
   expect(await page.evaluate(() => localStorage.getItem('blog-theme'))).toBeNull();
   await page.emulateMedia({ colorScheme: 'dark' });
   await expectTheme(page, 'dark');

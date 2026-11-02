@@ -1,8 +1,10 @@
 import type { ExternalArticle, PostData } from './content-schema.ts';
+import { matchesPublication, type Publication, type PublicationFilter } from './publication.ts';
 
 export interface ArticleSummary {
   id: string;
   kind: 'local' | 'external';
+  publication: Publication;
   title: string;
   icon?: string;
   url: string;
@@ -27,6 +29,7 @@ export function buildArticleIndex(
     ...posts.filter(({ data }) => includeDrafts || !data.draft).map(({ id, data }) => ({
       id: `local:${id}`,
       kind: 'local' as const,
+      publication: data.publication,
       title: data.title,
       icon: data.icon,
       url: `/posts/${id}/`,
@@ -40,6 +43,7 @@ export function buildArticleIndex(
     ...external.map((data) => ({
       id: `external:${data.id}`,
       kind: 'external' as const,
+      publication: data.publication,
       title: data.title,
       icon: data.icon,
       url: data.url,
@@ -59,10 +63,11 @@ export function buildArticleIndex(
   return items.sort((a, b) => Date.parse(b.date) - Date.parse(a.date) || a.id.localeCompare(b.id));
 }
 
-export function filterArticles(items: ArticleSummary[], query: string, tag: string) {
+export function filterArticles(items: ArticleSummary[], query: string, tag: string, publication: PublicationFilter = '') {
   const search = normalizeText(query);
   const selectedTag = tagSlug(tag);
   return items.filter((item) =>
+    matchesPublication(item, publication) &&
     (!search || normalizeText([item.title, ...item.tags].join(' ')).includes(search)) &&
     (!selectedTag || item.tags.some((value) => tagSlug(value) === selectedTag)),
   );

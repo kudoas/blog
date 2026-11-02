@@ -1,3 +1,5 @@
+import { publicationFilter } from './publication.ts';
+
 interface ArticleReturnLink { href: string; label: string }
 
 export function articleReturnLink(referrer: string, origin: string, taxonomyPaths: readonly string[]): ArticleReturnLink | null {
@@ -11,6 +13,8 @@ export function articleReturnLink(referrer: string, origin: string, taxonomyPath
       const value = url.searchParams.get(key);
       if (value) params.set(key, value);
     }
+    const publication = publicationFilter(url.searchParams.get('publication'));
+    if (publication) params.set('publication', publication);
     return params.size ? { href: `/?${params}`, label: '検索結果' } : null;
   }
   if (!taxonomyPaths.includes(url.pathname)) return null;

@@ -6,7 +6,7 @@ import { relatedArticles } from '../../src/lib/related-articles.ts';
 const site = 'https://blog.example/';
 const current = { id: 'local:current', url: '/posts/current/', tags: ['React', 'TypeScript'] };
 const article = (id: string, tags: string[], overrides: Partial<ArticleSummary> = {}): ArticleSummary => ({
-  id: `local:${id}`, url: `/posts/${id}/`, title: id, kind: 'local', date: '2026-01-01T00:00:00Z',
+  id: `local:${id}`, url: `/posts/${id}/`, title: id, kind: 'local', publication: 'personal', date: '2026-01-01T00:00:00Z',
   tags, categories: [], source: 'このブログ', description: '', draft: false, ...overrides,
 });
 

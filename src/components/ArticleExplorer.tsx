@@ -4,32 +4,33 @@ import type { ArticleSummary } from '../lib/articles';
 import { searchArticles } from '../lib/search';
 import type { SearchHit } from '../lib/search';
 import ArticleList from './ArticleList';
+import { matchesPublication, publicationFilter, type PublicationFilter } from '../lib/publication';
 
-interface SearchState { query: string; tag: string }
+interface SearchState { query: string; tag: string; publication: PublicationFilter }
 interface SearchResult extends SearchState { hits: SearchHit[]; failed: boolean }
 
 export default function ArticleExplorer({ articles }: { articles: ArticleSummary[] }) {
   const searchInput = useRef<HTMLInputElement>(null);
-  const [state, setState] = useState<SearchState>({ query: '', tag: '' });
+  const [state, setState] = useState<SearchState>({ query: '', tag: '', publication: '' });
   const [ready, setReady] = useState(false);
   const [composing, setComposing] = useState(false);
   const [result, setResult] = useState<SearchResult>(() => ({
-    query: '', tag: '', hits: articles.map((article) => ({ article, excerpt: '' })), failed: false,
+    query: '', tag: '', publication: '', hits: articles.map((article) => ({ article, excerpt: '' })), failed: false,
   }));
   const tags = collectTerms(articles);
   const fullText = !import.meta.env.DEV && Boolean(normalizeText(state.query));
-  const current = result?.query === state.query && result.tag === state.tag ? result : null;
+  const current = result?.query === state.query && result.tag === state.tag && result.publication === state.publication ? result : null;
   const busy = ready && fullText && (composing || !current);
   const fallback = !fullText || current?.failed;
   const displayed = current ?? result;
-  const visible = fallback ? filterArticles(articles, state.query, state.tag) : displayed.hits.map(({ article }) => article);
+  const visible = fallback ? filterArticles(articles, state.query, state.tag, state.publication) : displayed.hits.map(({ article }) => article).filter(article => matchesPublication(article, state.publication));
   const excerpts = !fallback ? Object.fromEntries(displayed.hits.map(({ article, excerpt }) => [article.id, excerpt])) : {};
-  const active = Boolean(state.query || state.tag);
+  const active = Boolean(state.query || state.tag || state.publication);
 
   useEffect(() => {
     const restore = () => {
       const params = new URLSearchParams(window.location.search);
-      setState({ query: params.get('q') ?? '', tag: params.get('tag') ?? '' });
+      setState({ query: params.get('q') ?? '', tag: params.get('tag') ?? '', publication: publicationFilter(params.get('publication')) });
     };
     restore();
     setReady(true);
@@ -40,20 +41,20 @@ export default function ArticleExplorer({ articles }: { articles: ArticleSummary
   useEffect(() => {
     if (!ready || composing) return;
     if (!fullText) {
-      setResult({ ...state, hits: filterArticles(articles, state.query, state.tag).map((article) => ({ article, excerpt: '' })), failed: false });
+      setResult({ ...state, hits: filterArticles(articles, state.query, state.tag, state.publication).map((article) => ({ article, excerpt: '' })), failed: false });
       return;
     }
     let cancelled = false;
     const timer = window.setTimeout(async () => {
       try {
-        const hits = await searchArticles(articles, state.query, state.tag);
+        const hits = await searchArticles(articles, state.query, state.tag, state.publication);
         if (!cancelled) setResult({ ...state, hits, failed: false });
       } catch {
-        if (!cancelled) setResult({ ...state, hits: filterArticles(articles, state.query, state.tag).map((article) => ({ article, excerpt: '' })), failed: true });
+        if (!cancelled) setResult({ ...state, hits: filterArticles(articles, state.query, state.tag, state.publication).map((article) => ({ article, excerpt: '' })), failed: true });
       }
     }, 300);
     return () => { cancelled = true; window.clearTimeout(timer); };
-  }, [articles, state.query, state.tag, ready, fullText, composing]);
+  }, [articles, state.query, state.tag, state.publication, ready, fullText, composing]);
 
   useEffect(() => {
     if (ready && window.location.hash === '#article-search') searchInput.current?.focus();
@@ -62,7 +63,7 @@ export default function ArticleExplorer({ articles }: { articles: ArticleSummary
   function update(next: SearchState) {
     setState(next);
     const url = new URL(window.location.href);
-    for (const [key, value] of [['q', next.query], ['tag', next.tag]]) {
+    for (const [key, value] of [['q', next.query], ['tag', next.tag], ['publication', next.publication]]) {
       if (value) url.searchParams.set(key, value);
       else url.searchParams.delete(key);
     }
@@ -72,6 +73,16 @@ export default function ArticleExplorer({ articles }: { articles: ArticleSummary
   return (
     <div className="article-explorer">
       <form role="search" onSubmit={(event) => event.preventDefault()}>
+        <fieldset disabled={!ready} className="publication-filter">
+          <legend className="sr-only">記事の分類</legend>
+          {([['', 'すべて'], ['personal', '個人記事'], ['contribution', '寄稿記事']] as const).map(([value, label]) => (
+            <label key={value}>
+              <input type="radio" name="publication" value={value} checked={state.publication === value}
+                onChange={() => update({ ...state, publication: value })} />
+              <span>{label}</span>
+            </label>
+          ))}
+        </fieldset>
         <fieldset disabled={!ready} className="search-fields">
           <legend className="sr-only">記事を探す</legend>
           <div className="search-input">
@@ -93,7 +104,7 @@ export default function ArticleExplorer({ articles }: { articles: ArticleSummary
       {fullText && current?.failed && <p className="search-help" role="alert">本文検索を読み込めませんでした。タイトル・タグから検索しています。</p>}
       <div className="list-status">
         <p role="status" aria-live="polite" aria-atomic="true">{busy ? '検索中…' : <><span className="result-number">{visible.length}</span> 件の記事{active && ` / 全${articles.length}件`}</>}</p>
-        {active && <button type="button" className="clear-search" onClick={() => { update({ query: '', tag: '' }); searchInput.current?.focus(); }}>条件をクリア</button>}
+        {active && <button type="button" className="clear-search" onClick={() => { update({ query: '', tag: '', publication: '' }); searchInput.current?.focus(); }}>条件をクリア</button>}
       </div>
       <div aria-busy={busy}>
         {busy && <p className="search-help">検索中は変更前の一覧を表示しています。</p>}

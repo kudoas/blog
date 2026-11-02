@@ -5,8 +5,8 @@ export const posts = readdirSync('content/ja/posts').filter((file) => file.endsW
   const raw = readFileSync(`content/ja/posts/${file}`, 'utf8');
   const frontmatter = raw.match(/^---\r?\n([\s\S]*?)\r?\n---/);
   if (!frontmatter) throw new Error(`Missing front matter: ${file}`);
-  const data = parse(frontmatter[1]) as { title: string; icon?: string; date: string; draft?: boolean; tags?: string[] };
+  const data = parse(frontmatter[1]) as { title: string; icon?: string; date: string; draft?: boolean; tags?: string[]; publication?: 'personal' | 'contribution' };
   return { id: file.slice(0, -3), data };
 }).filter(({ data }) => !data.draft);
 
-export const external = parse(readFileSync('content/external.yaml', 'utf8')) as { title: string; icon?: string; url: string; date: string; tags?: string[]; source: string }[];
+export const external = parse(readFileSync('content/external.yaml', 'utf8')) as { title: string; icon?: string; url: string; date: string; tags?: string[]; source: string; publication?: 'personal' | 'contribution' }[];
