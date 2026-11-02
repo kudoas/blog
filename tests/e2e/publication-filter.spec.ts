@@ -45,7 +45,8 @@ test('retains classification when returning from an article and traversing histo
   await expect(page.locator('[data-article-return-link="top"]')).toHaveAttribute('href', '/?q=Error&tag=react&publication=personal');
   await page.getByRole('link', { name: '検索を開く' }).click();
   await expect(page.getByRole('dialog').getByRole('searchbox')).toHaveValue('Error');
-  await page.keyboard.press('Escape');
+  await page.getByRole('button', { name: '検索を閉じる' }).click();
+  await expect(page.getByRole('dialog')).toBeHidden();
   await page.locator('[data-article-return-link="top"]').click();
   await expect(page.getByRole('radio', { name: '個人記事', exact: true })).toBeChecked();
   await expect(page.getByLabel('タグで絞り込む')).toHaveValue('react');
