@@ -30,10 +30,10 @@
   "dependencies": {
     "@astrojs/cloudflare": "15.0.0-beta.5",
     "@astrojs/markdown-remark": "7.3.6",
-    "@astrojs/react": "7.1.4",
+    "@astrojs/react": "7.1.5",
     "@astrojs/rss": "4.0.19",
     "@astrojs/sitemap": "3.7.4",
-    "astro": "7.4.7",
+    "astro": "7.4.8",
     "react": "19.3.1",
     "react-dom": "19.3.1",
     "remark-breaks": "4.0.0",
