@@ -30,8 +30,6 @@
     document.querySelectorAll('input[name="theme-preference"]').forEach((input) => {
       input.checked = input.value === root.dataset.theme;
     });
-    const background = getComputedStyle(root).getPropertyValue('--bg').trim();
-    document.querySelectorAll('meta[name="theme-color"]').forEach((meta) => { meta.content = background; });
   }
 
   apply();

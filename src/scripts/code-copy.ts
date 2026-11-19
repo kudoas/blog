@@ -12,6 +12,12 @@ function initializeCodeCopy() {
 
     const block = document.createElement('div');
     block.className = 'code-block';
+    const frame = document.createElement('div');
+    frame.className = 'code-frame';
+    // Extend each Shiki background behind the copy button, outside the scrollable pre.
+    for (const property of ['--shiki-light-bg', '--shiki-dark-bg']) {
+      frame.style.setProperty(property, pre.style.getPropertyValue(property));
+    }
     const status = document.createElement('span');
     status.className = 'code-copy-status';
     status.setAttribute('role', 'status');
@@ -28,7 +34,8 @@ function initializeCodeCopy() {
     button.setAttribute('data-pagefind-ignore', '');
     button.innerHTML = '<svg class="code-copy-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v11a1 1 0 0 0 1 1h4"/></svg><svg class="code-copy-check" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>';
     pre.before(block);
-    block.append(pre, button, feedback, status);
+    frame.append(pre, button, feedback);
+    block.append(frame, status);
 
     let copying = false;
     let resetTimer: number | undefined;

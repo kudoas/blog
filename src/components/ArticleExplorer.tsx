@@ -85,13 +85,10 @@ export default function ArticleExplorer({ articles }: { articles: ArticleSummary
         </fieldset>
         <fieldset disabled={!ready} className="search-fields">
           <legend className="sr-only">記事を探す</legend>
-          <div className="search-input">
-            <label htmlFor="article-search" className="sr-only">記事を検索</label>
-            <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="10.5" cy="10.5" r="6.5" /><path d="m16 16 5 5" /></svg>
-            <input ref={searchInput} id="article-search" type="search" placeholder="記事を検索" aria-describedby="search-help" value={state.query}
-              onCompositionStart={() => setComposing(true)} onCompositionEnd={() => setComposing(false)}
-              onChange={(event) => update({ ...state, query: event.target.value })} />
-          </div>
+          <label htmlFor="article-search" className="sr-only">記事を検索</label>
+          <input ref={searchInput} id="article-search" type="search" placeholder="記事を検索" aria-describedby="search-help" value={state.query}
+            onCompositionStart={() => setComposing(true)} onCompositionEnd={() => setComposing(false)}
+            onChange={(event) => update({ ...state, query: event.target.value })} />
           <label htmlFor="tag-filter" className="sr-only">タグで絞り込む</label>
           <select id="tag-filter" value={state.tag} onChange={(event) => update({ ...state, tag: event.target.value })}>
             <option value="">すべてのタグ</option>
@@ -103,12 +100,12 @@ export default function ArticleExplorer({ articles }: { articles: ArticleSummary
       <p id="search-help" className="search-help">{import.meta.env.DEV ? 'タイトル・タグから検索します。' : 'ブログ内は本文まで、外部記事はタイトル・タグ・説明を検索します。'}</p>
       {fullText && current?.failed && <p className="search-help" role="alert">本文検索を読み込めませんでした。タイトル・タグから検索しています。</p>}
       <div className="list-status">
-        <p role="status" aria-live="polite" aria-atomic="true">{busy ? '検索中…' : <><span className="result-number">{visible.length}</span> 件の記事{active && ` / 全${articles.length}件`}</>}</p>
-        {active && <button type="button" className="clear-search" onClick={() => { update({ query: '', tag: '', publication: '' }); searchInput.current?.focus(); }}>条件をクリア</button>}
+        <p role="status" aria-live="polite" aria-atomic="true">{busy ? '検索中…' : <>{visible.length} 件の記事{active && ` / 全${articles.length}件`}</>}</p>
+        {active && <button type="button" onClick={() => { update({ query: '', tag: '', publication: '' }); searchInput.current?.focus(); }}>条件をクリア</button>}
       </div>
       <div aria-busy={busy}>
         {busy && <p className="search-help">検索中は変更前の一覧を表示しています。</p>}
-        {visible.length > 0 ? <ArticleList articles={visible} excerpts={excerpts} /> : <p className="empty-state">{busy ? '変更前の条件に合う記事はありません。' : '条件に合う記事が見つかりませんでした。'}</p>}
+        {visible.length > 0 ? <ArticleList articles={visible} excerpts={excerpts} /> : <p>{busy ? '変更前の条件に合う記事はありません。' : '条件に合う記事が見つかりませんでした。'}</p>}
       </div>
     </div>
   );

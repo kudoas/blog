@@ -76,7 +76,7 @@ test('keeps article links and the body readable without JavaScript', async ({ br
   await page.goto('/');
   await expect(page.locator('.article-list > li')).toHaveCount(total);
   await page.getByRole('link', { name: 'Error BoundaryをFunction Componentで扱う', exact: true }).click();
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Error BoundaryをFunction Componentで扱う');
+  await expect(page.getByRole('heading', { level: 1, name: 'Error BoundaryをFunction Componentで扱う' })).toBeVisible();
   await expect(page.locator('.prose pre').first()).toBeVisible();
   await expect(page.getByRole('heading', { name: 'コメント・リアクション' })).toBeVisible();
   const discussion = page.getByRole('link', { name: 'GitHub でコメントを見る' });

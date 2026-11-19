@@ -77,7 +77,7 @@ test('keeps cross-page links usable with JavaScript disabled', async ({ browser 
   const page = await context.newPage();
   await page.goto('/tags/react/');
   await page.getByRole('link', { name: 'Error BoundaryをFunction Componentで扱う', exact: true }).click();
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Error BoundaryをFunction Componentで扱う');
+  await expect(page.getByRole('heading', { level: 1, name: 'Error BoundaryをFunction Componentで扱う' })).toBeVisible();
   await expect(page.locator('.prose pre > code').first()).toContainText('class ErrorBoundary');
   await page.goBack();
   await expect(page).toHaveURL(/\/tags\/react\/$/);

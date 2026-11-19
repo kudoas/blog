@@ -83,6 +83,9 @@ for (const theme of ['light', 'dark'] as const) {
     await pre.evaluate(element => { element.scrollLeft = 100; });
     expect(await pre.evaluate(element => element.scrollLeft)).toBeGreaterThan(0);
     await expect(copy).toBeInViewport();
+    const codeBounds = (await pre.boundingBox())!;
+    const buttonBounds = (await copy.boundingBox())!;
+    expect(codeBounds.x + codeBounds.width).toBeLessThanOrEqual(buttonBounds.x);
     await pre.evaluate(element => { element.scrollLeft = 0; });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await block.scrollIntoViewIfNeeded();

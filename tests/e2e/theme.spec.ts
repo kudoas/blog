@@ -4,11 +4,31 @@ const choices = { light: 'ライト', dark: 'ダーク' };
 const chooseTheme = (page: Page, theme: keyof typeof choices) => page.getByRole('radio', { name: choices[theme], exact: true }).click();
 const selection = (page: Page) => page.locator('input[name="theme-preference"]:checked');
 
-const colors = { light: 'rgb(255, 255, 255)', dark: 'rgb(13, 17, 23)' };
+async function expectTheme(page: Page, theme: 'light' | 'dark') {
+  await expect.poll(() => page.evaluate((scheme) => {
+    const sample = document.createElement('span');
+    sample.style.backgroundColor = 'Canvas';
+    document.body.append(sample);
+    const inherited = getComputedStyle(sample).backgroundColor;
+    sample.style.colorScheme = scheme;
+    const expected = getComputedStyle(sample).backgroundColor;
+    sample.remove();
+    return inherited === expected;
+  }, theme)).toBe(true);
+}
 
-async function expectTheme(page: import('@playwright/test').Page, theme: 'light' | 'dark') {
-  await expect(page.locator('html')).toHaveCSS('background-color', colors[theme]);
-  await expect(page.locator('html')).toHaveCSS('color-scheme', theme);
+function contrast(foreground: string, background: string) {
+  const luminance = (color: string) => {
+    const rgb = color.match(/[\d.]+/g)!.slice(0, 3).map(Number);
+    const [red, green, blue] = rgb.map((channel) => {
+      const value = channel / 255;
+      return value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+    });
+    return red * 0.2126 + green * 0.7152 + blue * 0.0722;
+  };
+  const first = luminance(foreground);
+  const second = luminance(background);
+  return (Math.max(first, second) + 0.05) / (Math.min(first, second) + 0.05);
 }
 
 test('follows the system until explicitly selected, persists navigation', async ({ page }) => {
@@ -34,8 +54,6 @@ test('follows the system until explicitly selected, persists navigation', async 
   await expectTheme(page, 'light');
   await chooseTheme(page, 'dark');
   await expectTheme(page, 'dark');
-  await expect(page.locator('meta[name="theme-color"]').first()).toHaveAttribute('content', '#0d1117');
-
 });
 
 test('applies a saved preference before body parsing', async ({ page }) => {
@@ -106,30 +124,35 @@ for (const theme of ['light', 'dark'] as const) {
     await expectTheme(page, theme);
     await page.getByRole('searchbox').fill('Figma');
     await expect(page.locator('.article-excerpt mark')).toContainText('Figma');
-    await expect(page.locator('.article-excerpt mark').first()).toHaveCSS('background-color', theme === 'light' ? 'rgb(219, 234, 254)' : 'rgb(23, 71, 107)');
+    const highlight = await page.locator('.article-excerpt mark').first().evaluate((mark) => {
+      const { color, backgroundColor } = getComputedStyle(mark);
+      return { color, backgroundColor };
+    });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await page.screenshot({ path: testInfo.outputPath(`${theme}-mobile.png`), fullPage: true });
     await page.goto('/posts/func-error-boundary/');
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await page.setViewportSize({ width: 1280, height: 900 });
     await page.screenshot({ path: testInfo.outputPath(`${theme}-article.png`), fullPage: true });
-    // Verify the colors actually used by the browser rather than duplicating the palette.
-    const contrast = await page.evaluate(() => {
-      const root = getComputedStyle(document.documentElement);
-      const luminance = (color: string) => {
-        const hex = color.slice(1);
-        const fullHex = hex.length === 3 ? [...hex].map((v) => v + v).join('') : hex;
-        const rgb = color.startsWith('#') ? fullHex.match(/../g)!.map((v) => parseInt(v, 16)) : color.match(/[\d.]+/g)!.slice(0, 3).map(Number);
-        const linear = rgb.map((v) => { const x = v / 255; return x <= 0.04045 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4; });
-        return linear[0] * 0.2126 + linear[1] * 0.7152 + linear[2] * 0.0722;
+    const { canvas, text, link, code } = await page.evaluate(() => {
+      const sample = document.createElement('span');
+      sample.style.backgroundColor = 'Canvas';
+      document.body.append(sample);
+      const canvas = getComputedStyle(sample).backgroundColor;
+      sample.remove();
+      const codeStyle = getComputedStyle(document.querySelector('.prose pre')!);
+      return {
+        canvas,
+        text: getComputedStyle(document.querySelector('.prose')!).color,
+        link: getComputedStyle(document.querySelector('.prose a')!).color,
+        code: { color: codeStyle.color, backgroundColor: codeStyle.backgroundColor },
       };
-      const bg = luminance(root.getPropertyValue('--bg').trim());
-      return ['--text', '--muted', '--accent', '--draft-text'].map((token) => {
-        const fg = luminance(root.getPropertyValue(token).trim());
-        return (Math.max(fg, bg) + 0.05) / (Math.min(fg, bg) + 0.05);
-      });
     });
-    for (const ratio of contrast) expect(ratio).toBeGreaterThanOrEqual(4.5);
+    expect(contrast(text, canvas)).toBeGreaterThanOrEqual(4.5);
+    expect(contrast(link, canvas)).toBeGreaterThanOrEqual(4.5);
+    expect(contrast(code.color, code.backgroundColor)).toBeGreaterThanOrEqual(4.5);
+    expect(contrast(highlight.color, highlight.backgroundColor)).toBeGreaterThanOrEqual(4.5);
+    expect(highlight.backgroundColor).not.toBe(canvas);
   });
 }
 
@@ -173,7 +196,7 @@ for (const delayed of [false, true]) {
   });
 }
 
-test('switches the icon group using arrow keys', async ({ page }) => {
+test('switches the theme using arrow keys', async ({ page }) => {
   await page.goto('/');
   await chooseTheme(page, 'light');
   await page.getByRole('radio', { name: 'ライト', exact: true }).focus();
