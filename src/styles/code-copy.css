@@ -1,13 +1,21 @@
 @layer base, layout, components, prose;
 
 @layer prose {
-  .code-block { --copy-inset: .5rem; position: relative; margin-block: 1em; min-width: 0; }
-  .code-copy { position: absolute; top: var(--copy-inset); right: var(--copy-inset); display: grid; place-items: center; width: 44px; height: 44px; }
+  .code-block { position: relative; margin-block: 1em; min-width: 0; }
+  .code-frame {
+    --copy-inset: .5rem;
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    border: 1px solid var(--code-border);
+    background: light-dark(var(--shiki-light-bg, Canvas), var(--shiki-dark-bg, Canvas));
+  }
+  .code-copy { align-self: start; display: grid; place-items: center; width: 44px; height: 44px; margin: var(--copy-inset); }
   .code-copy-check, .code-copy[data-state="copied"] .code-copy-icon { display: none; }
   .code-copy[data-state="copied"] .code-copy-check { display: block; }
   .code-copy-feedback { position: absolute; top: var(--copy-inset); right: calc(var(--copy-inset) + 50px); max-width: calc(100% - var(--copy-inset) * 2 - 50px); font-size: .875rem; }
   .code-copy-feedback:not(:empty) { padding: .25rem .5rem; border: 1px solid; background: Canvas; }
   .code-copy-status:not([data-state="failed"]) { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
   .code-copy-status[data-state="failed"] { display: block; margin-block-start: .5rem; font-size: .875rem; }
-  .prose .code-block pre { margin: 0; padding-block-start: 3.5rem; }
+  .prose .code-frame pre { margin: 0; border: 0; }
 }

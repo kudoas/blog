@@ -84,13 +84,16 @@
 }
 
 @layer prose {
-  .prose { line-height: 1.85; }
+  .prose {
+    --code-border: light-dark(CanvasText, color-mix(in srgb, CanvasText 25%, Canvas));
+    line-height: 1.85;
+  }
   .prose > :first-child { margin-block-start: 0; }
   .prose h2, .prose h3, .prose h4 { margin-block: 2em .6em; line-height: 1.45; }
   .prose ul, .prose ol, .prose blockquote { padding-inline-start: 1.5em; }
   .prose blockquote { margin-inline: 0; border-inline-start: 1px solid; }
   .prose :not(pre) > code { padding-inline: .2em; background: ButtonFace; color: ButtonText; }
-  .prose pre { padding: 1rem; border: 1px solid; overflow-x: auto; tab-size: 2; }
+  .prose pre { padding: 1rem; border: 1px solid var(--code-border); overflow-x: auto; tab-size: 2; }
   .prose table { display: block; overflow-x: auto; border-collapse: collapse; }
   .prose td, .prose th { padding: .25em .5em; border: 1px solid; }
 
