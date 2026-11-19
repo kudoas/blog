@@ -61,7 +61,9 @@ test('ships the search bundle and restricts local indexing to article content', 
 test('each Markdown article retains its URL, metadata, image paths and heading anchors', () => {
   for (const { id, data } of posts) {
     const $ = page(`posts/${id}/index.html`);
-    assert.equal($('h1').text(), data.title);
+    const heading = $('h1').clone();
+    heading.find('[aria-hidden="true"]').remove();
+    assert.equal(heading.text(), data.title);
     assert.equal($('link[rel="canonical"]').attr('href'), `https://blog.da1chi.net/posts/${id}/`);
     assert.equal($('meta[property="og:type"]').attr('content'), 'article');
     assert.ok($('meta[name="description"]').attr('content'));

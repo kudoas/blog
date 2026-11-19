@@ -58,5 +58,5 @@ test('retains the last fallback results when a new search is composing', async (
   expect(await page.locator('.article-summary').getByRole('heading').getByRole('link').allTextContents()).toEqual(fallbackLinks);
   await search.dispatchEvent('compositionend');
   await expect(page.getByRole('alert')).toBeVisible();
-  await expect(page.locator('.empty-state')).toHaveText('条件に合う記事が見つかりませんでした。');
+  await expect(page.getByText('条件に合う記事が見つかりませんでした。', { exact: true })).toBeVisible();
 });

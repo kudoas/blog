@@ -15,7 +15,7 @@ test('shows configured article icons in both themes and viewport sizes', async (
       const meta = page.locator('.post-meta');
       await expect(icon).toHaveText('⚛️');
       await expect(icon).toHaveAttribute('aria-hidden', 'true');
-      await expect(heading).toHaveText('Error BoundaryをFunction Componentで扱う');
+      await expect(heading).toHaveAccessibleName('Error BoundaryをFunction Componentで扱う');
       expect(await heading.getAttribute('data-pagefind-body')).not.toBeNull();
       await expect(icon).toBeVisible();
       await expect(meta).toBeVisible();

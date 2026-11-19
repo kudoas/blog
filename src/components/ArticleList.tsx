@@ -3,29 +3,29 @@ import type { ArticleSummary } from '../lib/articles';
 
 export default function ArticleList({ articles, excerpts = {} }: { articles: ArticleSummary[]; excerpts?: Record<string, string> }) {
   return (
-    <ul className="article-list">
+    <ul className="article-list" role="list">
       {articles.map((article) => (
         <li key={article.id}>
           <article className="article-summary">
             <time className="article-date" dateTime={article.date}>{formatDate(article.date)}</time>
-            <div className="article-summary-content">
-              <h2>
-                <a href={article.url} {...(article.kind === 'external' ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
-                  {article.icon && <span className="article-icon" aria-hidden="true">{article.icon}</span>}
-                  {article.title}
-                  {article.kind === 'external' && <span className="external-arrow" aria-label="外部サイトを新しいタブで開く">↗</span>}
-                </a>
-              </h2>
-              {/* Only Pagefind-generated excerpts are HTML: its API escapes content before adding <mark>. */}
-              {article.kind === 'local' && excerpts[article.id]
-                ? <p className="article-excerpt" dangerouslySetInnerHTML={{ __html: excerpts[article.id] }} />
-                : article.description && <p className="article-description">{article.description}</p>}
+            <h2>
+              <a href={article.url} {...(article.kind === 'external' ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+                {article.icon && <span className="article-icon" aria-hidden="true">{article.icon}</span>}
+                {article.title}
+                {article.kind === 'external' && <span className="external-arrow" aria-label="外部サイトを新しいタブで開く">↗</span>}
+              </a>
+            </h2>
+            {/* Only Pagefind-generated excerpts are HTML: its API escapes content before adding <mark>. */}
+            {article.kind === 'local' && excerpts[article.id]
+              ? <p className="article-excerpt" dangerouslySetInnerHTML={{ __html: excerpts[article.id] }} />
+              : article.description && <p className="article-description">{article.description}</p>}
+            {(article.kind === 'external' || article.draft || article.tags.length > 0) && (
               <div className="article-meta">
-                <span className={article.kind === 'external' ? 'article-source' : 'article-source local-source'}>{article.source}</span>
-                {article.draft && <span className="draft-label">下書き</span>}
+                {article.kind === 'external' && <span>{article.source}</span>}
+                {article.draft && <span>下書き</span>}
                 {article.tags.map((tag) => <a className="tag" href={tagUrl(tag)} key={tag}>#{tag}</a>)}
               </div>
-            </div>
+            )}
           </article>
         </li>
       ))}

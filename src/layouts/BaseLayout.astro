@@ -24,8 +24,6 @@ const imageUrl = new URL(image.startsWith('http') || image.startsWith('/') ? ima
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#0d1117" media="(prefers-color-scheme: dark)" />
     <script is:inline set:html={themeScript} />
     <ClientRouter fallback="swap" />
     <script>
@@ -56,16 +54,14 @@ const imageUrl = new URL(image.startsWith('http') || image.startsWith('/') ? ima
   <body>
     <a class="skip-link" href="#main">本文へスキップ</a>
     <header class="site-header shell">
-      <a class="wordmark" href="/" aria-label={`${site.title} ホーム`}>daichi<span>/</span>tech</a>
-      <div class="header-actions">
-        <nav aria-label="メインナビゲーション">
-          <a href="/" aria-current={Astro.url.pathname === '/' ? 'page' : undefined}>記事</a>
-          <a href="/tags/" aria-current={Astro.url.pathname.startsWith('/tags/') ? 'page' : undefined}>タグ</a>
-          <SearchEntry />
-          <a href={site.about}>About <span aria-hidden="true">↗</span></a>
-        </nav>
-        <ThemeSwitcher />
-      </div>
+      <a class="wordmark" href="/" aria-label={`${site.title} ホーム`}>{site.title}</a>
+      <nav aria-label="メインナビゲーション">
+        <a href="/" aria-current={Astro.url.pathname === '/' ? 'page' : undefined}>記事</a>
+        <a href="/tags/" aria-current={Astro.url.pathname.startsWith('/tags/') ? 'page' : undefined}>タグ</a>
+        <SearchEntry />
+        <a href={site.about}>About <span aria-hidden="true">↗</span></a>
+      </nav>
+      <ThemeSwitcher />
     </header>
     <main id="main" class="shell" tabindex="-1" aria-label={article ? '記事本文' : 'メインコンテンツ'}><slot /></main>
     <footer class="site-footer shell">

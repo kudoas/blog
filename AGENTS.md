@@ -9,8 +9,8 @@ Please answer concisely and politely in Japanese with emoji.
 - `src/content.config.ts` validates both collections; `src/lib/` prepares summary data.
 - `src/pages/` and `src/layouts/` render static Astro pages. React is limited to
   interactive search and filtering in `src/components/`.
-- `src/styles/global.css` owns the one-column dark blue design. `static/` preserves
-  existing public image URLs. `.cloudflare/output/v0/` is generated build output.
+- `src/styles/global.css` sets reading width and spacing around browser-native colors and controls.
+  `static/` preserves existing public image URLs. `.cloudflare/output/v0/` is generated build output.
 - `cloudflare.config.ts` configures Cloudflare Workers Static Assets.
   The Astro Cloudflare adapter produces an assets-only deployment.
   `static/_redirects` preserves legacy routes.

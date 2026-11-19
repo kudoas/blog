@@ -12,6 +12,6 @@ interface Props { label: string; articles: ArticleSummary[] }
 const { label, articles } = Astro.props;
 ---
 <BaseLayout title={`#${label}`}>
-  <header class="page-heading"><a class="back-link" href="/tags/">← タグ一覧</a><h1>#{label}</h1><p class="muted">{articles.length} 件の記事</p></header>
+  <header><a href="/tags/">← タグ一覧</a><h1>#{label}</h1><p>{articles.length} 件の記事</p></header>
   <ArticleList articles={articles} />
 </BaseLayout>
